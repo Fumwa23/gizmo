@@ -1,13 +1,11 @@
+/*
+This is the test code I was using to test the motor and the encoder. 
+It does work and can be used for troubleshooting later on.
+*/
+
+
 #include <Arduino.h> // Base library for Arduino functions
 #include <driver/ledc.h> // Library for LEDC functions
-
-// put function declarations here:
-int myFunction(int, int);
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
 
 // Define pins
 #define C1_PIN 26 // Encoder channel C1
