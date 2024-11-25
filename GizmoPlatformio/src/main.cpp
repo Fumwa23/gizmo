@@ -1,25 +1,22 @@
 /*
-This File is working code which tested if the motor and encoder are working properly.
+This is the main file for the Gizmo Platformio project.
 
+This file contains the setup and loop functions.
+
+It is the file that is compiled and uploaded to the ESP32.
 */
 
-#include <Arduino.h> // Base library for Arduino functions
-#include <driver/ledc.h> // Library for LEDC functions
+#include <Arduino.h>
+#include <driver/ledc.h> // Library replacement for analogWrite - Allows frequency, channel and resolution control.
 
 // put function declarations here:
-int myFunction(int, int);
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
+int home(int, int);
 
 // Define pins
 #define C1_PIN 26 // Encoder channel C1
 #define C2_PIN 27 // Encoder channel C2
 #define MOTOR_PWM_PIN1 12 // H-bridge control pin 1
 #define MOTOR_PWM_PIN2 13 // H-bridge control pin 2
-#define POT_PIN 32 // Potentiometer pin
 
 const int freq = 30000;
 const int pwmChannel = 0;
@@ -30,13 +27,14 @@ int dutyCycle = 200;
 volatile int encoderCount = 0;
 volatile int encoderCount2 = 0;
 unsigned long lastTime = 0;
+
+// Constants for encoder
 const int ENCODER_PULSES_PER_REV = 700; // Replace with your encoder's PPR
 
 // Interrupt service routine for encoder
 void IRAM_ATTR handleEncoder() {
   encoderCount++;
 }
-
 void IRAM_ATTR handleEncoder2() {
   encoderCount2++;
 }
@@ -59,11 +57,6 @@ void setup() {
 }
 
 void loop() {
-  // Read potentiometer value and map it to PWM range
-  int potValue = analogRead(POT_PIN);
-  int pwmValue = map(potValue, 0, 4095, 0, 255); // ESP32 ADC gives a range from 0 to 4095
-
-  // Apply PWM signal to control motor speeds
   //ledcWrite(pwmChannel, pwmValue); // Write PWM value to channel 0
   ledcWrite(pwmChannel, 255); // Write PWM value to channel 0
 
@@ -87,4 +80,9 @@ void loop() {
     encoderCount = 0;
     encoderCount2 = 0;
   }
+}
+
+// put function definitions here:
+int myFunction(int x, int y) {
+  return x + y;
 }
