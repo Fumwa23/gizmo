@@ -7,9 +7,9 @@ class PIDController {
 public:
     PIDController();        // Constructor
 
-    void initialise(float kp, float ki, float kd, float outMin, float outMax, float sampleTime);    // Initialise with a pin
+    void initialise(float kp, float ki, float kd, float outMin, float outMax, float sampleTime, float tau);    // Initialise with a pin
     float move(float setpoint, float measurement);     // Example function
-
+ 
 private:
     // PID gains
     float kp_;
@@ -18,6 +18,9 @@ private:
 
     // Derivative low-pass filter time constant
     float tau_;
+
+    // Sampling Time (seconds)
+    float sampleTime_;
 
     // Memory variables
     float integrator_;
