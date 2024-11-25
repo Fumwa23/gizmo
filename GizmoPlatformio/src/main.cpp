@@ -8,24 +8,28 @@ It is the file that is compiled and uploaded to the ESP32.
 
 #include <Arduino.h>
 #include <driver/ledc.h> // Library replacement for analogWrite - Allows frequency, channel and resolution control.
+#include <PIDController.h>
 
-// put function declarations here:
-void home();
+PIDController pid;
 
 // Define pins
 #define C1_PIN 26 // Encoder channel C1
 #define C2_PIN 27 // Encoder channel C2
-#define MOTOR_PWM_PIN1 12 // H-bridge control pin 1
-#define MOTOR_PWM_PIN2 13 // H-bridge control pin 2
+#define M1_PIN 12 // H-bridge control pin 1
+#define M2_PIN 13 // H-bridge control pin 2
 
+// put function declarations here:
+void home();
+
+
+// Constants for PWM
 const int freq = 30000;
 const int pwmChannel = 0;
 const int resolution = 8;
 int dutyCycle = 200;
 
 // Variables for encoder
-volatile int encoderCount = 0;
-volatile int encoderCount2 = 0;
+volatile int encoderPosition = 0;
 unsigned long lastTime = 0;
 
 // Constants for encoder
@@ -37,56 +41,74 @@ const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
 // Interrupt service routine for encoder
 void IRAM_ATTR handleEncoder() {
-  encoderCount++;
+  if (digitalRead(C2_PIN) == LOW) {
+    encoderPosition--;
+  } else {
+    encoderPosition++;
+  }
 }
-void IRAM_ATTR handleEncoder2() {
-  encoderCount2++;
-}
+
+// PID Setup
+const float kp = 0.5;
+const float ki = 0.0;
+const float kd = 0.0;
+const float outMin = -255.0;
+const float outMax = 255.0;
+const float sampleTime = 0.001;
+const float tau = 0.0001;
 
 void setup() {
   Serial.begin(115200);
+
+  // Setup pins as Input/Output
   pinMode(C1_PIN, INPUT_PULLUP);
   pinMode(C2_PIN, INPUT_PULLUP);
+  pinMode(M1_PIN, OUTPUT);
+  pinMode(M2_PIN, OUTPUT);
+
+  // Attach interrupts to encoder pins
   attachInterrupt(digitalPinToInterrupt(C1_PIN), handleEncoder, RISING);
-  attachInterrupt(digitalPinToInterrupt(C2_PIN), handleEncoder2, RISING);
 
-  // Setup motor control pins as outputs
-  pinMode(MOTOR_PWM_PIN1, OUTPUT);
-  pinMode(MOTOR_PWM_PIN2, OUTPUT);
-
-  ledcAttachPin(MOTOR_PWM_PIN1, pwmChannel); // Attach PWM to channel 0
+  ledcAttachPin(M1_PIN, pwmChannel); // Attach PWM to channel 0
   ledcSetup(pwmChannel, freq, resolution);
 
   lastTime = millis();
  
   home(); // Call home function to calibrate the arms
+
+  // Setting up PID controller
+  pid.initialise(kp, ki, kd, outMin, outMax, sampleTime, tau);
 }
 
 void loop() {
+    // Testing PID
+    float setpoint = 700.0;
+    float measurement = encoderPosition;
+
+    float output = pid.move(setpoint, measurement);
+
+
   //ledcWrite(pwmChannel, pwmValue); // Write PWM value to channel 0
   ledcWrite(pwmChannel, 255); // Write PWM value to channel 0
 
-  // Ensure MOTOR_PWM_PIN2 is LOW for unidirectional control
-  digitalWrite(MOTOR_PWM_PIN2, LOW);
+  // Ensure M2 is LOW for unidirectional control
+  digitalWrite(M2_PIN, LOW);
 
-  // Calculate RPM every second
+  Serial.print("EncoderPosition: ");
+  Serial.print(encoderPosition);
+
+  // Print output
+  Serial.print(" | Output: ");
+  Serial.println(output);
+
+  // Print encoderPosition every second
   unsigned long currentTime = millis();
   if (currentTime - lastTime >= 1000) { // 1-second interval
-    float rpm = (encoderCount / (float)ENCODER_PULSES_PER_REV) * 60.0; // Calculate RPM
     lastTime = currentTime;
-
-    Serial.print("EncoderCount: ");
-    Serial.print(encoderCount);
-
-    Serial.print(" | Encoder 2 Count: ");
-    Serial.print(encoderCount2);
-    Serial.print(" | RPM: ");
-    Serial.println(rpm);
-
-    encoderCount = 0;
-    encoderCount2 = 0;
+    
   }
 }
+
 
 // put function definitions here:
 void home() {
