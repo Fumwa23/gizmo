@@ -24,12 +24,15 @@ void home();
 
 // Constants for PWM
 const int freq = 30000;
-const int pwmChannel = 0;
+const int pwmChannel1 = 0;
+const int pwmChannel2 = 1;
 const int resolution = 8;
 int dutyCycle = 200;
 
 // Variables for encoder
 volatile int encoderPosition = 0;
+volatile int lastState = 0;
+
 unsigned long lastTime = 0;
 
 // Constants for encoder
@@ -39,18 +42,22 @@ const int ENCODER_PULSES_PER_REV = 700; // Replace with your encoder's PPR
 // We have named this like a unit, so 120 degrees is 120 * GYZ
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
-// Interrupt service routine for encoder
 void IRAM_ATTR handleEncoder() {
-  if (digitalRead(C2_PIN) == LOW) {
-    encoderPosition--;
-  } else {
-    encoderPosition++;
-  }
+    int state1 = digitalRead(C1_PIN);
+    int state2 = digitalRead(C2_PIN);
+
+    if (state1 != state2) {
+        // Clockwise
+        encoderPosition++;
+    } else {
+        // Anti-clockwise
+        encoderPosition--;
+    }
 }
 
 // PID Setup
-const float kp = 0.5;
-const float ki = 0.0;
+const float kp = 0.4;
+const float ki = 0.5;
 const float kd = 0.0;
 const float outMin = -255.0;
 const float outMax = 255.0;
@@ -69,8 +76,12 @@ void setup() {
   // Attach interrupts to encoder pins
   attachInterrupt(digitalPinToInterrupt(C1_PIN), handleEncoder, RISING);
 
-  ledcAttachPin(M1_PIN, pwmChannel); // Attach PWM to channel 0
-  ledcSetup(pwmChannel, freq, resolution);
+  // Setup PWM
+  ledcAttachPin(M1_PIN, pwmChannel1); // Attach PWM to channel 0
+  ledcSetup(pwmChannel1, freq, resolution);
+
+  ledcAttachPin(M2_PIN, pwmChannel2); // Attach PWM to channel 0
+  ledcSetup(pwmChannel2, freq, resolution);
 
   lastTime = millis();
  
@@ -81,18 +92,22 @@ void setup() {
 }
 
 void loop() {
-    // Testing PID
-    float setpoint = 700.0;
-    float measurement = encoderPosition;
+  // Testing PID
+  float setpoint = 360 * GYZ; // 120 degrees
+  float measurement = encoderPosition;
 
-    float output = pid.move(setpoint, measurement);
+  float output = pid.move(setpoint, measurement); // Get PID output (value between -255 AND 255)
 
-
-  //ledcWrite(pwmChannel, pwmValue); // Write PWM value to channel 0
-  ledcWrite(pwmChannel, 255); // Write PWM value to channel 0
-
-  // Ensure M2 is LOW for unidirectional control
-  digitalWrite(M2_PIN, LOW);
+  // Write output to motor
+  if (output > 0) {
+    // Clockwise
+    ledcWrite(pwmChannel1, 255 - output);
+    ledcWrite(pwmChannel2, 255);
+  } else {
+    // Anti-clockwise
+    ledcWrite(pwmChannel1, 255);
+    ledcWrite(pwmChannel2, 255 - output * -1);
+  }
 
   Serial.print("EncoderPosition: ");
   Serial.print(encoderPosition);
