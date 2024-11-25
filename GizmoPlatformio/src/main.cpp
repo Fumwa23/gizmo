@@ -10,10 +10,10 @@ int myFunction(int x, int y) {
 }
 
 // Define pins
-#define C1_PIN 26 // Encoder channel C1
+#define C1_PIN 14 // Encoder channel C1
 #define C2_PIN 27 // Encoder channel C2
 #define MOTOR_PWM_PIN1 12 // H-bridge control pin 1
-#define MOTOR_PWM_PIN2 14 // H-bridge control pin 2
+#define MOTOR_PWM_PIN2 13 // H-bridge control pin 2
 #define POT_PIN 32 // Potentiometer pin
 
 const int freq = 30000;
