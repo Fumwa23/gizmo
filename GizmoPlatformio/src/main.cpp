@@ -10,7 +10,7 @@ It is the file that is compiled and uploaded to the ESP32.
 #include <driver/ledc.h> // Library replacement for analogWrite - Allows frequency, channel and resolution control.
 
 // put function declarations here:
-int home(int, int);
+void home();
 
 // Define pins
 #define C1_PIN 26 // Encoder channel C1
@@ -31,6 +31,10 @@ unsigned long lastTime = 0;
 // Constants for encoder
 const int ENCODER_PULSES_PER_REV = 700; // Replace with your encoder's PPR
 
+// Constant multiplier to convert degrees to encoder counts
+// We have named this like a unit, so 120 degrees is 120 * GYZ
+const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
+
 // Interrupt service routine for encoder
 void IRAM_ATTR handleEncoder() {
   encoderCount++;
@@ -47,13 +51,15 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(C2_PIN), handleEncoder2, RISING);
 
   // Setup motor control pins as outputs
-  //pinMode(MOTOR_PWM_PIN1, OUTPUT);
+  pinMode(MOTOR_PWM_PIN1, OUTPUT);
   pinMode(MOTOR_PWM_PIN2, OUTPUT);
 
   ledcAttachPin(MOTOR_PWM_PIN1, pwmChannel); // Attach PWM to channel 0
   ledcSetup(pwmChannel, freq, resolution);
 
   lastTime = millis();
+ 
+  home(); // Call home function to calibrate the arms
 }
 
 void loop() {
@@ -83,6 +89,13 @@ void loop() {
 }
 
 // put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void home() {
+  // Move one arm 120 degrees clockwise
+    // use relative PID to move 120 clockwise
+
+  // Move the other arm 120 degrees anticlockwise
+    // use relative PID to move 120 anticlockwise
+
+  // Set EncoderHome position to 0 for both arms
+  
 }
