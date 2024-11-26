@@ -12,6 +12,7 @@ It is the file that is compiled and uploaded to the ESP32.
 #include <SPMController.h>
 
 PIDController pid;
+SPMController spmController;
 
 // Define pins
 #define C1_PIN 26 // Encoder channel C1
@@ -28,7 +29,6 @@ const int freq = 30000;
 const int pwmChannel1 = 0;
 const int pwmChannel2 = 1;
 const int resolution = 8;
-int dutyCycle = 200;
 
 // Variables for encoder
 volatile int encoderPosition = 0;
@@ -58,11 +58,12 @@ void IRAM_ATTR handleEncoder() {
 
 // PID Setup
 const float kp = 0.4;
-const float ki = 0.5;
-const float kd = 0.0;
-const float outMin = -255.0;
-const float outMax = 255.0;
-const float sampleTime = 0.001;
+const float ki = 0.05;
+const float kd = 0.2;
+
+const float outMin = -125.0;
+const float outMax = 125.0;
+const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
 //Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
@@ -70,6 +71,8 @@ double a_motor_angle = 240;
 double b_motor_angle = 120;
 
 
+
+float setpoint = 0; // FOR TESTING ONLY
 
 void setup() {
   Serial.begin(115200);
@@ -97,16 +100,25 @@ void setup() {
   // Setting up PID controller
   pid.initialise(kp, ki, kd, outMin, outMax, sampleTime, tau);
 
-  //Initilaise SPM controller by passing the addresses of the motor angles and the z_angle (always 36 but can be edited for modularity)
-  SPMController.initialise(&a_motor_angle, &b_motor_angle, 36);
+  spmController.initialise(&a_motor_angle, &b_motor_angle, 36);
+  spmController.initialise(&a_motor_angle, &b_motor_angle, 36);
+
+  setpoint = 360 * GYZ; // 120 degrees
 }
 
 void loop() {
+  // Get current time
+  unsigned long currentTime = millis();
+
   // Testing PID
-  float setpoint = 360 * GYZ; // 120 degrees
   float measurement = encoderPosition;
 
   float output = pid.move(setpoint, measurement); // Get PID output (value between -255 AND 255)
+  if (output < 0) {
+    output -= 130;
+  } else if (output > 0) {
+    output += 130;
+  }
 
   // Write output to motor
   if (output > 0) {
@@ -119,18 +131,20 @@ void loop() {
     ledcWrite(pwmChannel2, 255 - output * -1);
   }
 
-  Serial.print("EncoderPosition: ");
-  Serial.print(encoderPosition);
+  if (currentTime - lastTime >= 20){
 
-  // Print output
-  Serial.print(" | Output: ");
-  Serial.println(output);
-
-  // Print encoderPosition every second
-  unsigned long currentTime = millis();
-  if (currentTime - lastTime >= 1000) { // 1-second interval
     lastTime = currentTime;
-    
+    //setpoint += 20;
+
+    Serial.print("Setpoint: ");
+    Serial.print(setpoint);
+
+    Serial.print("EncoderPosition: ");
+    Serial.print(encoderPosition);
+
+    // Print output
+    Serial.print(" | Output: ");
+    Serial.println(output);
   }
 }
 

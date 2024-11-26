@@ -1,17 +1,17 @@
 #include "SPMController.h"
 
 void SPMController::initialise(double * a_motor_ptr, double * b_motor_ptr, double z_angle){
-    double * a_motor_ptr = a_motor_ptr;
-    double * b_motor_ptr = b_motor_ptr;
+  double * a_motor_ptr = a_motor_ptr;
+  double * b_motor_ptr = b_motor_ptr;
 
-    pi = 2*acos(0);
-    
-    double sz_angle_sin = sin(36*pi/180);
-    double cz_angle_cos = cos(36*pi/180);
+  pi = 2*acos(0);
+  
+  double sz_angle_sin = sin(36*pi/180);
+  double cz_angle_cos = cos(36*pi/180);
 
-    vector <double> driver_arm(3);
+  vector <double> driver_arm(3);
 
-    vector <double> cMotor = {sz_angle_sin,0,-cz_angle_cos};
+  vector <double> cMotor = {sz_angle_sin,0,-cz_angle_cos};
 }
 
 void SPMController::calculate_motors(double phi, double theta){
@@ -59,13 +59,12 @@ void SPMController::calculate_motors(double phi, double theta){
 
 
 //Function to get the unit vector of the driver arm with a given angle, where theta is angle around the z axis and phi is the angle from the z axis
-void SPMController::get_direction_vector(double phi, double theta)
-{
-    double rphi_rads = phi*pi/180;
-    double rtheta_rads = theta*pi/180;
-    driver_arm[0] = sin(rphi_rads)*cos(rtheta_rads);
-    driver_arm[1] = sin(rphi_rads)*sin(rtheta_rads);
-    driver_arm[2] = cos(rphi_rads);
+void SPMController::get_direction_vector(double phi, double theta) {
+  double rphi_rads = phi*pi/180;
+  double rtheta_rads = theta*pi/180;
+  driver_arm[0] = sin(rphi_rads)*cos(rtheta_rads);
+  driver_arm[1] = sin(rphi_rads)*sin(rtheta_rads);
+  driver_arm[2] = cos(rphi_rads);
 }
 
 //Function to get the angle of the joint vector in the xy plane
