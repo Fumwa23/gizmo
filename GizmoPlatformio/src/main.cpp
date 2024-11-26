@@ -9,6 +9,7 @@ It is the file that is compiled and uploaded to the ESP32.
 #include <Arduino.h>
 #include <driver/ledc.h> // Library replacement for analogWrite - Allows frequency, channel and resolution control.
 #include <PIDController.h>
+#include <SPMController.h>
 
 PIDController pid;
 
@@ -64,6 +65,12 @@ const float outMax = 255.0;
 const float sampleTime = 0.001;
 const float tau = 0.0001;
 
+//Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
+double a_motor_angle = 240;
+double b_motor_angle = 120;
+
+
+
 void setup() {
   Serial.begin(115200);
 
@@ -89,6 +96,9 @@ void setup() {
 
   // Setting up PID controller
   pid.initialise(kp, ki, kd, outMin, outMax, sampleTime, tau);
+
+  //Initilaise SPM controller by passing the addresses of the motor angles and the z_angle (always 36 but can be edited for modularity)
+  SPMController.initialise(&a_motor_angle, &b_motor_angle, 36);
 }
 
 void loop() {
