@@ -9,7 +9,7 @@ using namespace std;
 class SPMController{
 public:
     SPMController();              // Constructor
-    void initialise(double * a_motor_ptr, double * b_motor_ptr, double z_angle);
+    void begin(double * a_motor_ptr, double * b_motor_ptr);
     void calculate_motors(double phi, double theta);       // Example function
 
 private:

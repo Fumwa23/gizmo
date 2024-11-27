@@ -12,6 +12,7 @@ It is the file that is compiled and uploaded to the ESP32.
 #include <SPMController.h>
 
 PIDController pid;
+SPMController spm;
 
 // Define pins
 #define C1_PIN 26 // Encoder channel C1
@@ -98,7 +99,11 @@ void setup() {
   pid.initialise(kp, ki, kd, outMin, outMax, sampleTime, tau);
 
   //Initilaise SPM controller by passing the addresses of the motor angles and the z_angle (always 36 but can be edited for modularity)
-  SPMController.initialise(&a_motor_angle, &b_motor_angle, 36);
+  spm.begin(&a_motor_angle, &b_motor_angle);
+  spm.calculate_motors(0,0);
+  Serial.println(a_motor_angle);
+  Serial.println(b_motor_angle);
+  //
 }
 
 void loop() {

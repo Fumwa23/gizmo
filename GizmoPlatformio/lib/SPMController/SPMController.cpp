@@ -1,8 +1,8 @@
 #include "SPMController.h"
+SPMController::SPMController() {}
 
-void SPMController::initialise(double * a_motor_ptr, double * b_motor_ptr, double z_angle){
-    double * a_motor_ptr = a_motor_ptr;
-    double * b_motor_ptr = b_motor_ptr;
+
+void SPMController::begin(double * a_motor_ptr, double * b_motor_ptr){
 
     pi = 2*acos(0);
     
