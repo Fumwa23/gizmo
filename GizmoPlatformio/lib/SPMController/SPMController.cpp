@@ -1,56 +1,55 @@
 #include "SPMController.h"
-SPMController::SPMController() {}
+SPMController::SPMController():
+pi(2*acos(0)),
+    
+sz_angle_sin(sin(36*pi/180)),
+cz_angle_cos(cos(36*pi/180)),
+cMotor({sz_angle_sin,0,-cz_angle_cos}),
+{}
 
 
 void SPMController::begin(double * a_motor_ptr, double * b_motor_ptr){
-
-    pi = 2*acos(0);
-    
-    double sz_angle_sin = sin(36*pi/180);
-    double cz_angle_cos = cos(36*pi/180);
-
-    vector <double> driver_arm(3);
-
-    vector <double> cMotor = {sz_angle_sin,0,-cz_angle_cos};
 }
 
 void SPMController::calculate_motors(double phi, double theta){
+  Serial.println("--------------------------------------PASSED ADDRESES---------------------------");
   //Find direction vector given angle
-  get_direction_vector(20,180);
-  print_vector(driver_arm, "DRIVER ARM");
-  
+  vector <double> driver_arm = get_direction_vector(phi,theta);
+  //print_vector(driver_arm, "DRIVER ARM");
+  Serial.println("---------------------------got vector----------------------------");
   //Find joint c (attached to static motor)
   vector <double> cJoint = cross_product(cMotor, driver_arm);
-  print_vector(cJoint, "JOINT C");
+  Serial.println("GOT CJOINT");
+  //print_vector(cJoint, "JOINT C");
 
   //Get cross part of quaternion rotation
   vector <double> rotationCross = scaxvec(cross_product(driver_arm, cJoint),sqrt(3)/2);
-  print_vector(rotationCross, "ROTATION CROSS");
+  //print_vector(rotationCross, "ROTATION CROSS");
 
   //Get constant part of vector rotation
   vector <double> rotConst = scaxvec(cJoint, -0.5);
-  print_vector(rotConst, "Rotation constant");
+  //print_vector(rotConst, "Rotation constant");
 
   //Get A joint position
   vector <double> aJoint = sub_vectors(rotConst, rotationCross);
-  print_vector(aJoint, "A JOINT");
+  //print_vector(aJoint, "A JOINT");
 
   //Get B joint position
   vector <double> bJoint = add_vectors(rotConst, rotationCross);
-  print_vector(bJoint, "B JOINT");
+  //print_vector(bJoint, "B JOINT");
 
   //Get A motor position
   double aMotor = get_motor_angle(aJoint);
-  Serial.println("MOTOR A ANGLE");
-  Serial.println(aMotor);
-  Serial.println();
+  //Serial.println("MOTOR A ANGLE");
+  //Serial.println(aMotor);
+  //Serial.println();
 
   //Get B motor position
   double bMotor = get_motor_angle(bJoint);
-  Serial.println("MOTOR B ANGLE");
-  Serial.println(bMotor);
-  Serial.println();
-
+  //Serial.println("MOTOR B ANGLE");
+  //Serial.println(bMotor);
+  //Serial.println();
+  
   * a_motor_ptr = aMotor;
   * b_motor_ptr = bMotor;
 }
@@ -59,13 +58,20 @@ void SPMController::calculate_motors(double phi, double theta){
 
 
 //Function to get the unit vector of the driver arm with a given angle, where theta is angle around the z axis and phi is the angle from the z axis
-void SPMController::get_direction_vector(double phi, double theta)
+vector <double> SPMController::get_direction_vector(double phi, double theta)
 {
+  vector <double> driver_arm(3);
+  Serial.println("FUNCTION START");
     double rphi_rads = phi*pi/180;
     double rtheta_rads = theta*pi/180;
+
+    Serial.println("CALCULATED RADIANS");
+    Serial.println(rphi_rads);
     driver_arm[0] = sin(rphi_rads)*cos(rtheta_rads);
     driver_arm[1] = sin(rphi_rads)*sin(rtheta_rads);
     driver_arm[2] = cos(rphi_rads);
+    Serial.println("DONE TRIG");
+    return driver_arm;
 }
 
 //Function to get the angle of the joint vector in the xy plane
