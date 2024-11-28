@@ -4,22 +4,21 @@ pi(2*acos(0)),
     
 sz_angle_sin(sin(36*pi/180)),
 cz_angle_cos(cos(36*pi/180)),
-cMotor({sz_angle_sin,0,-cz_angle_cos}),
+cMotor({sz_angle_sin,0,-cz_angle_cos})
 {}
 
 
 void SPMController::begin(double * a_motor_ptr, double * b_motor_ptr){
+  this-> a_motor_ptr = a_motor_ptr;
+  this-> b_motor_ptr = b_motor_ptr;
 }
 
 void SPMController::calculate_motors(double phi, double theta){
-  Serial.println("--------------------------------------PASSED ADDRESES---------------------------");
   //Find direction vector given angle
   vector <double> driver_arm = get_direction_vector(phi,theta);
   //print_vector(driver_arm, "DRIVER ARM");
-  Serial.println("---------------------------got vector----------------------------");
   //Find joint c (attached to static motor)
   vector <double> cJoint = cross_product(cMotor, driver_arm);
-  Serial.println("GOT CJOINT");
   //print_vector(cJoint, "JOINT C");
 
   //Get cross part of quaternion rotation
@@ -61,16 +60,12 @@ void SPMController::calculate_motors(double phi, double theta){
 vector <double> SPMController::get_direction_vector(double phi, double theta)
 {
   vector <double> driver_arm(3);
-  Serial.println("FUNCTION START");
     double rphi_rads = phi*pi/180;
     double rtheta_rads = theta*pi/180;
 
-    Serial.println("CALCULATED RADIANS");
-    Serial.println(rphi_rads);
     driver_arm[0] = sin(rphi_rads)*cos(rtheta_rads);
     driver_arm[1] = sin(rphi_rads)*sin(rtheta_rads);
     driver_arm[2] = cos(rphi_rads);
-    Serial.println("DONE TRIG");
     return driver_arm;
 }
 
