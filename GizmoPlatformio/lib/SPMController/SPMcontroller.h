@@ -23,7 +23,7 @@ private:
     double * a_motor_ptr;
     double * b_motor_ptr;
 
-    void get_direction_vector(double phi, double theta);
+    vector <double> get_direction_vector(double phi, double theta);
     double get_joint_angle(double x, double y);
     double get_motor_angle(vector <double> joint);
     vector <double> cross_product(vector <double> a, vector <double> b);
