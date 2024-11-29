@@ -301,11 +301,6 @@ void moveArmsToHome() {
   }
 }
 
-float moveMotorAtSpeed(){
-  // code here
-  return 0;
-}
-
 
 //Oscillation functions
 void startOscillation(int direction, int magnitude){

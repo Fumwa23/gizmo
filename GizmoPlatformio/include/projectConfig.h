@@ -33,6 +33,8 @@ void moveArmsToHome();
 float moveMotorAtSpeed();
 float moveTo();
 void analogWrite(int motorNumber, float inputPWM, bool remap = true);
+void startOscillation(int direction, int magnitude);
+void doOscillation();
 
 // --------------------------------------------- DEFINE CONSTANTS
 const int freq = 30000;
@@ -65,8 +67,13 @@ extern volatile int encoder2Position;
 extern unsigned long lastTime;
 extern unsigned long lastTime2;
 
-extern double motorAngle1;
-extern double motorAngle2;
+extern float motorAngle1;
+extern float motorAngle2;
+
+//Varibales for Oscillation
+extern int dOscillationDirection;
+extern int mOscillationMagnitude;
+extern unsigned long sOscillationStart;
 
 extern float setpoint;
 
