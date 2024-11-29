@@ -145,16 +145,17 @@ void loop() {
   unsigned long currentTime = millis();
 
   int m1Start = 120*GYZ;
-  int m2Start = 240*GYZ;
   int m1End = 60*GYZ;
+  
+  int m2Start = 240*GYZ;
   int m2End = 300*GYZ;
 
   int m1Setpoint = m1End;
   int m2Setpoint = m2End;
 
   // Testing PID
-  float calculatedPWM = pid1.move(m1Setpoint, encoder2Position); // Get PID output (value between -255 AND 255)
-  analogWrite(1, calculatedPWM);
+  float calculatedPWM1 = pid1.move(m1Setpoint, encoder2Position); // Get PID output (value between -255 AND 255)
+  analogWrite(1, calculatedPWM1);
 
   float calculatedPWM2 = pid2.move(m2Setpoint, encoder2Position); // Get PID output (value between -255 AND 255)
   analogWrite(2, calculatedPWM2);
@@ -165,7 +166,7 @@ void loop() {
 
     // Print output
     Serial.print(" | Output: ");
-    Serial.print(calculatedPWM);
+    Serial.print(calculatedPWM1);
 
     Serial.print(" Encoder1Position: ");
     Serial.print(encoder1Position);
@@ -178,18 +179,6 @@ void loop() {
     Serial.println(encoder2Position);
   }
 
-  // if (currentTime - lastTime2 >= 2500){
-
-  //   lastTime2 = currentTime;
-    
-
-  //   if (setpoint == 2400) {
-  //     setpoint = 0;
-  //   }
-  //   else {
-  //     setpoint = 2400;
-  //   }
-  // }
 }
 
 
@@ -295,8 +284,8 @@ void moveArmsToHome() {
   const unsigned long timeout = 1000;
 
   while (true){
-    float calculatedPWM = pid1.move(120*GYZ, encoder1Position); 
-    analogWrite(1, calculatedPWM);
+    float calculatedPWM1 = pid1.move(120*GYZ, encoder1Position); 
+    analogWrite(1, calculatedPWM1);
 
     // Move motor 2 to 240 degrees
     float calculatedPWM2 = pid2.move(240*GYZ, encoder2Position);
@@ -313,7 +302,7 @@ void moveArmsToHome() {
       
       // Print output
       Serial.print(" | Output: ");
-      Serial.print(calculatedPWM);
+      Serial.print(calculatedPWM1);
 
       Serial.print(" Encoder1Position: ");
       Serial.print(encoder1Position);
