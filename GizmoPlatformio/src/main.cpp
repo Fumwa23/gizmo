@@ -69,7 +69,6 @@ const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
 
-
 // --------------------------------------------- DEFINE GLOBAL VARIABLES 
 // Variables for encoder
 volatile int encoder1Position = 0;
@@ -144,39 +143,25 @@ void loop() {
   // Get current time
   unsigned long currentTime = millis();
 
-  int m1Start = 120*GYZ;
-  int m1End = 60*GYZ;
-  
-  int m2Start = 240*GYZ;
-  int m2End = 300*GYZ;
-
-  int m1Setpoint = m1End;
-  int m2Setpoint = m2End;
-
-  // Testing PID
-  float calculatedPWM1 = pid1.move(m1Setpoint, encoder2Position); // Get PID output (value between -255 AND 255)
-  analogWrite(1, calculatedPWM1);
-
-  float calculatedPWM2 = pid2.move(m2Setpoint, encoder2Position); // Get PID output (value between -255 AND 255)
-  analogWrite(2, calculatedPWM2);
-
+  // Tracking position every second for debugging
   if (currentTime - lastTime >= 1000){
 
     lastTime = currentTime;
 
     // Print output
     Serial.print(" | Output: ");
-    Serial.print(calculatedPWM1);
+    Serial.print("INSERT PWM OUTPUT");
 
     Serial.print(" Encoder1Position: ");
     Serial.print(encoder1Position);
 
     // Print output
-    Serial.print(" Output2: ");
-    Serial.print(calculatedPWM2);
+    Serial.print(" | Output2: ");
+    Serial.print("INSERT PWM OUTPUT");
 
     Serial.print(" Encoder2Position: ");
-    Serial.println(encoder2Position);
+    Serial.print(encoder2Position);
+    Serial.println(" |");
   }
 
 }
@@ -294,6 +279,8 @@ void moveArmsToHome() {
     // Check to see if position has been reached
     if (abs(encoder1Position - 120*GYZ) < 50 && abs(encoder2Position - 240*GYZ) < 50){
       Serial.println("---- HOMING COMPLETE ----");
+      analogWrite(1, 0); // Stop motors 
+      analogWrite(2, 0); // Stop motors
       break;
     }
 
