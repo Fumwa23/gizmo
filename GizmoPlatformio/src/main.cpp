@@ -179,8 +179,9 @@ void loop() {
   unsigned long currentTime = millis();
 
   int m1Start = 120*GYZ;
-  int m2Start = 240*GYZ;
   int m1End = 60*GYZ;
+  
+  int m2Start = 240*GYZ;
   int m2End = 300*GYZ;
 
   int m1Setpoint = m1End;
