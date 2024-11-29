@@ -34,6 +34,16 @@ void PIDController::initialise(float kp, float ki, float kd, float outMin, float
     output_ = 0.0f;
 }
 
+/**
+ * @brief Move the motor to the setpoint using PID control.
+ * 
+ * This function calculates the output value for the motor using the PID control algorithm.
+ * 
+ * @param setpoint The desired position for the motor.
+ * @param measurement The current position of the motor.
+ * 
+ * @return The output value for the motor.
+ */
 float PIDController::move(float setpoint, float measurement) {
     // Calculate error
     float error = setpoint - measurement;
