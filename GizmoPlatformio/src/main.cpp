@@ -12,8 +12,8 @@ It is the file that is compiled and uploaded to the ESP32.
 #include <SPMController.h>
 
 // --------------------------------------------- CREATE OBJECTS
-PIDController pidB;
-PIDController pidA;
+PIDController pid1;
+PIDController pid2;
 SPMController spm;
 
 // --------------------------------------------- DEFINE PINS 
@@ -71,8 +71,8 @@ const float kp = 0.4;
 const float ki = 0.05;
 const float kd = 0.2;
 
-const float outMin = -255.0;
-const float outMax = 255.0;
+const float outMin = -155.0;
+const float outMax = 155.0;
 const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
@@ -87,16 +87,16 @@ const double motorSize = 10.81*GYZ;
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES 
 // Variables for encoder
-volatile int bEncoderPosition = 0;
-volatile int aEncoderPosition = 0;
+volatile int encoder1Position = 0;
+volatile int encoder2Position = 0;
 
 // Variables for millis()
 unsigned long lastTime = 0;
 unsigned long lastTime2 = 0;
 
-//Motor angle  variables. If there are already variables, remove these and add pre-existing variables to the definition later
-double aMotorAngle = 240;
-double bMotorAngle = 120;
+//Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
+double motorAngle1 = 120;
+double motorAngle2 = 240;
 
 //Variables for dial
 bool pulsed = LOW;
@@ -151,19 +151,17 @@ void setup() {
   ledcSetup(pwmChannel4, freq, resolution);
 
   // Setting up PID 
-  pidB.initialise(kp, ki, kd, outMin, outMax, sampleTime, tau);
-  pidA.initialise(kp, ki, kd, outMin, outMax, sampleTime, tau);
-
-  //Setting up SPM
-  spm.begin(&aMotorAngle, &bMotorAngle);
+  pid1.initialise(kp, ki, kd, outMin, outMax, sampleTime, tau);
+  pid2.initialise(kp, ki, kd, outMin, outMax, sampleTime, tau);
+  spm.begin(&motorAngle2, &motorAngle1);
 
   // --------------------------------------------- CALLIBRATION AND HOMING
 
   lastTime = millis();
  
-  // Reset encoders positions
-  bEncoderPosition = motorSize;
-  aEncoderPosition = 360*GYZ - motorSize;
+  // Starting encoder positions on setup.
+  encoder1Position = 33.5*GYZ;
+  encoder2Position = (360-33.5)*GYZ;
 
   // Move arms to home position
   moveArmsToHome();
@@ -180,33 +178,38 @@ void loop() {
   // Get current time
   unsigned long currentTime = millis();
 
-  // Testing PID
-  float bCalculatedPWM = pidB.move(setpoint, bEncoderPosition); // Get PID output (value between -255 AND 255)
-  //analogWrite(1, bCalculatedPWM);
+  int m1Start = 120*GYZ;
+  int m2Start = 240*GYZ;
+  int m1End = 60*GYZ;
+  int m2End = 300*GYZ;
 
-  float aCalculatedPWM = pidA.move(5000, aEncoderPosition); // Get PID output (value between -255 AND 255)
-  //analogWrite(2, aCalculatedPWM);
+  int m1Setpoint = m1End;
+  int m2Setpoint = m2End;
+
+  // Testing PID
+  float calculatedPWM1 = pid1.move(m1Setpoint, encoder2Position); // Get PID output (value between -255 AND 255)
+  analogWrite(1, calculatedPWM1);
+
+  float calculatedPWM2 = pid2.move(m2Setpoint, encoder2Position); // Get PID output (value between -255 AND 255)
+  analogWrite(2, calculatedPWM2);
 
   if (currentTime - lastTime >= 1000){
 
     lastTime = currentTime;
 
-    Serial.print("Setpoint: ");
-    Serial.print(setpoint);
-
     // Print output
     Serial.print(" | Output: ");
-    Serial.print(bCalculatedPWM);
+    Serial.print(calculatedPWM1);
 
-    Serial.print(" bEncoderPosition: ");
-    Serial.print(bEncoderPosition);
+    Serial.print(" Encoder1Position: ");
+    Serial.print(encoder1Position);
 
     // Print output
-    Serial.print(" | Output2: ");
-    Serial.print(aCalculatedPWM);
+    Serial.print(" Output2: ");
+    Serial.print(calculatedPWM2);
 
     Serial.print(" aEncoderPosition: ");
-    Serial.println(aEncoderPosition);
+    Serial.println(encoder2Position);
   }
 
   //Code to read phone dial
@@ -241,19 +244,6 @@ void loop() {
   }else{
     startOscillation(10,0);
   }
-
-  // if (currentTime - lastTime2 >= 2500){
-
-  //   lastTime2 = currentTime;
-    
-
-  //   if (setpoint == 2400) {
-  //     setpoint = 0;
-  //   }
-  //   else {
-  //     setpoint = 2400;
-  //   }
-  // }
 }
 
 
@@ -267,10 +257,10 @@ void IRAM_ATTR handleEncoder() {
 
     if (state1 != state2) {
         // Clockwise
-        bEncoderPosition++;
+        encoder1Position++;
     } else {
         // Anti-clockwise
-        bEncoderPosition--;
+        encoder1Position--;
     }
 }
 
@@ -281,10 +271,10 @@ void IRAM_ATTR handleEncoder2() {
 
     if (state1 != state2) {
         // Clockwise
-        aEncoderPosition++;
+        encoder1Position++;
     } else {
         // Anti-clockwise
-        aEncoderPosition--;
+        encoder2Position--;
     }
 }
 
@@ -302,10 +292,11 @@ void IRAM_ATTR handleEncoder2() {
  *                 rotation.
  * @param remap If true (default), adjusts the PWM value to ensure the motor operates within 
  *              its minimum and maximum range. 
+ * @todo Change map function to be proper mapping
  */
 void analogWrite(int motorNumber, float inputPWM, bool remap){
 
-  // The motor requires a minimum pwm to move, this remaps ths values
+  // The motor requires a minimum pwm to move, this remaps ths values 
   if (remap){ 
     if (inputPWM < 0) {
       inputPWM -= 255 + outMin;
@@ -358,17 +349,16 @@ void moveArmsToHome() {
   const unsigned long timeout = 1000;
 
   while (true){
-    float bCalculatedPWM = pidB.move(120*GYZ, bEncoderPosition); 
-    analogWrite(1, bCalculatedPWM);
+    float calculatedPWM1 = pid1.move(120*GYZ, encoder1Position); 
+    analogWrite(1, calculatedPWM1);
 
     // Move motor 2 to 240 degrees
-    float aCalculatedPWM = pidA.move(240*GYZ, aEncoderPosition);
-    analogWrite(2, aCalculatedPWM);
+    float calculatedPWM2 = pid2.move(240*GYZ, encoder2Position);
+    analogWrite(2, calculatedPWM2);
 
     // Check to see if position has been reached
-    if (abs(bEncoderPosition - 120*GYZ) < 50 && abs(aEncoderPosition - 240*GYZ) < 50){
+    if (abs(encoder1Position - 120*GYZ) < 50 && abs(encoder2Position - 240*GYZ) < 50){
       Serial.println("---- HOMING COMPLETE ----");
-      //delay(10000);
       break;
     }
 
@@ -377,17 +367,17 @@ void moveArmsToHome() {
       
       // Print output
       Serial.print(" | Output: ");
-      Serial.print(bCalculatedPWM);
+      Serial.print(calculatedPWM1);
 
-      Serial.print(" bEncoderPosition: ");
-      Serial.print(bEncoderPosition);
+      Serial.print(" Encoder1Position: ");
+      Serial.print(encoder1Position);
 
       // Print output
       Serial.print(" | Output2: ");
-      Serial.print(aCalculatedPWM);
+      Serial.print(calculatedPWM2);
 
       Serial.print(" aEncoderPosition: ");
-      Serial.println(aEncoderPosition);
+      Serial.println(encoder2Position);
 
       startTime = millis();
     }
@@ -406,8 +396,8 @@ void startOscillation(int direction, int magnitude){
   mOscillationMagnitude = magnitude;
   oscillating = true;
   spm.calculate_motors(mOscillationMagnitude,dOscillationDirection);
-  float bTarget = bMotorAngle*GYZ;
-  float aTarget = aMotorAngle*GYZ;
+  float bTarget = motorAngle2*GYZ;
+  float aTarget = motorAngle1*GYZ;
   
 
 }
