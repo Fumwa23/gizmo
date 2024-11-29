@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <driver/ledc.h>
+#include <math.h>
 #include <PIDController.h>
 #include <SPMController.h>
 
@@ -21,6 +22,9 @@ extern SPMController spm;
 #define C4_PIN 33
 #define M3_PIN 26
 #define M4_PIN 25
+
+#define PULSE_PIN 27
+#define REST_PIN 14
 
 // --------------------------------------------- FUNCTION DECLARATIONS
 void IRAM_ATTR handleEncoder();
@@ -50,6 +54,9 @@ const float outMin = -155.0;
 const float outMax = 155.0;
 const float sampleTime = 0.0001;
 const float tau = 0.0001;
+
+const double pi = 3.141592653589793;
+const float timePeriod = 2 * pi * sqrt(60 / 9.8);
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
