@@ -8,6 +8,7 @@ It is the file that is compiled and uploaded to the ESP32.
 
 #include <Arduino.h>
 #include <driver/ledc.h>
+#include <math.h>
 #include <PIDController.h>
 #include <SPMController.h>
 
@@ -29,6 +30,12 @@ SPMController spm;
 #define M3_PIN 26 // H-bridge control pin 1
 #define M4_PIN 25 // H-bridge control pin 2
 
+// Dial
+#define PULSE_PIN 14 //Counts clicks of the phone as it unspools
+#define REST_PIN 15 //If the dial is in rest position
+
+
+
 // --------------------------------------------- FUNCTION DECLARATIONS
 void IRAM_ATTR handleEncoder();
 void IRAM_ATTR handleEncoder2();
@@ -38,16 +45,18 @@ float moveTo();
 
 void analogWrite(int motorNumber, float inputPWM, bool remap = true); // Custom analogWrite() function
 
+void startOscillation(int magnitude, int direction);
+void doOscillation();
 // --------------------------------------------- DEFINE CONSTANTS 
 // Constants for PWM
 const int freq = 30000;
 const int resolution = 8;
 
-// PWM channels for motor 1
+// PWM channels for motor 1/b
 const int pwmChannel1 = 0;
 const int pwmChannel2 = 1;
 
-// PWM channels for motor 2
+// PWM channels for motor 2/a
 const int pwmChannel3 = 2;
 const int pwmChannel4 = 3;
 
@@ -68,6 +77,14 @@ const float outMax = 155.0;
 const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
+//Define mathematical and sytem constants
+const double pi = 2*acos(0);
+const float timePeriod = 2*pi*sqrt(0.06/9.8);
+
+
+// Define collision tolerance angle
+const float motorSize = 10.81*GYZ;
+
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES 
 // Variables for encoder
@@ -79,9 +96,19 @@ unsigned long lastTime = 0;
 unsigned long lastTime2 = 0;
 
 //Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
-double motorAngle1 = 120;
-double motorAngle2 = 240;
+float motorAngle1 = 120;
+float motorAngle2 = 240;
 
+//Variables for dial
+bool pulsed = LOW;
+bool dialling = false;
+int pulseCount = 0;
+bool oscillating = false;
+
+//Varibales for Oscillation
+int dOscillationDirection;
+int mOscillationMagnitude;
+unsigned long sOscillationStart;
 
 float setpoint = 0; // FOR TESTING ONLY
 
@@ -97,6 +124,9 @@ void setup() {
   pinMode(C4_PIN, INPUT_PULLUP);
   pinMode(M3_PIN, OUTPUT);
   pinMode(M4_PIN, OUTPUT);
+
+  pinMode(PULSE_PIN, INPUT_PULLUP);
+  pinMode(REST_PIN, INPUT_PULLUP);
 
 
   // --------------------------------------------- SETUP FUNCTIONS
@@ -136,6 +166,12 @@ void setup() {
 
   // Move arms to home position
   moveArmsToHome();
+
+
+
+
+  setpoint = 360 * GYZ; // 120 degrees
+  //Ben - Surely this sets it to 360
 }
 
 void loop() {
@@ -164,6 +200,38 @@ void loop() {
     Serial.println(" |");
   }
 
+  //Code to read phone dial
+  //Read rest pin
+  bool restState = digitalRead(REST_PIN);
+
+  if (restState){
+    //Dial is not in rest state.
+    if (!dialling){
+      //Just started dialling
+      dialling = true;
+    }
+    //Read pulse pin
+    bool pulseState = digitalRead(PULSE_PIN);
+    if (pulseState && !pulsed){
+      pulseCount++;
+    }
+    //set pulsed to hold previous value for edge detection
+    pulsed = pulseState;
+  }else{
+    //Dial is in rest state. Check if it has just returned
+    if (dialling){
+      //Just finished dialling
+      dialling = false;
+      //DO SOMETHING
+      pulseCount = 0;
+    }
+  }
+
+  if (oscillating){
+    doOscillation();
+  }else{
+    startOscillation(10,0);
+  }
 }
 
 
@@ -191,7 +259,7 @@ void IRAM_ATTR handleEncoder2() {
 
     if (state1 != state2) {
         // Clockwise
-        encoder2Position++;
+        encoder1Position++;
     } else {
         // Anti-clockwise
         encoder2Position--;
@@ -298,7 +366,7 @@ void moveArmsToHome() {
       Serial.print(" | Output2: ");
       Serial.print(calculatedPWM2);
 
-      Serial.print(" Encoder2Position: ");
+      Serial.print(" aEncoderPosition: ");
       Serial.println(encoder2Position);
 
       startTime = millis();
@@ -309,4 +377,43 @@ void moveArmsToHome() {
 float moveMotorAtSpeed(){
   // code here
   return 0;
+}
+
+
+//Oscillation functions
+void startOscillation(int direction, int magnitude){
+  Serial.println(" ---- STARTING OSCILATTION ---- ");
+  dOscillationDirection = direction;
+  mOscillationMagnitude = magnitude;
+  sOscillationStart = millis();
+  oscillating = true;
+  spm.calculate_motors(mOscillationMagnitude,dOscillationDirection);
+  float target1 = motorAngle1*GYZ;
+  float target2 = motorAngle2*GYZ;
+  while (true){
+    //Move motors to targets
+    float calculatedPWM1 = pid1.move(target1, encoder1Position); 
+    analogWrite(1, calculatedPWM1);
+
+    float calculatedPWM2 = pid2.move(target2, encoder2Position);
+    analogWrite(2, calculatedPWM2);
+
+    // Check to see if position has been reached
+    if (abs(encoder1Position - target1) < 50 && abs(encoder2Position - target2) < 50){
+      Serial.println("---- OSCILLATION START ----");
+      break;
+    }
+  }
+}
+
+void doOscillation(){
+  float t = fmod(millis()-sOscillationStart,timePeriod);
+  float phi = mOscillationMagnitude*cos(2*pi*t/timePeriod);
+  spm.calculate_motors(phi, dOscillationDirection);
+  float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
+  analogWrite(1, calculatedPWM1);
+
+  float calculatedPWM2 = pid2.move(motorAngle2*GYZ, encoder2Position);
+  analogWrite(2, calculatedPWM2);
+
 }
