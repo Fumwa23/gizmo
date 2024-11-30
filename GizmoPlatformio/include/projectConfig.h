@@ -35,8 +35,6 @@ float moveMotorAtSpeed();
 float moveTo();
 void analogWrite(int motorNumber, float inputPWM, bool remap = true);
 
-void startOscillation(int direction, int magnitude);
-void doOscillation();
 void dynamicOscillation(int direction, int amplitude);
 
 void setupFunction();
