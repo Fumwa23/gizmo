@@ -56,7 +56,7 @@ void loop() {
 
   // Get current time
   unsigned long currentTime = millis();
-  unsigned long currentTime2 = millis();
+  //unsigned long currentTime2 = millis();
 
   trackDialPulses();
 
@@ -77,7 +77,7 @@ void loop() {
     lastTime = currentTime;
   }
 
-  aOscillationAmplitude = pulseCount*30/maxPulseCount; // This mean that at max pulse count, the amplitude will be at 30
+  aOscillationAmplitude = pulseCount*20/maxPulseCount; // This mean that at max pulse count, the amplitude will be at 30
 
   // TODO: May want there to be a wider margin range where the pulse count is correct. 
   timePeriod = 4*resonantTimePeriod - 3*pulseCount*resonantTimePeriod/maxPulseCount; // This means that at max pulse count, the time period will be at resonant frequency
