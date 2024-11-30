@@ -6,92 +6,18 @@ This file contains the setup and loop functions.
 It is the file that is compiled and uploaded to the ESP32.
 */
 
-#include <Arduino.h>
-#include <driver/ledc.h>
-#include <math.h>
-#include <PIDController.h>
-#include <SPMController.h>
+#include "projectConfig.h"
 
 // --------------------------------------------- CREATE OBJECTS
 PIDController pid1;
 PIDController pid2;
 SPMController spm;
 
-// --------------------------------------------- DEFINE PINS 
-//  Motor 1
-#define C1_PIN 35 // Encoder channel C1
-#define C2_PIN 34 // Encoder channel C2
-#define M1_PIN 12 // H-bridge control pin 1
-#define M2_PIN 13 // H-bridge control pin 2
-
-// Motor 2
-#define C3_PIN 32 // Encoder channel C1
-#define C4_PIN 33 // Encoder channel C2
-#define M3_PIN 26 // H-bridge control pin 1
-#define M4_PIN 25 // H-bridge control pin 2
-
-// Dial
-#define PULSE_PIN 14 //Counts clicks of the phone as it unspools
-#define REST_PIN 15 //If the dial is in rest position
-
-
-
-// --------------------------------------------- FUNCTION DECLARATIONS
-void IRAM_ATTR handleEncoder();
-void IRAM_ATTR handleEncoder2();
-void moveArmsToHome();
-float moveMoterAtSpeed();
-float moveTo();
-
-void analogWrite(int motorNumber, float inputPWM, bool remap = true); // Custom analogWrite() function
-
-void startOscillation(int direction, int magnitude);
-void doOscillation();
-// --------------------------------------------- DEFINE CONSTANTS 
-// Constants for PWM
-const int freq = 30000;
-const int resolution = 8;
-
-// PWM channels for motor 1/b
-const int pwmChannel1 = 0;
-const int pwmChannel2 = 1;
-
-// PWM channels for motor 2/a
-const int pwmChannel3 = 2;
-const int pwmChannel4 = 3;
-
-// Constants for the encoders
-const int ENCODER_PULSES_PER_REV = 700; // Replace with your encoder's PPR
-
-// Constant multiplier to convert degrees to encoder counts
-// We have named this like a unit, so 120 degrees is 120 * GYZ
-const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
-
-// Constants for PID control
-const float kp = 0.4;
-const float ki = 0.05;
-const float kd = 0.2;
-
-const float outMin = -155.0;
-const float outMax = 155.0;
-const float sampleTime = 0.0001;
-const float tau = 0.0001;
-
-//Define mathematical and sytem constants
-const double pi = 2*acos(0);
-const float timePeriod = 2000*pi*sqrt(0.06/9.8);
-
-
-// Define collision tolerance angle
-const float motorSize = 10.81*GYZ;
-
-
 // --------------------------------------------- DEFINE GLOBAL VARIABLES 
 // Variables for encoder
 volatile int encoder1Position = 0;
 volatile int encoder2Position = 0;
 
-// Variables for millis()
 unsigned long lastTime = 0;
 unsigned long lastTime2 = 0;
 
@@ -267,6 +193,13 @@ void IRAM_ATTR handleEncoder2() {
     }
 }
 
+
+float moveMotorAtSpeed(){
+  // code here
+  return 0;
+}
+
+
 /**
  * @brief Sends a PWM signal to control a motor's speed and direction.
  * 
@@ -373,11 +306,6 @@ void moveArmsToHome() {
       startTime = millis();
     }
   }
-}
-
-float moveMotorAtSpeed(){
-  // code here
-  return 0;
 }
 
 
