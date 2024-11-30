@@ -37,7 +37,7 @@ void PIDController::initialise(float kp, float ki, float kd, float outMin, float
 /**
  * @brief Move the motor to the setpoint using PID control.
  * 
- * This function calculates the output value for the motor using the PID control algorithm.
+ * This function calculates the PWM value for the motors using the PID control algorithm.
  * 
  * @param setpoint The desired position for the motor.
  * @param measurement The current position of the motor.

@@ -27,14 +27,19 @@ extern SPMController spm;
 #define REST_PIN 14
 
 // --------------------------------------------- FUNCTION DECLARATIONS
-void IRAM_ATTR handleEncoder();
+void IRAM_ATTR handleEncoder1();
 void IRAM_ATTR handleEncoder2();
+
 void moveArmsToHome();
 float moveMotorAtSpeed();
 float moveTo();
 void analogWrite(int motorNumber, float inputPWM, bool remap = true);
+
 void startOscillation(int direction, int magnitude);
 void doOscillation();
+void dynamicOscillation(int direction, int amplitude);
+
+void setupFunction();
 
 // --------------------------------------------- DEFINE CONSTANTS
 const int freq = 30000;
@@ -45,12 +50,12 @@ const int pwmChannel2 = 1;
 const int pwmChannel3 = 2;
 const int pwmChannel4 = 3;
 
-const int ENCODER_PULSES_PER_REV = 700;
+const int ENCODER_PULSES_PER_REV = 420;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
-const float kp = 0.4;
-const float ki = 0.05; //0.05
-const float kd = 0.0; //0.2
+const float kp = 0.4; // Proportional gain
+const float ki = 0.05; // Integral gain
+const float kd = 0.0; // Derivative gain
 
 const float outMin = -155.0;
 const float outMax = 155.0;
@@ -58,7 +63,7 @@ const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
 const double pi = 3.141592653589793;
-const float timePeriod = 2000 * pi * sqrt(0.06 / 9.8);
+const float timePeriod = 2 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
@@ -71,10 +76,22 @@ extern float motorAngle1;
 extern float motorAngle2;
 
 //Varibales for Oscillation
+extern bool oscillating;
 extern int dOscillationDirection;
-extern int mOscillationMagnitude;
+extern int mOscillationAmplitude;
 extern unsigned long sOscillationStart;
+extern unsigned long lastOscillationTime;
 
 extern float setpoint;
 
-#endif
+void setupPins();
+void setupMotors();
+
+void analogWrite(int motorNumber, float inputPWM, bool remap);
+void moveArmsToHome();
+float moveMotorAtSpeed();
+
+void IRAM_ATTR handleEncoder1();
+void IRAM_ATTR handleEncoder2();
+
+#endif // PROJECT_CONFIG_H
