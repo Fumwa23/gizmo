@@ -40,20 +40,14 @@ int aOscillationAmplitude = 30;
 unsigned long sOscillationStart;
 unsigned long lastOscillationTime;
 
-float setpoint = 0; // FOR TESTING ONLY
+float timePeriod = 700;
 
 void setup() {
-  // Setup Serial Monitor
   Serial.begin(115200);
 
   setupPins();
   setupMotors();
 
-
-  Serial.print("Time period : ");
-  Serial.println(timePeriod);
-
-  // Move arms to home position
   moveArmsToHome();
   delay(1000);
 }
@@ -64,39 +58,29 @@ void loop() {
   unsigned long currentTime = millis();
   unsigned long currentTime2 = millis();
 
-  //Code to read phone dial
-  //Read rest pin
-  bool restState = digitalRead(REST_PIN);
+  trackDialPulses();
 
-  if (restState == LOW){
-    //Dial is not in rest state.
-    if (!dialling){
-      //Just started dialling
-      dialling = true;
-    }
-    //Read pulse pin
-    bool pulseState = digitalRead(PULSE_PIN);
-    if (pulseState && !pulsed){
-      pulseCount++;
-    }
-    //set pulsed to hold previous value for edge detection
-    pulsed = pulseState;
-  }else{
-    //Dial is in rest state. Check if it has just returned
-    if (dialling){
-      //Just finished dialling
-      dialling = false;
-      //DO SOMETHING
-      pulseCount = 0;
-    }
+  const int maxPulseCount = 30;
+
+  if (pulseCount > maxPulseCount){
+    pulseCount = maxPulseCount;
   }
 
-  circularOscillation();
-  //dynamicOscillation(dOscillationDirection, aOscillationAmplitude);
-  // if (oscillating){
-  //   doOscillation();
-  // }else{
-  //   startOscillation(0,42.75);
-  //   delay(1000);
-  // }
+  // TODO: create a function which iteratively decreases the pulseCount until it reaches 0 at a time interval
+  if (currentTime - lastTime >= 2000){
+    if (pulseCount > 0){
+      Serial.print("Pulse count : ");
+      Serial.println(pulseCount);
+      pulseCount--;
+    }
+
+    lastTime = currentTime;
+  }
+
+  aOscillationAmplitude = pulseCount*30/maxPulseCount; // This mean that at max pulse count, the amplitude will be at 30
+
+  // TODO: May want there to be a wider margin range where the pulse count is correct. 
+  timePeriod = 4*resonantTimePeriod - 3*pulseCount*resonantTimePeriod/maxPulseCount; // This means that at max pulse count, the time period will be at resonant frequency
+
+  dynamicOscillation(dOscillationDirection, aOscillationAmplitude);
 }

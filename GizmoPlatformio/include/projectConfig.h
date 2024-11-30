@@ -23,8 +23,8 @@ extern SPMController spm;
 #define M3_PIN 26
 #define M4_PIN 25
 
-#define PULSE_PIN 27
-#define REST_PIN 14
+#define PULSE_PIN 14
+#define REST_PIN 27
 
 // --------------------------------------------- FUNCTION DECLARATIONS
 void IRAM_ATTR handleEncoder1();
@@ -64,7 +64,8 @@ const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
 const double pi = 3.141592653589793;
-const float timePeriod = 0.8* 737; // 1 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
+extern float timePeriod; // 1 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
+const float resonantTimePeriod = 700;
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
@@ -87,6 +88,11 @@ extern unsigned long lastCircularOscillationTime;
 
 extern float setpoint;
 
+//Variables for dial
+extern bool pulsed;
+extern bool dialling;
+extern int pulseCount;
+
 void setupPins();
 void setupMotors();
 
@@ -97,7 +103,7 @@ float moveMotorAtSpeed();
 void IRAM_ATTR handleEncoder1();
 void IRAM_ATTR handleEncoder2();
 
-void trackPulses();
+void trackDialPulses();
 void trackNumberDialed();
 
 #endif // PROJECT_CONFIG_H
