@@ -35,6 +35,8 @@ float moveMotorAtSpeed();
 float moveTo();
 void analogWrite(int motorNumber, float inputPWM, bool remap = true);
 
+void testSpeed(int magnitude);
+
 void dynamicOscillation(int direction, int amplitude);
 
 void setupFunction();
@@ -48,7 +50,7 @@ const int pwmChannel2 = 1;
 const int pwmChannel3 = 2;
 const int pwmChannel4 = 3;
 
-const int ENCODER_PULSES_PER_REV = 420;
+const int ENCODER_PULSES_PER_REV = 700;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
 const float kp = 0.4; // Proportional gain
@@ -72,6 +74,12 @@ extern unsigned long lastTime2;
 
 extern float motorAngle1;
 extern float motorAngle2;
+
+//Variables for testing speed
+extern int direction;
+extern unsigned long startTestTime;
+extern unsigned long lastTestSample;
+extern bool testing;
 
 //Varibales for Oscillation
 extern bool oscillating;

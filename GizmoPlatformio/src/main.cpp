@@ -37,6 +37,12 @@ int mOscillationAmplitude;
 unsigned long sOscillationStart;
 unsigned long lastOscillationTime;
 
+//Variables for speed testing
+bool testing = false;
+int direction = 1;
+unsigned long startTestTime = 0;
+unsigned long lastTestSample = 0;
+
 float setpoint = 0; // FOR TESTING ONLY
 
 void setup() {
@@ -82,14 +88,14 @@ void loop() {
     if (dialling){
       //Just finished dialling
       dialling = false;
-      //DO SOMETHING
+      //TO DO  - SOMETHING
       pulseCount = 0;
     }
   }
 
   int oscillationDirection = 90;
   int oscillationAmplitude = 30;
-  dynamicOscillation(oscillationDirection, oscillationAmplitude);
+  testSpeed(30);
   // if (oscillating){
   //   doOscillation();
   // }else{

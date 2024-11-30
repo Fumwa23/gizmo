@@ -119,3 +119,47 @@ float moveMotorAtSpeed(){
   // code here
   return 0.0;
 }
+
+void testSpeed(int magnitude){
+  if (testing){
+    unsigned long currentTime = millis();
+    int current1Position = encoder1Position;
+    int current2Position = encoder2Position;
+    if (abs(current1Position - motorAngle1*GYZ) < 10 && abs(current2Position - motorAngle2) - motorAngle2*GYZ){
+      Serial.println(" ---- FINISHED SPEED TEST ---- ");
+      Serial.print(" Time : ");
+      Serial.print(currentTime);
+      Serial.print("   Encoder1 Pos : ");
+      Serial.print(current1Position);
+      Serial.print("   Encoder2 Pos");
+      Serial.println(current2Position);
+      Serial.print("Total time for a change of ");
+      Serial.print(magnitude);
+      Serial.print(" is ");
+      Serial.println(currentTime-startTestTime);
+      testing = false;
+    }
+    float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position);
+    analogWrite(1, calculatedPWM1);
+
+    float calculatedPWM2 = pid2.move(motorAngle2*GYZ, encoder2Position);
+    analogWrite(2, calculatedPWM2);
+    // if (currentTime>lastTestSample+200){
+    //   Serial.print("  | ");
+    //   Serial.print(currentTime);
+    //   Serial.print(" POS1 : ");
+    //   Serial.print(current1Position/GYZ);
+    //   Serial.print(" POS2 : ");
+    //   Serial.print(current2Position/GYZ);
+    // }
+  }else{
+    Serial.println(" ---- STARTING SPEED TEST ---- ");
+    testing = true;
+    spm.calculate_motors(magnitude*direction,0);
+    Serial.println(motorAngle1);
+    Serial.println(motorAngle2);
+    direction *= -1;
+    lastTestSample = millis();
+    startTestTime = millis();
+  }
+}
