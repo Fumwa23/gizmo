@@ -33,7 +33,7 @@ int pulseCount = 0;
 //Varibales for Oscillation
 bool oscillating = false;
 int dOscillationDirection;
-int mOscillationMagnitude;
+int mOscillationAmplitude;
 unsigned long sOscillationStart;
 unsigned long lastOscillationTime;
 
@@ -87,10 +87,13 @@ void loop() {
     }
   }
 
-  if (oscillating){
-    doOscillation();
-  }else{
-    startOscillation(0,42.75);
-    delay(1000);
-  }
+  int oscillationDirection = 90;
+  int oscillationAmplitude = 30;
+  dynamicOscillation(oscillationDirection, oscillationAmplitude);
+  // if (oscillating){
+  //   doOscillation();
+  // }else{
+  //   startOscillation(0,42.75);
+  //   delay(1000);
+  // }
 }
