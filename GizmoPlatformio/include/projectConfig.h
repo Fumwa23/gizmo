@@ -97,4 +97,7 @@ float moveMotorAtSpeed();
 void IRAM_ATTR handleEncoder1();
 void IRAM_ATTR handleEncoder2();
 
+void trackPulses();
+void trackNumberDialed();
+
 #endif // PROJECT_CONFIG_H
