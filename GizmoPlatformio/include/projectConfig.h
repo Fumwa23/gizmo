@@ -33,6 +33,8 @@ void moveArmsToHome();
 float moveMotorAtSpeed();
 float moveTo();
 void analogWrite(int motorNumber, float inputPWM, bool remap = true);
+void startOscillation(int direction, int magnitude);
+void doOscillation();
 
 void setupFunction();
 
@@ -48,9 +50,15 @@ const int pwmChannel4 = 3;
 const int ENCODER_PULSES_PER_REV = 700;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
+<<<<<<< HEAD
 const float kp = 0.4; // Proportional gain
 const float ki = 0.05; // Integral gain
 const float kd = 0.2; // Derivative gain
+=======
+const float kp = 0.4;
+const float ki = 0.0; //0.05
+const float kd = 0.0; //0.2
+>>>>>>> origin/Oscillation-algorithm
 
 const float outMin = -155.0;
 const float outMax = 155.0;
@@ -58,7 +66,7 @@ const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
 const double pi = 3.141592653589793;
-const float timePeriod = 2 * pi * sqrt(60 / 9.8);
+const float timePeriod = 2000 * pi * sqrt(0.06 / 9.8);
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
@@ -69,6 +77,14 @@ extern unsigned long lastTime2;
 
 extern float motorAngle1;
 extern float motorAngle2;
+<<<<<<< HEAD
+=======
+
+//Varibales for Oscillation
+extern int dOscillationDirection;
+extern int mOscillationMagnitude;
+extern unsigned long sOscillationStart;
+>>>>>>> origin/Oscillation-algorithm
 
 extern float setpoint;
 
