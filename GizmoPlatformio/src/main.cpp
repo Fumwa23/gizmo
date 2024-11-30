@@ -91,19 +91,7 @@ void loop() {
     }
   }
 
-  if (currentTime - lastTime >= 20){
-    dOscillationDirection += 2;
-    //dOscillationDirection += 1;
-    lastTime = currentTime;
-  }
-
-  spm.calculate_motors(aOscillationAmplitude,dOscillationDirection);
-  // Move motors to calculated angle
-  float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
-  analogWrite(1, calculatedPWM1);
-
-  float calculatedPWM2 = pid2.move(motorAngle2*GYZ, encoder2Position);
-  analogWrite(2, calculatedPWM2);
+  circularOscillation();
   //dynamicOscillation(dOscillationDirection, aOscillationAmplitude);
   // if (oscillating){
   //   doOscillation();

@@ -143,3 +143,27 @@ void dynamicOscillation(int direction, int amplitude){ // Direction of oscillati
     lastOscillationTime = millis();
   }
 }
+void circularOscillation(){
+    unsigned long currentTime = millis();
+    if (currentTime - lastTime >= 20){
+        dOscillationDirection += 2;
+        //dOscillationDirection += 1;
+        lastTime = currentTime;
+    }
+
+    Serial.print("Direction : ");
+    Serial.print(dOscillationDirection);
+    Serial.print(" | Encoder 1 : ");
+    Serial.print(encoder1Position/GYZ);
+    Serial.print(" | Encoder 2 : ");
+    Serial.println(encoder2Position/GYZ);
+
+
+    spm.calculate_motors(aOscillationAmplitude,dOscillationDirection);
+    // Move motors to calculated angle
+    float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
+    analogWrite(1, calculatedPWM1);
+
+    float calculatedPWM2 = pid2.move(motorAngle2*GYZ, encoder2Position);
+    analogWrite(2, calculatedPWM2);
+}
