@@ -34,8 +34,10 @@ void moveArmsToHome();
 float moveMotorAtSpeed();
 float moveTo();
 void analogWrite(int motorNumber, float inputPWM, bool remap = true);
+
 void startOscillation(int direction, int magnitude);
 void doOscillation();
+void dynamicOscillation(int direction, int amplitude);
 
 void setupFunction();
 
@@ -48,7 +50,7 @@ const int pwmChannel2 = 1;
 const int pwmChannel3 = 2;
 const int pwmChannel4 = 3;
 
-const int ENCODER_PULSES_PER_REV = 700;
+const int ENCODER_PULSES_PER_REV = 535;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
 const float kp = 0.4; // Proportional gain
@@ -76,7 +78,7 @@ extern float motorAngle2;
 //Varibales for Oscillation
 extern bool oscillating;
 extern int dOscillationDirection;
-extern int mOscillationMagnitude;
+extern int mOscillationAmplitude;
 extern unsigned long sOscillationStart;
 extern unsigned long lastOscillationTime;
 
