@@ -18,8 +18,8 @@ SPMController spm;
 volatile int encoder1Position = 0;
 volatile int encoder2Position = 0;
 
+unsigned long lastCircularOscillationTime = 0;
 unsigned long lastTime = 0;
-
 unsigned long lastTime2 = 0;
 
 //Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
@@ -34,7 +34,7 @@ int pulseCount = 0;
 //Varibales for Oscillation
 bool oscillating = false;
 
-int dOscillationDirection = 90;
+int dOscillationDirection = 0;
 int aOscillationAmplitude = 30;
 
 unsigned long sOscillationStart;
@@ -68,7 +68,7 @@ void loop() {
   //Read rest pin
   bool restState = digitalRead(REST_PIN);
 
-  if (restState){
+  if (restState == LOW){
     //Dial is not in rest state.
     if (!dialling){
       //Just started dialling

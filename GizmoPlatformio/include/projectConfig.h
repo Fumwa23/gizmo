@@ -83,6 +83,8 @@ extern int aOscillationAmplitude;
 extern unsigned long sOscillationStart;
 extern unsigned long lastOscillationTime;
 
+extern unsigned long lastCircularOscillationTime;
+
 extern float setpoint;
 
 void setupPins();
