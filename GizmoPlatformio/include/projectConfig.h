@@ -50,12 +50,12 @@ const int pwmChannel2 = 1;
 const int pwmChannel3 = 2;
 const int pwmChannel4 = 3;
 
-const int ENCODER_PULSES_PER_REV = 420;
+const int ENCODER_PULSES_PER_REV = 700;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
-const float kp = 0.4; // Proportional gain
+const float kp = 2; // Proportional gain
 const float ki = 0.05; // Integral gain
-const float kd = 0.0; // Derivative gain
+const float kd = 0.0001; // Derivative gain
 
 const float outMin = -155.0;
 const float outMax = 155.0;
@@ -63,7 +63,7 @@ const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
 const double pi = 3.141592653589793;
-const float timePeriod = 2 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
+const float timePeriod = 0.8* 737; // 1 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
@@ -78,7 +78,7 @@ extern float motorAngle2;
 //Varibales for Oscillation
 extern bool oscillating;
 extern int dOscillationDirection;
-extern int mOscillationAmplitude;
+extern int aOscillationAmplitude;
 extern unsigned long sOscillationStart;
 extern unsigned long lastOscillationTime;
 

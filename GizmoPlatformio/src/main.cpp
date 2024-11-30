@@ -19,6 +19,7 @@ volatile int encoder1Position = 0;
 volatile int encoder2Position = 0;
 
 unsigned long lastTime = 0;
+
 unsigned long lastTime2 = 0;
 
 //Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
@@ -32,8 +33,10 @@ int pulseCount = 0;
 
 //Varibales for Oscillation
 bool oscillating = false;
-int dOscillationDirection;
-int mOscillationAmplitude;
+
+int dOscillationDirection = 90;
+int aOscillationAmplitude = 30;
+
 unsigned long sOscillationStart;
 unsigned long lastOscillationTime;
 
@@ -59,6 +62,7 @@ void loop() {
 
   // Get current time
   unsigned long currentTime = millis();
+  unsigned long currentTime2 = millis();
 
   //Code to read phone dial
   //Read rest pin
@@ -87,9 +91,20 @@ void loop() {
     }
   }
 
-  int oscillationDirection = 90;
-  int oscillationAmplitude = 30;
-  dynamicOscillation(oscillationDirection, oscillationAmplitude);
+  if (currentTime - lastTime >= 20){
+    dOscillationDirection += 2;
+    //dOscillationDirection += 1;
+    lastTime = currentTime;
+  }
+
+  spm.calculate_motors(aOscillationAmplitude,dOscillationDirection);
+  // Move motors to calculated angle
+  float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
+  analogWrite(1, calculatedPWM1);
+
+  float calculatedPWM2 = pid2.move(motorAngle2*GYZ, encoder2Position);
+  analogWrite(2, calculatedPWM2);
+  //dynamicOscillation(dOscillationDirection, aOscillationAmplitude);
   // if (oscillating){
   //   doOscillation();
   // }else{

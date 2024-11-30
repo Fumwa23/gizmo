@@ -4,11 +4,11 @@
 //Oscillation functions
 void startOscillation(int direction, int amplitude){
   dOscillationDirection = direction;
-  mOscillationAmplitude = amplitude;
+  aOscillationAmplitude = amplitude;
 
   sOscillationStart = millis();
   oscillating = true;
-  spm.calculate_motors(mOscillationAmplitude,dOscillationDirection);
+  spm.calculate_motors(aOscillationAmplitude,dOscillationDirection);
   float target1 = motorAngle1*GYZ;
   float target2 = motorAngle2*GYZ;
 
@@ -65,7 +65,7 @@ void startOscillation(int direction, int amplitude){
 void doOscillation(){
   if (millis() > lastOscillationTime+20){
     float t = fmod(millis()-sOscillationStart,timePeriod);
-    float phi = mOscillationAmplitude*cos(2*pi*t/timePeriod);
+    float phi = aOscillationAmplitude*cos(2*pi*t/timePeriod);
     spm.calculate_motors(phi, dOscillationDirection);
     
     float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
