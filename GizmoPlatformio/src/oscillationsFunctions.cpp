@@ -3,21 +3,20 @@
 
 //Oscillation functions
 void startOscillation(int direction, int magnitude){
-  Serial.print(millis());
-  Serial.println(" ---- STARTING OSCILATTION ---- ");
   dOscillationDirection = direction;
   mOscillationMagnitude = magnitude;
+
   sOscillationStart = millis();
   oscillating = true;
   spm.calculate_motors(mOscillationMagnitude,dOscillationDirection);
   float target1 = motorAngle1*GYZ;
   float target2 = motorAngle2*GYZ;
+
   Serial.print("Target 1 : ");
   Serial.print(target1);
   Serial.print("   Target 2 : ");
   Serial.println(target2);
-  unsigned long startTime = millis(); // Start time for timeout
-  const unsigned long timeout = 100;
+
   while (true){
     //Move motors to targets
     float calculatedPWM1 = pid1.move(target1, encoder1Position); 
@@ -36,6 +35,11 @@ void startOscillation(int direction, int magnitude){
       analogWrite(2, 0.0);
       break;
     }
+
+    // Debugging logging:
+    unsigned long startTime = millis(); // Start time for timeout
+    const unsigned long timeout = 100;
+
     if (millis() - startTime > timeout) {
       Serial.print("---- WAITING TO START OSCILLATION ----");
       
@@ -63,11 +67,13 @@ void doOscillation(){
     float t = fmod(millis()-sOscillationStart,timePeriod);
     float phi = mOscillationMagnitude*cos(2*pi*t/timePeriod);
     spm.calculate_motors(phi, dOscillationDirection);
+    
     float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
     analogWrite(1, calculatedPWM1);
 
     float calculatedPWM2 = pid2.move(motorAngle2*GYZ, encoder2Position);
     analogWrite(2, calculatedPWM2);
+
     Serial.print("t : ");
     Serial.print(t);
     Serial.print("   Phi : ");
@@ -84,6 +90,7 @@ void doOscillation(){
     Serial.print(encoder2Position/GYZ);
     Serial.print("   Target2 : ");
     Serial.println(motorAngle2);
+
     lastOscillationTime = millis();
   }
 }

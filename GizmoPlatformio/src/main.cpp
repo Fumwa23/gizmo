@@ -90,7 +90,7 @@ void loop() {
   if (oscillating){
     doOscillation();
   }else{
-    startOscillation(0,30);
+    startOscillation(0,42.75);
     delay(1000);
   }
 }

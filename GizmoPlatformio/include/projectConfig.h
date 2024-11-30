@@ -61,7 +61,7 @@ const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
 const double pi = 3.141592653589793;
-const float timePeriod = 2000 * pi * sqrt(0.06 / 9.8);
+const float timePeriod = 2 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
