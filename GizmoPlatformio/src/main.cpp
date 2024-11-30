@@ -50,6 +50,8 @@ void setup() {
 
   moveArmsToHome();
   delay(1000);
+
+  sOscillationStart = millis(); // TODO: check if this goes here.
 }
 
 void loop() {
@@ -77,10 +79,11 @@ void loop() {
     lastTime = currentTime;
   }
 
-  aOscillationAmplitude = pulseCount*20/maxPulseCount; // This mean that at max pulse count, the amplitude will be at 30
+  // aOscillationAmplitude = pulseCount*20/maxPulseCount; // This mean that at max pulse count, the amplitude will be at 30
 
-  // TODO: May want there to be a wider margin range where the pulse count is correct. 
-  timePeriod = 4*resonantTimePeriod - 3*pulseCount*resonantTimePeriod/maxPulseCount; // This means that at max pulse count, the time period will be at resonant frequency
+  // // TODO: May want there to be a wider margin range where the pulse count is correct. 
+  // timePeriod = 4*resonantTimePeriod - 3*pulseCount*resonantTimePeriod/maxPulseCount; // This means that at max pulse count, the time period will be at resonant frequency
 
-  dynamicOscillation(dOscillationDirection, aOscillationAmplitude);
+  circularOscillation();
+  // //dynamicOscillation(90, aOscillationAmplitude);
 }
