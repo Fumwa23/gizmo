@@ -50,7 +50,7 @@ const int pwmChannel2 = 1;
 const int pwmChannel3 = 2;
 const int pwmChannel4 = 3;
 
-const int ENCODER_PULSES_PER_REV = 535;
+const int ENCODER_PULSES_PER_REV = 420;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
 const float kp = 0.4; // Proportional gain

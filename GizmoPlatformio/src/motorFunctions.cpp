@@ -70,8 +70,8 @@ void moveArmsToHome() {
   unsigned long startTime = millis(); // Start time for timeout
   const unsigned long timeout = 1000;
 
-  int homePosition1 = 150 * GYZ;
-  int homePosition2 = 210 * GYZ;
+  int homePosition1 = 120 * GYZ;
+  int homePosition2 = 240 * GYZ;
 
   while (true){
     float calculatedPWM1 = pid1.move(homePosition1, encoder1Position); 
