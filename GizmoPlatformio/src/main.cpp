@@ -93,6 +93,8 @@ void setup() {
   // Move arms to home position
   moveArmsToHome();
   delay(1000);
+
+  setupFunction();
 }
 
 void loop() {
@@ -180,7 +182,7 @@ void IRAM_ATTR handleEncoder2() {
 
     if (state1 != state2) {
         // Clockwise
-        encoder1Position++;
+        encoder2Position++;
     } else {
         // Anti-clockwise
         encoder2Position--;
@@ -212,7 +214,7 @@ float moveMotorAtSpeed(){
  */
 void analogWrite(int motorNumber, float inputPWM, bool remap){
 
-  // The motor requires a minimum pwm to move, this remaps ths values 
+  // The motor requires a minimum pwm to move, this remaps the values 
   if (remap){ 
     if (inputPWM < 0) {
       inputPWM -= 255 + outMin;
@@ -264,19 +266,26 @@ void moveArmsToHome() {
   unsigned long startTime = millis(); // Start time for timeout
   const unsigned long timeout = 1000;
 
+  int homePosition1 = 150 * GYZ;
+  int homePosition2 = 210 * GYZ;
+
   while (true){
-    float calculatedPWM1 = pid1.move(120*GYZ, encoder1Position); 
+    float calculatedPWM1 = pid1.move(homePosition1, encoder1Position); 
     analogWrite(1, calculatedPWM1);
 
     // Move motor 2 to 240 degrees
-    float calculatedPWM2 = pid2.move(240*GYZ, encoder2Position);
+    float calculatedPWM2 = pid2.move(homePosition2, encoder2Position);
     analogWrite(2, calculatedPWM2);
 
     // Check to see if position has been reached
-    if (abs(encoder1Position - 120*GYZ) < 50 && abs(encoder2Position - 240*GYZ) < 50){
-      Serial.println("---- HOMING COMPLETE ----");
+    if (abs(encoder1Position - homePosition1) < 10 && abs(encoder2Position - homePosition2) < 10){
       analogWrite(1, 0); // Stop motors 
       analogWrite(2, 0); // Stop motors
+      Serial.print("---- HOMING COMPLETE ----");
+      Serial.print(" | Encoder 1 position: ");
+      Serial.print(encoder1Position/GYZ);
+      Serial.print(" | Encoder 2 position: ");
+      Serial.println(encoder2Position/GYZ);
       break;
     }
 
@@ -288,39 +297,38 @@ void moveArmsToHome() {
       Serial.print(calculatedPWM1);
 
       Serial.print(" Encoder1Position: ");
-      Serial.print(encoder1Position);
+      Serial.print(encoder1Position/GYZ);
 
       // Print output
       Serial.print(" | Output2: ");
       Serial.print(calculatedPWM2);
 
       Serial.print(" aEncoderPosition: ");
-      Serial.println(encoder2Position);
+      Serial.println(encoder2Position/GYZ);
 
       startTime = millis();
     }
   }
 }
 
-float moveMotorAtSpeed(){
-  // code here
-  return 0;
-}
-
 void setupFunction() {
   unsigned long startTime = millis(); // Start time for timeout
-  const unsigned long timeout = 1000;
+  const unsigned long timeout = 10;
+
+  int homePosition1 = 60 * GYZ;
+  int homePosition2 = 300 * GYZ;
 
   while (true){
-    float calculatedPWM1 = pid1.move(60*GYZ, encoder1Position); 
+    
+    float calculatedPWM1 = pid1.move(homePosition1, encoder1Position); 
     analogWrite(1, calculatedPWM1);
 
     // Move motor 2 to 240 degrees
-    float calculatedPWM2 = pid2.move(300*GYZ, encoder2Position);
+    float calculatedPWM2 = pid2.move(homePosition2, encoder2Position);
     analogWrite(2, calculatedPWM2);
 
     // Check to see if position has been reached
-    if (abs(encoder1Position - 120*GYZ) < 50 && abs(encoder2Position - 240*GYZ) < 50){
+    if (abs(encoder1Position - homePosition1) < 50 && abs(encoder2Position - homePosition2) < 50){
       Serial.println("---- MOVEMENT COMPLETE ----");
       analogWrite(1, 0); // Stop motors 
       analogWrite(2, 0); // Stop motors
@@ -328,21 +336,21 @@ void setupFunction() {
     }
 
     if (millis() - startTime > timeout) {
-      Serial.print("---- WAITING FOR MOVEMENT TO COMPLETE ----");
+      Serial.print("---- DEBUGGING ----");
       
       // Print output
       Serial.print(" | Output: ");
       Serial.print(calculatedPWM1);
 
       Serial.print(" Encoder1Position: ");
-      Serial.print(encoder1Position);
+      Serial.print(encoder1Position/GYZ);
 
       // Print output
       Serial.print(" | Output2: ");
       Serial.print(calculatedPWM2);
 
       Serial.print(" aEncoderPosition: ");
-      Serial.println(encoder2Position);
+      Serial.println(encoder2Position/GYZ);
 
       startTime = millis();
     }

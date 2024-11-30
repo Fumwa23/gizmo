@@ -48,9 +48,9 @@ const int pwmChannel4 = 3;
 const int ENCODER_PULSES_PER_REV = 700;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
-const float kp = 0.4;
-const float ki = 0.05;
-const float kd = 0.2;
+const float kp = 0.4; // Proportional gain
+const float ki = 0.05; // Integral gain
+const float kd = 0.2; // Derivative gain
 
 const float outMin = -155.0;
 const float outMax = 155.0;
@@ -67,8 +67,8 @@ extern volatile int encoder2Position;
 extern unsigned long lastTime;
 extern unsigned long lastTime2;
 
-extern double motorAngle1;
-extern double motorAngle2;
+extern float motorAngle1;
+extern float motorAngle2;
 
 extern float setpoint;
 
