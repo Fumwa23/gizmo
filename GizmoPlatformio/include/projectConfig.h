@@ -49,7 +49,7 @@ const int ENCODER_PULSES_PER_REV = 700;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
 const float kp = 0.4;
-const float ki = 0.0; //0.05
+const float ki = 0.05; //0.05
 const float kd = 0.0; //0.2
 
 const float outMin = -155.0;

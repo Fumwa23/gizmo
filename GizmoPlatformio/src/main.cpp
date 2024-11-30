@@ -317,6 +317,7 @@ void startOscillation(int direction, int magnitude){
   mOscillationMagnitude = magnitude;
   sOscillationStart = millis();
   oscillating = true;
+  Serial.println(magnitude);
   spm.calculate_motors(mOscillationMagnitude,dOscillationDirection);
   float target1 = motorAngle1*GYZ;
   float target2 = motorAngle2*GYZ;
