@@ -22,6 +22,8 @@ unsigned long lastTime = 0;
 
 unsigned long lastTime2 = 0;
 
+float timePeriod = 0;
+
 //Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
 float motorAngle1 = 120;
 float motorAngle2 = 240;
@@ -64,35 +66,25 @@ void loop() {
   unsigned long currentTime = millis();
   unsigned long currentTime2 = millis();
 
-  //Code to read phone dial
-  //Read rest pin
-  bool restState = digitalRead(REST_PIN);
 
-  if (restState){
-    //Dial is not in rest state.
-    if (!dialling){
-      //Just started dialling
-      dialling = true;
-    }
-    //Read pulse pin
-    bool pulseState = digitalRead(PULSE_PIN);
-    if (pulseState && !pulsed){
-      pulseCount++;
-    }
-    //set pulsed to hold previous value for edge detection
-    pulsed = pulseState;
-  }else{
-    //Dial is in rest state. Check if it has just returned
-    if (dialling){
-      //Just finished dialling
-      dialling = false;
-      //DO SOMETHING
+  // Track pulses
+  trackPulses();
+  //timePeriod = 50 * pulseCount;
+
+  if (currentTime - lastTime >= 1000) {
+    // Calculate RPM every second
+    pulseCount -= 1;
+    
+    if (pulseCount < 0){
       pulseCount = 0;
-    }
+    } 
+
+    Serial.print("Pulse Count: ");
+    Serial.println(pulseCount);
   }
 
-  circularOscillation();
-  //dynamicOscillation(dOscillationDirection, aOscillationAmplitude);
+  //circularOscillation();
+  dynamicOscillation(dOscillationDirection, aOscillationAmplitude);
   // if (oscillating){
   //   doOscillation();
   // }else{
