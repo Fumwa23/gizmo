@@ -27,8 +27,9 @@ extern SPMController spm;
 #define REST_PIN 14
 
 // --------------------------------------------- FUNCTION DECLARATIONS
-void IRAM_ATTR handleEncoder();
+void IRAM_ATTR handleEncoder1();
 void IRAM_ATTR handleEncoder2();
+
 void moveArmsToHome();
 float moveMotorAtSpeed();
 float moveTo();
@@ -50,15 +51,9 @@ const int pwmChannel4 = 3;
 const int ENCODER_PULSES_PER_REV = 700;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
-<<<<<<< HEAD
 const float kp = 0.4; // Proportional gain
 const float ki = 0.05; // Integral gain
-const float kd = 0.2; // Derivative gain
-=======
-const float kp = 0.4;
-const float ki = 0.0; //0.05
-const float kd = 0.0; //0.2
->>>>>>> origin/Oscillation-algorithm
+const float kd = 0.0; // Derivative gain
 
 const float outMin = -155.0;
 const float outMax = 155.0;
@@ -77,15 +72,24 @@ extern unsigned long lastTime2;
 
 extern float motorAngle1;
 extern float motorAngle2;
-<<<<<<< HEAD
-=======
 
 //Varibales for Oscillation
+extern bool oscillating;
 extern int dOscillationDirection;
 extern int mOscillationMagnitude;
 extern unsigned long sOscillationStart;
->>>>>>> origin/Oscillation-algorithm
+extern unsigned long lastOscillationTime;
 
 extern float setpoint;
 
-#endif
+void setupPins();
+void setupMotors();
+
+void analogWrite(int motorNumber, float inputPWM, bool remap);
+void moveArmsToHome();
+float moveMotorAtSpeed();
+
+void IRAM_ATTR handleEncoder1();
+void IRAM_ATTR handleEncoder2();
+
+#endif // PROJECT_CONFIG_H

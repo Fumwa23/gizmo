@@ -9,6 +9,8 @@ This File is working code which tested if the motor and encoder are working prop
 // put function declarations here:
 int myFunction(int, int);
 
+void setupFunction();
+
 // put function definitions here:
 int myFunction(int x, int y) {
   return x + y;
