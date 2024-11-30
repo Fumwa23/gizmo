@@ -6,7 +6,7 @@ This file contains the setup and loop functions.
 It is the file that is compiled and uploaded to the ESP32.
 */
 
-#include "projectConfig.h"
+#include "projectConfig.h" // Include proect header file
 
 // --------------------------------------------- CREATE OBJECTS
 PIDController pid1;
@@ -92,6 +92,7 @@ void setup() {
 
   // Move arms to home position
   moveArmsToHome();
+  delay(1000);
 }
 
 void loop() {
@@ -147,11 +148,11 @@ void loop() {
     }
   }
 
-  if (oscillating){
-    doOscillation();
-  }else{
-    startOscillation(10,0);
-  }
+  // if (oscillating){
+  //   doOscillation();
+  // }else{
+  //   startOscillation(10,0);
+  // }
 }
 
 
@@ -304,6 +305,48 @@ void moveArmsToHome() {
 float moveMotorAtSpeed(){
   // code here
   return 0;
+}
+
+void setupFunction() {
+  unsigned long startTime = millis(); // Start time for timeout
+  const unsigned long timeout = 1000;
+
+  while (true){
+    float calculatedPWM1 = pid1.move(60*GYZ, encoder1Position); 
+    analogWrite(1, calculatedPWM1);
+
+    // Move motor 2 to 240 degrees
+    float calculatedPWM2 = pid2.move(300*GYZ, encoder2Position);
+    analogWrite(2, calculatedPWM2);
+
+    // Check to see if position has been reached
+    if (abs(encoder1Position - 120*GYZ) < 50 && abs(encoder2Position - 240*GYZ) < 50){
+      Serial.println("---- MOVEMENT COMPLETE ----");
+      analogWrite(1, 0); // Stop motors 
+      analogWrite(2, 0); // Stop motors
+      break;
+    }
+
+    if (millis() - startTime > timeout) {
+      Serial.print("---- WAITING FOR MOVEMENT TO COMPLETE ----");
+      
+      // Print output
+      Serial.print(" | Output: ");
+      Serial.print(calculatedPWM1);
+
+      Serial.print(" Encoder1Position: ");
+      Serial.print(encoder1Position);
+
+      // Print output
+      Serial.print(" | Output2: ");
+      Serial.print(calculatedPWM2);
+
+      Serial.print(" aEncoderPosition: ");
+      Serial.println(encoder2Position);
+
+      startTime = millis();
+    }
+  }
 }
 
 

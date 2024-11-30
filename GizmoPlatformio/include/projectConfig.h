@@ -34,6 +34,8 @@ float moveMotorAtSpeed();
 float moveTo();
 void analogWrite(int motorNumber, float inputPWM, bool remap = true);
 
+void setupFunction();
+
 // --------------------------------------------- DEFINE CONSTANTS
 const int freq = 30000;
 const int resolution = 8;
