@@ -345,7 +345,7 @@ void startOscillation(int direction, int magnitude){
       break;
     }
     if (millis() - startTime > timeout) {
-      Serial.print("---- WAITING FOR HOME TO COMPLETE ----");
+      Serial.print("---- WAITING TO START OSCILLATION ----");
       
       // Print output
       Serial.print(" | Output: ");

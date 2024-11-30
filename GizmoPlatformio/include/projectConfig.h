@@ -49,8 +49,8 @@ const int ENCODER_PULSES_PER_REV = 700;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
 const float kp = 0.4;
-const float ki = 0.05;
-const float kd = 0.2;
+const float ki = 0.0; //0.05
+const float kd = 0.0; //0.2
 
 const float outMin = -155.0;
 const float outMax = 155.0;
@@ -58,7 +58,7 @@ const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
 const double pi = 3.141592653589793;
-const float timePeriod = 2 * pi * sqrt(60 / 9.8);
+const float timePeriod = 2000 * pi * sqrt(0.06 / 9.8);
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
