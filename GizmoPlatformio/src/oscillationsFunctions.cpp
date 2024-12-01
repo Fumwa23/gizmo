@@ -63,9 +63,9 @@ void startOscillation(int direction, int amplitude){
 }
 
 void doOscillation(){
-  if (millis() > lastOscillationTime+20){
+  if (millis() - lastOscillationTime > 20){
     float t = fmod(millis()-sOscillationStart,timePeriod);
-    float phi = aOscillationAmplitude*cos(2*pi*t/timePeriod);
+    float phi = aOscillationAmplitude*cos(2*pi*t/timePeriod); 
     spm.calculate_motors(phi, dOscillationDirection);
     
     float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
@@ -104,15 +104,40 @@ void doOscillation(){
  * @todo Test if the asynchronus delay is needed. 
  * @todo Check if amplitude should be a global variable. 
  */
-void dynamicOscillation(int direction, int amplitude){ // Direction of oscillation and amplitude of oscillation
-  if (millis() > lastOscillationTime+20){
+void dynamicOscillation(){ // Direction of oscillation and amplitude of oscillation
+  // Calculate the magnitude of the oscillation that motors should move to.
+  float t = fmod(millis()-sOscillationStart,timePeriod); // Time within oscillation period
 
+  // If the time within oscillation is less than 10ms, set the new direction and amplitude
+  if (t <= 10){ // giving t a buffer in case it isn't exactly zero
+    if (newOscillationDirectionBool){
+      dOscillationDirection = newOscillationDirection;
+      newOscillationDirectionBool = false;
+    }
+
+    if (newOscillationAmplitudeBool){
+      aOscillationAmplitude = newOscillationAmplitude;
+      newOscillationAmplitudeBool = false;
+    }
+
+    if (newTimePeriodBool){
+      timePeriod = newTimePeriod;
+      newTimePeriodBool = false;
+    }
+  }
+  
+
+  if (millis() - lastOscillationTime > 20){
     // TODO: add function which clamps time period?
 
-    // Calculate the magnitude of the oscillation that motors should move to.
-    float t = fmod(millis()-sOscillationStart,timePeriod); // Time within oscillation period
-    float phi = amplitude*cos(2*pi*t/timePeriod); // Magnitude of oscillation
-    spm.calculate_motors(phi, direction);
+    Serial.print("Amplitude: ");
+    Serial.print(aOscillationAmplitude);
+    Serial.print("Time period: ");
+    Serial.println(timePeriod);
+
+
+    float phi = aOscillationAmplitude*sin(2*pi*t/timePeriod); // Magnitude of oscillation
+    spm.calculate_motors(phi, dOscillationDirection);
     
     // Move motors to calculated angle
     float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
@@ -122,25 +147,22 @@ void dynamicOscillation(int direction, int amplitude){ // Direction of oscillati
     analogWrite(2, calculatedPWM2);
 
     // DEBUGGING
-    // Serial.print("t : ");
-    // Serial.print(t);
-    // Serial.print("   Phi : ");
-    // Serial.print(phi);
-    // Serial.print("   PWM1 : ");
-    // Serial.print(calculatedPWM1);
-    // Serial.print("   Encoder1 : ");
-    // Serial.print(encoder1Position/GYZ);
-    // Serial.print("   Target1  : ");
-    // Serial.print(motorAngle1);
-    // Serial.print("   PWM2 : ");
-    // Serial.print(calculatedPWM2);
-    // Serial.print("   Encoder2 : ");
-    // Serial.print(encoder2Position/GYZ);
-    // Serial.print("   Target2 : ");
-    // Serial.println(motorAngle2);
-
-    // Add manual damping 
-    amplitude =- 1;
+    Serial.print("t : ");
+    Serial.print(t);
+    Serial.print("   Phi : ");
+    Serial.print(phi);
+    Serial.print("   PWM1 : ");
+    Serial.print(calculatedPWM1);
+    Serial.print("   Encoder1 : ");
+    Serial.print(encoder1Position/GYZ);
+    Serial.print("   Target1  : ");
+    Serial.print(motorAngle1);
+    Serial.print("   PWM2 : ");
+    Serial.print(calculatedPWM2);
+    Serial.print("   Encoder2 : ");
+    Serial.print(encoder2Position/GYZ);
+    Serial.print("   Target2 : ");
+    Serial.println(motorAngle2);
 
     lastOscillationTime = millis();
   }
@@ -167,4 +189,51 @@ void circularOscillation(){
 
     float calculatedPWM2 = pid2.move(motorAngle2*GYZ, encoder2Position);
     analogWrite(2, calculatedPWM2);
+}
+
+void testingFunction(){
+  spm.calculate_motors(42, 0);
+    
+  // Move motors to calculated angle
+  float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
+  analogWrite(1, calculatedPWM1);
+
+  float calculatedPWM2 = pid2.move(motorAngle2*GYZ, encoder2Position);
+  analogWrite(2, calculatedPWM2);
+
+  if (encoder1Position - motorAngle1*GYZ < 50 && encoder2Position - motorAngle2*GYZ < 50){
+    analogWrite(1, 0);
+    analogWrite(2, 0);
+  } else {
+    delay(20);
+  }
+
+  spm.calculate_motors(42, 180);
+    
+  // Move motors to calculated angle
+  calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
+  analogWrite(1, calculatedPWM1);
+
+  calculatedPWM2 = pid2.move(motorAngle2*GYZ, encoder2Position);
+  analogWrite(2, calculatedPWM2);
+
+  analogWrite(1, 0);
+  analogWrite(2, 0);
+
+  delay(1500);
+
+  // // DEBUGGING
+  //   Serial.print("   PWM1 : ");
+  //   Serial.print(calculatedPWM1);
+  //   Serial.print("   Encoder1 : ");
+  //   Serial.print(encoder1Position/GYZ);
+  //   Serial.print("   Target1  : ");
+  //   Serial.print(motorAngle1);
+  //   Serial.print("   PWM2 : ");
+  //   Serial.print(calculatedPWM2);
+  //   Serial.print("   Encoder2 : ");
+  //   Serial.print(encoder2Position/GYZ);
+  //   Serial.print("   Target2 : ");
+  //   Serial.println(motorAngle2);
+
 }

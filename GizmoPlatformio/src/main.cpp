@@ -27,20 +27,27 @@ float motorAngle1 = 120;
 float motorAngle2 = 240;
 
 //Variables for dial
-bool pulsed = LOW;
+bool lastPulseState = LOW;
 bool dialling = false;
 int pulseCount = 0;
+int lastPulseCount = 0;
 
 //Varibales for Oscillation
 bool oscillating = false;
 
 int dOscillationDirection = 0;
-int aOscillationAmplitude = 30;
+int aOscillationAmplitude = 0;
+int newOscillationDirection = 0;
+int newOscillationAmplitude = 0;
+bool newOscillationDirectionBool = false;
+bool newOscillationAmplitudeBool = false;
 
 unsigned long sOscillationStart;
 unsigned long lastOscillationTime;
 
-float timePeriod = 700;
+float timePeriod = 100;
+float newTimePeriod = 0;
+bool newTimePeriodBool = false;
 
 void setup() {
   Serial.begin(115200);
@@ -71,19 +78,29 @@ void loop() {
   // TODO: create a function which iteratively decreases the pulseCount until it reaches 0 at a time interval
   if (currentTime - lastTime >= 2000){
     if (pulseCount > 0){
-      Serial.print("Pulse count : ");
-      Serial.println(pulseCount);
+      lastPulseCount = pulseCount;
       pulseCount--;
     }
 
     lastTime = currentTime;
   }
 
-  // aOscillationAmplitude = pulseCount*20/maxPulseCount; // This mean that at max pulse count, the amplitude will be at 30
+  if (lastPulseCount != pulseCount){
+    const float resonantTimePeriod = 700;
 
-  // // TODO: May want there to be a wider margin range where the pulse count is correct. 
-  // timePeriod = 4*resonantTimePeriod - 3*pulseCount*resonantTimePeriod/maxPulseCount; // This means that at max pulse count, the time period will be at resonant frequency
+    newOscillationDirection = 0; 
+    newOscillationAmplitude = pulseCount*20/maxPulseCount; // This mean that at max pulse count, the amplitude will be at 30
+    newTimePeriod = 4*resonantTimePeriod - 3*pulseCount*resonantTimePeriod/maxPulseCount; // This means that at max pulse count, the time period will be at resonant frequency
 
-  circularOscillation();
-  // //dynamicOscillation(90, aOscillationAmplitude);
+    newTimePeriodBool = true;
+    newOscillationAmplitudeBool = true;
+    newOscillationDirectionBool = true;
+  }
+
+  // TODO: May want there to be a wider margin range where the pulse count is correct. 
+  
+
+  //circularOscillation();
+  //dynamicOscillation();
+  testingFunction();
 }

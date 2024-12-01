@@ -13,6 +13,12 @@ void SPMController::begin(float * a_motor_ptr, float * b_motor_ptr){
   this-> b_motor_ptr = b_motor_ptr;
 }
 
+/**
+ * @brief Function to calculate the motor angles given the desired angle of the driver arm
+ * 
+ * @param phi Angle from the z axis
+ * @param theta Angle around the z axis
+ */
 void SPMController::calculate_motors(float phi, float theta){
   //Find direction vector given angle
   vector <float> driver_arm = get_direction_vector(phi,theta);

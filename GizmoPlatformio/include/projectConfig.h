@@ -37,8 +37,10 @@ void analogWrite(int motorNumber, float inputPWM, bool remap = true);
 
 void startOscillation(int direction, int magnitude);
 void doOscillation();
-void dynamicOscillation(int direction, int amplitude);
+void dynamicOscillation();
 void circularOscillation();
+
+void testingFunction();
 
 void setupFunction();
 
@@ -65,7 +67,8 @@ const float tau = 0.0001;
 
 const double pi = 3.141592653589793;
 extern float timePeriod; // 1 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
-const float resonantTimePeriod = 700;
+extern bool newTimePeriodBool;
+extern float newTimePeriod;
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
@@ -81,6 +84,11 @@ extern float motorAngle2;
 extern bool oscillating;
 extern int dOscillationDirection;
 extern int aOscillationAmplitude;
+extern int newOscillationDirection;
+extern int newOscillationAmplitude;
+extern bool newOscillationDirectionBool;
+extern bool newOscillationAmplitudeBool;
+
 extern unsigned long sOscillationStart;
 extern unsigned long lastOscillationTime;
 
@@ -89,9 +97,10 @@ extern unsigned long lastCircularOscillationTime;
 extern float setpoint;
 
 //Variables for dial
-extern bool pulsed;
+extern bool lastPulseState;
 extern bool dialling;
 extern int pulseCount;
+extern int lastPulseCount;
 
 void setupPins();
 void setupMotors();
