@@ -107,9 +107,9 @@ void loop() {
 
   //circularOscillation();
   //dynamicOscillation();
-  doOscillation();
+  //doOscillation();
 
-  //testingFunction(90);
+  testingFunction(90);
   //manualCircularOscillation();
   //circularOscillationOwen();
 }
