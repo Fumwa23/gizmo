@@ -100,22 +100,32 @@ float SPMController::get_joint_angle(float x,float y){
 
 //Function to solve for the motor angle from the x axis, knowing the vector of the joint
 float SPMController::get_motor_angle(vector <float> joint){
-  //Define parameters of equation mcosx + nsinx = p where x is the desired angle
-  float m = joint[0]*sz_angle_sin;
-  float n = joint[1]*sz_angle_sin;
-  float p = joint[2]*cz_angle_cos;
-  //Define gamma, such that cos(x-gamma) = p/sqrt(n^2+m^2)
-  float gamma = get_joint_angle(joint[0],joint[1]);
+  // //Define parameters of equation mcosx + nsinx = p where x is the desired angle
+  // float m = joint[0]*sz_angle_sin;
+  // float n = joint[1]*sz_angle_sin;
+  // float p = joint[2]*cz_angle_cos;
+  // //Define gamma, such that cos(x-gamma) = p/sqrt(n^2+m^2)
+  // float gamma = get_joint_angle(joint[0],joint[1]);
 
-  //Define q, where q is p/sqrt(m^2+n^2)
-  float q = p/sqrt(m*m+n*n);
-  //Generate angle
-  float motor_angle = pi-acos(q)+gamma;
-  if (motor_angle > 2*pi){
-    motor_angle -= 2*pi;
-  }
-  //Convert to degrees
-  return motor_angle/pi*180;
+  // //Define q, where q is p/sqrt(m^2+n^2)
+  // float q = p/sqrt(m*m+n*n);
+  float xyMag = sqrt(joint[0]*joint[0]+joint[1]*joint[1]);
+  float elevation = joint[2]/xyMag;
+  Serial.println(elevation);
+  float gamma = asin(elevation*cz_angle_cos/sz_angle_sin);
+  Serial.println(gamma);
+
+  float motorAngle = gamma + get_joint_angle(joint[0],joint[1]);
+
+
+
+  // //Generate angle
+  // float motor_angle = pi-acos(q)+gamma;
+  // if (motor_angle > 2*pi){
+  //   motor_angle -= 2*pi;
+  // }
+  // //Convert to degrees
+  return motorAngle/pi*180;
 }
 
 
@@ -166,10 +176,12 @@ vector <float> SPMController::sub_vectors(vector <float> a, vector <float> b){
 //Function to serial print a vector
 void SPMController::print_vector(vector <float> to_print, String title ){
   int i;
-  Serial.println(title);
+  Serial.print(title);
   for (i=0; i<to_print.size(); i++){
-    Serial.println(to_print[i]);
+    Serial.print("   ");
+    Serial.print(to_print[i]);
   }
-  Serial.println();
+  Serial.print("   XY Angle : ");
+  float angle = get_joint_angle(to_print[0], to_print[1])*180/pi;
+  Serial.println(angle);
 }
-
