@@ -114,8 +114,9 @@ float SPMController::get_motor_angle(vector <float> joint){
   Serial.println(elevation);
   float gamma = asin(elevation*cz_angle_cos/sz_angle_sin);
   Serial.println(gamma);
-
-  float motorAngle = gamma + get_joint_angle(joint[0],joint[1]);
+  vector <float> vertical = {0.0, 0.0, 1.0};
+  vector <float> tempVector = cross_product(joint, vertical);
+  float motorAngle = gamma + get_joint_angle(tempVector[0],tempVector[1]);
 
 
 
