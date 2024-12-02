@@ -6,11 +6,13 @@
 #include <math.h>
 #include <PIDController.h>
 #include <SPMController.h>
+#include <SPMControllerOwen.h>
 
 // --------------------------------------------- CREATE OBJECTS
 extern PIDController pid1;
 extern PIDController pid2;
 extern SPMController spm;
+extern SPMControllerOwen spmOwen;
 
 // --------------------------------------------- DEFINE PINS
 #define C1_PIN 35
@@ -23,8 +25,8 @@ extern SPMController spm;
 #define M3_PIN 26
 #define M4_PIN 25
 
-#define PULSE_PIN 27
-#define REST_PIN 14
+#define PULSE_PIN 14
+#define REST_PIN 27
 
 // --------------------------------------------- FUNCTION DECLARATIONS
 void IRAM_ATTR handleEncoder1();
@@ -53,9 +55,9 @@ const int pwmChannel4 = 3;
 const int ENCODER_PULSES_PER_REV = 700;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
 
-const float kp = 0.4; // Proportional gain
+const float kp = 2; // Proportional gain
 const float ki = 0.05; // Integral gain
-const float kd = 0.0; // Derivative gain
+const float kd = 0.0001; // Derivative gain
 
 const float outMin = -155.0;
 const float outMax = 155.0;
@@ -63,7 +65,9 @@ const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
 const double pi = 3.141592653589793;
-const float timePeriod = 2 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
+extern float timePeriod; // 1 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
+extern bool newTimePeriodBool;
+extern float newTimePeriod;
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
@@ -84,11 +88,26 @@ extern bool testing;
 //Varibales for Oscillation
 extern bool oscillating;
 extern int dOscillationDirection;
-extern int mOscillationAmplitude;
+extern int aOscillationAmplitude;
+extern int newOscillationDirection;
+extern int newOscillationAmplitude;
+extern bool newOscillationDirectionBool;
+extern bool newOscillationAmplitudeBool;
+
 extern unsigned long sOscillationStart;
 extern unsigned long lastOscillationTime;
 
+extern unsigned long lastCircularOscillationTime;
+
 extern float setpoint;
+
+//Variables for dial
+extern bool lastPulseState;
+extern bool dialling;
+extern int pulseCount;
+extern int lastPulseCount;
+
+extern int stage;
 
 void setupPins();
 void setupMotors();
@@ -99,5 +118,8 @@ float moveMotorAtSpeed();
 
 void IRAM_ATTR handleEncoder1();
 void IRAM_ATTR handleEncoder2();
+
+void trackDialPulses();
+void trackNumberDialed();
 
 #endif // PROJECT_CONFIG_H

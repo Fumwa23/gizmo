@@ -12,12 +12,14 @@ It is the file that is compiled and uploaded to the ESP32.
 PIDController pid1;
 PIDController pid2;
 SPMController spm;
+SPMControllerOwen spmOwen;
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES 
 // Variables for encoder
 volatile int encoder1Position = 0;
 volatile int encoder2Position = 0;
 
+unsigned long lastCircularOscillationTime = 0;
 unsigned long lastTime = 0;
 unsigned long lastTime2 = 0;
 
@@ -26,14 +28,21 @@ float motorAngle1 = 120;
 float motorAngle2 = 240;
 
 //Variables for dial
-bool pulsed = LOW;
+bool lastPulseState = LOW;
 bool dialling = false;
 int pulseCount = 0;
+int lastPulseCount = 0;
 
 //Varibales for Oscillation
 bool oscillating = false;
-int dOscillationDirection;
-int mOscillationAmplitude;
+
+int dOscillationDirection = 0;
+int aOscillationAmplitude = 30;
+int newOscillationDirection = 0;
+int newOscillationAmplitude = 0;
+bool newOscillationDirectionBool = false;
+bool newOscillationAmplitudeBool = false;
+
 unsigned long sOscillationStart;
 unsigned long lastOscillationTime;
 
@@ -43,43 +52,51 @@ int direction = 1;
 unsigned long startTestTime = 0;
 unsigned long lastTestSample = 0;
 
-float setpoint = 0; // FOR TESTING ONLY
+//Variables for speed testing
+bool testing = false;
+int direction = 1;
+unsigned long startTestTime = 0;
+unsigned long lastTestSample = 0;
+
+float timePeriod = 700;
+float newTimePeriod = 0;
+bool newTimePeriodBool = false;
+
+
+// Manual circular Oscillation variable
+int stage = 0;
 
 void setup() {
-  // Setup Serial Monitor
   Serial.begin(115200);
 
   setupPins();
   setupMotors();
 
-
-  Serial.print("Time period : ");
-  Serial.println(timePeriod);
-
-  // Move arms to home position
   moveArmsToHome();
   delay(1000);
+
+  sOscillationStart = millis(); // TODO: check if this goes here.
 }
 
 void loop() {
 
   // Get current time
   unsigned long currentTime = millis();
+  //unsigned long currentTime2 = millis();
 
-  //Code to read phone dial
-  //Read rest pin
-  bool restState = digitalRead(REST_PIN);
+  trackDialPulses();
 
-  if (restState){
-    //Dial is not in rest state.
-    if (!dialling){
-      //Just started dialling
-      dialling = true;
-    }
-    //Read pulse pin
-    bool pulseState = digitalRead(PULSE_PIN);
-    if (pulseState && !pulsed){
-      pulseCount++;
+  const int maxPulseCount = 30;
+
+  if (pulseCount > maxPulseCount){
+    pulseCount = maxPulseCount;
+  }
+
+  // TODO: create a function which iteratively decreases the pulseCount until it reaches 0 at a time interval
+  if (currentTime - lastTime >= 2000){
+    if (pulseCount > 0){
+      lastPulseCount = pulseCount;
+      pulseCount--;
     }
     //set pulsed to hold previous value for edge detection
     pulsed = pulseState;
