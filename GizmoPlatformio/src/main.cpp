@@ -37,7 +37,7 @@ int lastPulseCount = 0;
 bool oscillating = false;
 
 int dOscillationDirection = 0;
-int aOscillationAmplitude = 30;
+int aOscillationAmplitude = 20;
 int newOscillationDirection = 0;
 int newOscillationAmplitude = 0;
 bool newOscillationDirectionBool = false;
@@ -46,7 +46,7 @@ bool newOscillationAmplitudeBool = false;
 unsigned long sOscillationStart;
 unsigned long lastOscillationTime;
 
-float timePeriod = 700;
+float timePeriod = 650;
 float newTimePeriod = 0;
 bool newTimePeriodBool = false;
 
@@ -84,6 +84,8 @@ void loop() {
   if (currentTime - lastTime >= 2000){
     if (pulseCount > 0){
       lastPulseCount = pulseCount;
+      Serial.print("Pulse count : ");
+      Serial.println(pulseCount);
       pulseCount--;
     }
 
@@ -106,7 +108,7 @@ void loop() {
   
 
   //circularOscillation();
-  //dynamicOscillation();
+  dynamicOscillation();
   doOscillation();
 
   //testingFunction(90);
