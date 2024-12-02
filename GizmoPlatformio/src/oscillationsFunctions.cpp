@@ -130,10 +130,10 @@ void dynamicOscillation(){ // Direction of oscillation and amplitude of oscillat
   if (millis() - lastOscillationTime > 20){
     // TODO: add function which clamps time period?
 
-    Serial.print("Amplitude: ");
-    Serial.print(aOscillationAmplitude);
-    Serial.print("Time period: ");
-    Serial.println(timePeriod);
+    // Serial.print("Amplitude: ");
+    // Serial.print(aOscillationAmplitude);
+    // Serial.print("Time period: ");
+    // Serial.println(timePeriod);
 
 
     float phi = aOscillationAmplitude*sin(2*pi*t/timePeriod); // Magnitude of oscillation
@@ -147,22 +147,22 @@ void dynamicOscillation(){ // Direction of oscillation and amplitude of oscillat
     analogWrite(2, calculatedPWM2);
 
     // DEBUGGING
-    Serial.print("t : ");
-    Serial.print(t);
-    Serial.print("   Phi : ");
-    Serial.print(phi);
-    Serial.print("   PWM1 : ");
-    Serial.print(calculatedPWM1);
-    Serial.print("   Encoder1 : ");
-    Serial.print(encoder1Position/GYZ);
-    Serial.print("   Target1  : ");
-    Serial.print(motorAngle1);
-    Serial.print("   PWM2 : ");
-    Serial.print(calculatedPWM2);
-    Serial.print("   Encoder2 : ");
-    Serial.print(encoder2Position/GYZ);
-    Serial.print("   Target2 : ");
-    Serial.println(motorAngle2);
+    // Serial.print("t : ");
+    // Serial.print(t);
+    // Serial.print("   Phi : ");
+    // Serial.print(phi);
+    // Serial.print("   PWM1 : ");
+    // Serial.print(calculatedPWM1);
+    // Serial.print("   Encoder1 : ");
+    // Serial.print(encoder1Position/GYZ);
+    // Serial.print("   Target1  : ");
+    // Serial.print(motorAngle1);
+    // Serial.print("   PWM2 : ");
+    // Serial.print(calculatedPWM2);
+    // Serial.print("   Encoder2 : ");
+    // Serial.print(encoder2Position/GYZ);
+    // Serial.print("   Target2 : ");
+    // Serial.println(motorAngle2);
 
     lastOscillationTime = millis();
   }

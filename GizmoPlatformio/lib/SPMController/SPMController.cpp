@@ -20,12 +20,16 @@ void SPMController::begin(float * a_motor_ptr, float * b_motor_ptr){
  * @param theta Angle around the z axis
  */
 void SPMController::calculate_motors(float phi, float theta){
+  // Serial.print(" ----- Calclulating for phi : ");
+  // Serial.print(phi);
+  // Serial.print("   and theta : ");
+  // Serial.println(theta);
   //Find direction vector given angle
   vector <float> driver_arm = get_direction_vector(phi,theta);
   //print_vector(driver_arm, "DRIVER ARM");
   //Find joint c (attached to static motor)
-  vector <float> cJoint = cross_product(cMotor, driver_arm);
-  //print_vector(cJoint, "JOINT C");
+  vector <float> cJoint = cross_product(driver_arm, cMotor);
+  // print_vector(cJoint, "JOINT C");
 
   //Get cross part of quaternion rotation
   vector <float> rotationCross = scaxvec(cross_product(driver_arm, cJoint),sqrt(3)/2);
@@ -111,12 +115,19 @@ float SPMController::get_motor_angle(vector <float> joint){
   // float q = p/sqrt(m*m+n*n);
   float xyMag = sqrt(joint[0]*joint[0]+joint[1]*joint[1]);
   float elevation = joint[2]/xyMag;
-  Serial.println(elevation);
+  //Serial.println(elevation);
   float gamma = asin(elevation*cz_angle_cos/sz_angle_sin);
-  Serial.println(gamma);
-  vector <float> vertical = {0.0,0.0,1.0};
-  vector<float> tempVector = cross_product(vertical, joint);
-  float motorAngle = gamma + get_joint_angle(tempVector[0], tempVector[1]);
+  //Serial.println(gamma);
+  vector <float> vertical = {0.0, 0.0, 1.0};
+  vector <float> tempVector = cross_product(joint, vertical);
+  float theta = get_joint_angle(tempVector[0],tempVector[1]);
+  // Serial.print(" Theta : ");
+  // Serial.print(theta*180/pi);
+  // Serial.print("   Gamma : ");
+  // Serial.println(gamma*180/pi);
+  float motorAngle = theta+gamma;
+
+
 
   // //Generate angle
   // float motor_angle = pi-acos(q)+gamma;
