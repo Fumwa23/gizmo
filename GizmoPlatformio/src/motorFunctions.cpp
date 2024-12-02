@@ -129,10 +129,10 @@ void testSpeed(int magnitude){
       Serial.println(" ---- FINISHED SPEED TEST ---- ");
       Serial.print(" Time : ");
       Serial.print(currentTime);
-      Serial.print("   Encoder1 Pos : ");
-      Serial.print(current1Position);
-      Serial.print("   Encoder2 Pos");
-      Serial.println(current2Position);
+      Serial.print("   Motor1 Pos : ");
+      Serial.print(current1Position/GYZ);
+      Serial.print("   Motor2 Pos");
+      Serial.println(current2Position/GYZ);
       Serial.print("Total time for a change of ");
       Serial.print(magnitude);
       Serial.print(" is ");
@@ -155,10 +155,11 @@ void testSpeed(int magnitude){
   }else{
     Serial.println(" ---- STARTING SPEED TEST ---- ");
     testing = true;
-    spm.calculate_motors(magnitude*direction,0);
+    spm.calculate_motors(magnitude*direction,90);
     Serial.println(motorAngle1);
     Serial.println(motorAngle2);
-    direction *= -1;
+    Serial.println(direction);
+    direction = direction*-1;
     lastTestSample = millis();
     startTestTime = millis();
   }

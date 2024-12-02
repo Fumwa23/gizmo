@@ -120,8 +120,8 @@ void testingFunction(int direction){
 
     //dOscillationDirection = dOscillationDirection == 0 ? 180 : 0;
 
-    analogWrite(1, 0);
-    analogWrite(2, 0);
+    analogWrite(1, 0.0);
+    analogWrite(2, 0.0);
     delay(10000);
   }
 
@@ -159,8 +159,8 @@ void manualCircularOscillation(){
     if (encoder1Position - 35*GYZ < 50 && encoder2Position - 120*GYZ < 50){
       Serial.print("Succeed stage 0");
 
-      analogWrite(1, 0);
-      analogWrite(2, 0);
+      analogWrite(1, 0.0);
+      analogWrite(2, 0.0);
 
       stage = 1;
       //delay(5000);
@@ -170,7 +170,7 @@ void manualCircularOscillation(){
   if (stage == 1){
     Serial.println(stage);
     // Move motors to calculated angle
-    analogWrite(1, 0);
+    analogWrite(1, 0.0);
 
     float calculatedPWM2 = pid2.move(3000*GYZ, encoder2Position);
     analogWrite(2, calculatedPWM2);
@@ -183,8 +183,8 @@ void manualCircularOscillation(){
     if (abs(encoder1Position - 35*GYZ) < 50 && abs(encoder2Position - 300*GYZ) < 50){
       Serial.print("Succeed stage 1");
 
-      analogWrite(1, 0);
-      analogWrite(2, 0);
+      analogWrite(1, 0.0);
+      analogWrite(2, 0.0);
 
       //delay(1000);
       stage = 2;
@@ -197,13 +197,13 @@ void manualCircularOscillation(){
     float calculatedPWM1 = pid1.move(270*GYZ, encoder1Position); 
     analogWrite(1, calculatedPWM1);
 
-    analogWrite(2, 0);
+    analogWrite(2, 0.0);
 
     if (abs(encoder1Position - 270*GYZ) < 50 && abs(encoder2Position - 300*GYZ) < 50){
       Serial.print("Succeed stage 2");
 
-      analogWrite(1, 0);
-      analogWrite(2, 0);
+      analogWrite(1, 0.0);
+      analogWrite(2, 0.0);
 
       //delay(1000);
       stage = 0;
