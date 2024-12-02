@@ -65,7 +65,7 @@ void startOscillation(int direction, int amplitude){
 void doOscillation(){
   if (millis() - lastOscillationTime > 20){
     float t = fmod(millis()-sOscillationStart,timePeriod);
-    float phi = aOscillationAmplitude*cos(2*pi*t/timePeriod); 
+    float phi = aOscillationAmplitude*sin(2*pi*t/timePeriod); 
     spm.calculate_motors(phi, dOscillationDirection);
     
     float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
@@ -169,7 +169,7 @@ void dynamicOscillation(){ // Direction of oscillation and amplitude of oscillat
 }
 void circularOscillation(){
     unsigned long circularOscillationTime = millis();
-    if (circularOscillationTime - lastTime >= 100){
+    if (circularOscillationTime - lastTime >= 20){
         dOscillationDirection += 2;
         lastCircularOscillationTime = circularOscillationTime;
 
@@ -303,4 +303,35 @@ void manualCircularOscillation(){
       stage = 0;
     }
   }
+}
+
+
+void circularOscillationOwen(){
+    unsigned long circularOscillationTime = millis();
+    if (circularOscillationTime - lastTime >= 100){
+        dOscillationDirection += 2;
+        lastCircularOscillationTime = circularOscillationTime;
+
+        Serial.print("Direction : ");
+        Serial.print(dOscillationDirection%360);
+        Serial.print(" | Target 1 : ");
+        Serial.print(motorAngle1);
+        Serial.print(" Target 2 : ");
+        Serial.print(motorAngle2);
+        Serial.print(" | Encoder 1 : ");
+        Serial.print(encoder1Position/GYZ);
+        Serial.print(" Encoder 2 : ");
+        Serial.println(encoder2Position/GYZ);
+    }
+
+    spmOwen.begin(&motorAngle2, &motorAngle1);
+    spmOwen.calculate_motors(aOscillationAmplitude,dOscillationDirection);
+
+
+    // Move motors to calculated angle
+    float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
+    analogWrite(1, calculatedPWM1);
+
+    float calculatedPWM2 = pid2.move(motorAngle2*GYZ, encoder2Position);
+    analogWrite(2, calculatedPWM2);
 }

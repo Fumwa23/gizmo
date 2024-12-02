@@ -12,6 +12,7 @@ It is the file that is compiled and uploaded to the ESP32.
 PIDController pid1;
 PIDController pid2;
 SPMController spm;
+SPMControllerOwen spmOwen;
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES 
 // Variables for encoder
@@ -35,7 +36,7 @@ int lastPulseCount = 0;
 //Varibales for Oscillation
 bool oscillating = false;
 
-int dOscillationDirection = 315;
+int dOscillationDirection = 0;
 int aOscillationAmplitude = 30;
 int newOscillationDirection = 0;
 int newOscillationAmplitude = 0;
@@ -45,7 +46,7 @@ bool newOscillationAmplitudeBool = false;
 unsigned long sOscillationStart;
 unsigned long lastOscillationTime;
 
-float timePeriod = 100;
+float timePeriod = 700;
 float newTimePeriod = 0;
 bool newTimePeriodBool = false;
 
@@ -106,7 +107,9 @@ void loop() {
 
   //circularOscillation();
   //dynamicOscillation();
+  doOscillation();
 
   //testingFunction(90);
-  manualCircularOscillation();
+  //manualCircularOscillation();
+  //circularOscillationOwen();
 }

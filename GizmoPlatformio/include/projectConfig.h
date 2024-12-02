@@ -6,11 +6,13 @@
 #include <math.h>
 #include <PIDController.h>
 #include <SPMController.h>
+#include <SPMControllerOwen.h>
 
 // --------------------------------------------- CREATE OBJECTS
 extern PIDController pid1;
 extern PIDController pid2;
 extern SPMController spm;
+extern SPMControllerOwen spmOwen;
 
 // --------------------------------------------- DEFINE PINS
 #define C1_PIN 35
@@ -39,6 +41,7 @@ void startOscillation(int direction, int magnitude);
 void doOscillation();
 void dynamicOscillation();
 void circularOscillation();
+void circularOscillationOwen();
 void manualCircularOscillation();
 
 void testingFunction(int direction);
