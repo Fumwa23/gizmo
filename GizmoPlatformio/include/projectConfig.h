@@ -39,8 +39,9 @@ void startOscillation(int direction, int magnitude);
 void doOscillation();
 void dynamicOscillation();
 void circularOscillation();
+void manualCircularOscillation();
 
-void testingFunction();
+void testingFunction(int direction);
 
 void setupFunction();
 
@@ -101,6 +102,8 @@ extern bool lastPulseState;
 extern bool dialling;
 extern int pulseCount;
 extern int lastPulseCount;
+
+extern int stage;
 
 void setupPins();
 void setupMotors();

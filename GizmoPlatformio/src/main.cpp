@@ -35,8 +35,8 @@ int lastPulseCount = 0;
 //Varibales for Oscillation
 bool oscillating = false;
 
-int dOscillationDirection = 0;
-int aOscillationAmplitude = 0;
+int dOscillationDirection = 315;
+int aOscillationAmplitude = 30;
 int newOscillationDirection = 0;
 int newOscillationAmplitude = 0;
 bool newOscillationDirectionBool = false;
@@ -48,6 +48,10 @@ unsigned long lastOscillationTime;
 float timePeriod = 100;
 float newTimePeriod = 0;
 bool newTimePeriodBool = false;
+
+
+// Manual circular Oscillation variable
+int stage = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -102,5 +106,7 @@ void loop() {
 
   //circularOscillation();
   //dynamicOscillation();
-  testingFunction();
+
+  //testingFunction(90);
+  manualCircularOscillation();
 }
