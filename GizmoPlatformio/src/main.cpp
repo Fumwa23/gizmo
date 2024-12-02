@@ -52,11 +52,6 @@ int direction = 1;
 unsigned long startTestTime = 0;
 unsigned long lastTestSample = 0;
 
-//Variables for speed testing
-bool testing = false;
-int direction = 1;
-unsigned long startTestTime = 0;
-unsigned long lastTestSample = 0;
 
 float timePeriod = 700;
 float newTimePeriod = 0;
@@ -72,8 +67,22 @@ void setup() {
   setupPins();
   setupMotors();
 
+  // int i;
+  // for (i=0; i<=360; i+=45){
+  //   spm.calculate_motors(10,i);
+  //   Serial.print(" SPM Angle : ");
+  //   Serial.print(i);
+  //   Serial.print("   Motor1 Angle : ");
+  //   Serial.print(motorAngle1);
+  //   Serial.print("   Motor2 Angle : ");
+  //   Serial.println(motorAngle2);
+  // }
+  // while(true){}
+
+
   moveArmsToHome();
-  delay(1000);
+  delay(2000);
+
 
   sOscillationStart = millis(); // TODO: check if this goes here.
 }
@@ -99,7 +108,6 @@ void loop() {
       pulseCount--;
     }
     //set pulsed to hold previous value for edge detection
-    pulsed = pulseState;
   }else{
     //Dial is in rest state. Check if it has just returned
     if (dialling){
@@ -112,7 +120,7 @@ void loop() {
 
   int oscillationDirection = 90;
   int oscillationAmplitude = 30;
-  testSpeed(30);
+  testSpeed(20);
   // if (oscillating){
   //   doOscillation();
   // }else{
