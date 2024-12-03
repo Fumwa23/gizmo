@@ -37,10 +37,6 @@ float moveMotorAtSpeed();
 void analogWrite(int motorNumber, float inputPWM, bool remap = true);
 
 //Bens Effiecient? matbe? oscillation algorithm
-void getTime();
-void checkChanges();
-int getMomentum();
-void doOscillation();
 void dynamicOscillation();
 
 // --------------------------------------------- DEFINE CONSTANTS
@@ -84,9 +80,9 @@ extern unsigned int tPhi;
 // --------------------------------------------- DEFINE OWEN OSCILLATION VARIABLES
 extern bool oscillating;
 extern int dOscillationDirection;
-extern int aOscillationAmplitude;
+extern float aOscillationAmplitude;
 
-extern int newOscillationAmplitude;
+extern float newOscillationAmplitude;
 extern bool newOscillationAmplitudeBool;
 
 extern unsigned long sOscillationStart;
@@ -130,5 +126,11 @@ void trackNumberDialed();
 void dropPulseCount();
 
 void updateParameters();
+
+void alternativeOscillation();
+
+//TESTING VARIABLES
+extern bool increasingPulseCount;
+void testingUpdateParameter();
 
 #endif // PROJECT_CONFIG_H
