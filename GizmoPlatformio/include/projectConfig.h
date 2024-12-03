@@ -34,10 +34,7 @@ void IRAM_ATTR handleEncoder2();
 
 void moveArmsToHome();
 float moveMotorAtSpeed();
-float moveTo();
 void analogWrite(int motorNumber, float inputPWM, bool remap = true);
-
-void setupFunction();
 
 //Bens Effiecient? matbe? oscillation algorithm
 void getTime();

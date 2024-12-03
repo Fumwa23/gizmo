@@ -1,5 +1,10 @@
 #include "projectConfig.h"
 
+/**
+ * @brief Tracks pulses and adds to pulse count every time one occurs
+ *
+ * @todo Add section to cause pulses to decreae over time. 
+ */
 void trackDialPulses(){
      bool restState = digitalRead(REST_PIN);
 
