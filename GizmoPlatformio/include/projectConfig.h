@@ -38,6 +38,7 @@ void analogWrite(int motorNumber, float inputPWM, bool remap = true);
 
 //Bens Effiecient? matbe? oscillation algorithm
 void dynamicOscillation();
+void circularOscillation();
 
 // --------------------------------------------- DEFINE CONSTANTS
 const int freq = 30000;
