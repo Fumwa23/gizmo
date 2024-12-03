@@ -55,6 +55,8 @@ const int phiTimePeriod = 1000;
 const int phiMaxTimePeriod = 5000;
 const int phiMinTimePeriod = 100;
 
+unsigned int tPhi;
+
 
 // Manual circular Oscillation variable
 int stage = 0;

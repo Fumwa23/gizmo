@@ -1,7 +1,7 @@
 #include "projectConfig.h"
 
 
-void getTimes(){
+void getTime(){
   tPhi = millis()%phiTimePeriod;
 }
 
