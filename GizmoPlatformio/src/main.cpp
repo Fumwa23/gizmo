@@ -22,6 +22,7 @@ volatile int encoder2Position = 0;
 unsigned long lastCircularOscillationTime = 0;
 unsigned long lastTime = 0;
 unsigned long lastTime2 = 0;
+unsigned long nextPulseDrop = 0; 
 
 float timePeriod = 0;
 
@@ -39,7 +40,7 @@ int lastPulseCount = 0;
 bool oscillating = false;
 
 int dOscillationDirection = 0;
-int aOscillationAmplitude = 20;
+int aOscillationAmplitude = 0;
 int newOscillationDirection = 0;
 int newOscillationAmplitude = 0;
 bool newOscillationDirectionBool = false;
@@ -56,6 +57,10 @@ const int thetaTimePeriod = 1000;
 const int phiTimePeriod = 1000;
 const int phiMaxTimePeriod = 5000;
 const int phiMinTimePeriod = 100;
+
+unsigned int tPhi;
+
+bool doneCentre = false;
 
 
 // Manual circular Oscillation variable
@@ -79,30 +84,15 @@ void loop() {
   getTime();
 
   trackDialPulses();
+  dropPulseCount();
 
-
-  // Track pulses
-  trackPulses();
-  //timePeriod = 50 * pulseCount;
-
-  if (currentTime - lastTime >= 1000) {
-    // Calculate RPM every second
-    pulseCount -= 1;
-    
-    if (pulseCount < 0){
-      pulseCount = 0;
-    } 
-
-    Serial.print("Pulse Count: ");
-    Serial.println(pulseCount);
-  }
+  // Description:
+  updateParameters();
 
   //circularOscillation();
-  dynamicOscillation(dOscillationDirection, aOscillationAmplitude);
-  // if (oscillating){
-  //   doOscillation();
-  // }else{
-  //   startOscillation(0,42.75);
-  //   delay(1000);
-  // }
+  //doOscillation();
+
+  //testingFunction(90);
+  //manualCircularOscillation();
+  //circularOscillationOwen();
 }

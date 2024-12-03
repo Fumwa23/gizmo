@@ -39,7 +39,7 @@ void analogWrite(int motorNumber, float inputPWM, bool remap = true);
 //Bens Effiecient? matbe? oscillation algorithm
 void getTime();
 void checkChanges();
-int get_momentum();
+int getMomentum();
 void doOscillation();
 void dynamicOscillation();
 
@@ -59,8 +59,8 @@ const float kp = 2; // Proportional gain
 const float ki = 0.05; // Integral gain
 const float kd = 0.0001; // Derivative gain
 
-const float outMin = -155.0;
-const float outMax = 155.0;
+const float outMin = -200.0;
+const float outMax = 200.0;
 const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
@@ -106,21 +106,7 @@ extern float motorAngle1;
 extern float motorAngle2;
 
 
-extern long nextPulseDrop; //Clock variable for dropping pulse
-
-
-//Phi clock variables
-
-//Theta variable
-int current_theta;
-
-//Varibales for Oscillation
-extern bool doneCentre = false;
-int cachedMomentum;
-int frequency;
-int amplitude;
-
-//New oscillation
+extern unsigned long nextPulseDrop; //Clock variable for dropping pulse
 
 //Variables for dial
 extern bool lastPulseState;
@@ -145,7 +131,7 @@ float moveMotorAtSpeed();
 void IRAM_ATTR handleEncoder1();
 void IRAM_ATTR handleEncoder2();
 
-void trackPulses();
-void trackRestAndPulse();
+void trackDialPulses();
+void trackNumberDialled();
 
 #endif // PROJECT_CONFIG_H

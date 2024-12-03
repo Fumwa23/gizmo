@@ -1,70 +1,64 @@
 #include "projectConfig.h"
 
 
-void getTimes(){
+void getTime(){
   tPhi = millis()%phiTimePeriod;
 }
 
-void checkChanges(){
-  float testTime = tPhi%(phiTimePeriod/2);
-  if (doneCentre){
-    if (testTime > phiTimePeriod/4){
-      frequency += get_momentum();
-      doneCentre = false;
-    }
-  }else{
-    if (testTime < phiTimePeriod/4){
-      amplitude += get_momentum();
-      doneCentre = true;
-    }
-  }
-}
+// void checkChanges(){
+//   float testTime = tPhi%(phiTimePeriod/2);
+//   if (doneCentre){
+//     if (testTime > phiTimePeriod/4){
+//       frequency += getMomentum();
+//       doneCentre = false;
+//     }
+//   }else{
+//     if (testTime < phiTimePeriod/4){
+//       amplitude += getMomentum();
+//       doneCentre = true;
+//     }
+//   }
+// }
 
-int get_momentum(){
-  int temp;
-  if (cachedMomentum!=0){
-    temp = cachedMomentum;
-    cachedMomentum = 0;
-    return temp;
-  }else{
-    if (pulseCount>0){
-      if (pulseCount >= maxMomentumGain){
-        pulseCount -= maxMomentumGain;
-        cachedMomentum = maxMomentumGain;
-        return maxMomentumGain;
-      }else{
-        temp = pulseCount;
-        pulseCount = 0;
-        cachedMomentum = temp;
-        return temp;        
-      }
-    }else{
-      return minMomentumGain;
-    }
-  }
-}
+// int getMomentum(){
+//   int temp;
+//   if (cachedMomentum!=0){
+//     temp = cachedMomentum;
+//     cachedMomentum = 0;
+//     return temp;
+//   }else{
+//     if (pulseCount>0){
+//       if (pulseCount >= maxMomentumGain){
+//         pulseCount -= maxMomentumGain;
+//         cachedMomentum = maxMomentumGain;
+//         return maxMomentumGain;
+//       }else{
+//         temp = pulseCount;
+//         pulseCount = 0;
+//         cachedMomentum = temp;
+//         return temp;        
+//       }
+//     }else{
+//       return minMomentumGain;
+//     }
+//   }
+// }
 
-void doOscillation(){
-  if (frequency = 0){
-    //TO DO damp/return to rest and lock motors. Should be seperate function
-  }else{
-    float time = 2*pi*tPhi/phiTimePeriod;
-    float phi = amplitude*sin(time*frequency);
-    spm.calculate_motors(phi,0);
-    float calculatedPWM1 = pid1.move(motorAngle1, encoder1Position); 
-    analogWrite(1, calculatedPWM1);
+// // void doOscillation(){
+// //   if (frequency = 0){
+// //     //TO DO damp/return to rest and lock motors. Should be seperate function
+// //   }else{
+// //     float time = 2*pi*tPhi/phiTimePeriod;
+// //     float phi = amplitude*sin(time*frequency);
+// //     spm.calculate_motors(phi,0);
+// //     float calculatedPWM1 = pid1.move(motorAngle1, encoder1Position); 
+// //     analogWrite(1, calculatedPWM1);
 
-    // Move motor 2 to 240 degrees
-    float calculatedPWM2 = pid2.move(motorAngle2, encoder2Position);
-    analogWrite(2, calculatedPWM2);
-  }
-}
-
-
-
-
-
-
+// //     // Move motor 2 to 240 degrees
+// //     float calculatedPWM2 = pid2.move(motorAngle2, encoder2Position);
+// //     analogWrite(2, calculatedPWM2);
+// //   }
+// // }
 
 /**
  * @brief A method of oscillating the spindle in a way where the direction and magnitude of the oscillation can be adjusted dynamically. 
@@ -80,7 +74,7 @@ void dynamicOscillation(){ // Direction of oscillation and amplitude of oscillat
   float t = fmod(millis()-sOscillationStart,timePeriod); // Time within oscillation period
 
   // If the time within oscillation is less than 10ms, set the new direction and amplitude
-  if (t >= timePeriod-10){ // giving t a buffer in case it isn't exactly zero
+  if (t >= timePeriod-10 || (t >= timePeriod/2-10 && t<= timePeriod/2)){ // giving t a buffer in case it isn't exactly zero
     if (newOscillationDirectionBool){
       dOscillationDirection = newOscillationDirection;
       newOscillationDirectionBool = false;
@@ -90,21 +84,22 @@ void dynamicOscillation(){ // Direction of oscillation and amplitude of oscillat
       aOscillationAmplitude = newOscillationAmplitude;
       newOscillationAmplitudeBool = false;
     }
+  }
 
+  if (t >= timePeriod/4-10){ // giving t a buffer in case it isn't exactly zero
     if (newTimePeriodBool){
       timePeriod = newTimePeriod;
       newTimePeriodBool = false;
     }
   }
-  
 
   if (millis() - lastOscillationTime > 20){
     // TODO: add function which clamps time period?
 
-    Serial.print("Amplitude: ");
-    Serial.print(aOscillationAmplitude);
-    Serial.print("Time period: ");
-    Serial.println(timePeriod);
+    // Serial.print("Amplitude: ");
+    // Serial.print(aOscillationAmplitude);
+    // Serial.print("Time period: ");
+    // Serial.println(timePeriod);
 
 
     float phi = aOscillationAmplitude*sin(2*pi*t/timePeriod); // Magnitude of oscillation
@@ -118,22 +113,22 @@ void dynamicOscillation(){ // Direction of oscillation and amplitude of oscillat
     analogWrite(2, calculatedPWM2);
 
     // DEBUGGING
-    Serial.print("t : ");
-    Serial.print(t);
-    Serial.print("   Phi : ");
-    Serial.print(phi);
-    Serial.print("   PWM1 : ");
-    Serial.print(calculatedPWM1);
-    Serial.print("   Encoder1 : ");
-    Serial.print(encoder1Position/GYZ);
-    Serial.print("   Target1  : ");
-    Serial.print(motorAngle1);
-    Serial.print("   PWM2 : ");
-    Serial.print(calculatedPWM2);
-    Serial.print("   Encoder2 : ");
-    Serial.print(encoder2Position/GYZ);
-    Serial.print("   Target2 : ");
-    Serial.println(motorAngle2);
+    // Serial.print("t : ");
+    // Serial.print(t);
+    // Serial.print("   Phi : ");
+    // Serial.print(phi);
+    // Serial.print("   PWM1 : ");
+    // Serial.print(calculatedPWM1);
+    // Serial.print("   Encoder1 : ");
+    // Serial.print(encoder1Position/GYZ);
+    // Serial.print("   Target1  : ");
+    // Serial.print(motorAngle1);
+    // Serial.print("   PWM2 : ");
+    // Serial.print(calculatedPWM2);
+    // Serial.print("   Encoder2 : ");
+    // Serial.print(encoder2Position/GYZ);
+    // Serial.print("   Target2 : ");
+    // Serial.println(motorAngle2);
 
     lastOscillationTime = millis();
   }
