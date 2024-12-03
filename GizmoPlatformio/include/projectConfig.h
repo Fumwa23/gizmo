@@ -130,4 +130,6 @@ void trackDialPulses();
 void trackNumberDialed();
 void dropPulseCount();
 
+void updateParameters();
+
 #endif // PROJECT_CONFIG_H

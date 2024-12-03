@@ -87,12 +87,9 @@ void dynamicOscillation(){ // Direction of oscillation and amplitude of oscillat
   }
 
   if (t >= timePeriod/4-10){ // giving t a buffer in case it isn't exactly zero
-    if (newOscillationDirectionBool){
-
-      if (newTimePeriodBool){
-        timePeriod = newTimePeriod;
-        newTimePeriodBool = false;
-      }
+    if (newTimePeriodBool){
+      timePeriod = newTimePeriod;
+      newTimePeriodBool = false;
     }
   }
 
