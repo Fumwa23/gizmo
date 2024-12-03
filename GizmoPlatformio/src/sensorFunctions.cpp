@@ -67,7 +67,7 @@ void dropPulseCount(){
 }
 
 void updateParameters(){
-      const int maxPulseCount = 30;
+    const int maxPulseCount = 30;
 
     if (pulseCount > maxPulseCount){
         pulseCount = maxPulseCount;
@@ -84,4 +84,22 @@ void updateParameters(){
         newOscillationAmplitudeBool = true;
         newOscillationDirectionBool = true;
     }
+}
+
+void testingParameters(){
+    const int maxPulseCount = 30;
+
+    if (pulseCount > maxPulseCount){
+        pulseCount = maxPulseCount;
+    }
+
+    const float resonantTimePeriod = 700;
+
+    newOscillationDirection = 0; 
+    newOscillationAmplitude = pulseCount*20/maxPulseCount; // This mean that at max pulse count, the amplitude will be at 30
+    newTimePeriod = 4*resonantTimePeriod - 3*pulseCount*resonantTimePeriod/maxPulseCount; // This means that at max pulse count, the time period will be at resonant frequency
+
+    newTimePeriodBool = true;
+    newOscillationAmplitudeBool = true;
+    newOscillationDirectionBool = true;
 }

@@ -84,14 +84,8 @@ void loop() {
   trackDialPulses();
   dropPulseCount();
 
-  // Description:
   updateParameters();
 
-  dynamicOscillation();
-  //circularOscillation();
-  //doOscillation();
-
-  //testingFunction(90);
-  //manualCircularOscillation();
-  //circularOscillationOwen();
+  // dynamicOscillation();
+  testingOscillation();
 }
