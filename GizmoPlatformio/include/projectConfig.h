@@ -39,8 +39,9 @@ void analogWrite(int motorNumber, float inputPWM, bool remap = true);
 //Bens Effiecient? matbe? oscillation algorithm
 void getTime();
 void checkChanges();
-int get_momentum();
+int getMomentum();
 void doOscillation();
+void dynamicOscillation();
 
 // --------------------------------------------- DEFINE CONSTANTS
 const int freq = 30000;
@@ -58,8 +59,8 @@ const float kp = 2; // Proportional gain
 const float ki = 0.05; // Integral gain
 const float kd = 0.0001; // Derivative gain
 
-const float outMin = -155.0;
-const float outMax = 155.0;
+const float outMin = -200.0;
+const float outMax = 200.0;
 const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
@@ -68,13 +69,17 @@ extern float timePeriod; // 1 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
 extern bool newTimePeriodBool;
 extern float newTimePeriod;
 
-const int thetaTimePeriod = 1000;
-const int phiTimePeriod;
-const int phiMaxTimePeriod = 5000;
-const int phiMinTimePeriod = 100;
+// --------------------------------------------- DEFINE BENS OSCILLATION VARIABLES
+
+extern const int thetaTimePeriod;
+extern const int phiTimePeriod;
+extern const int phiMaxTimePeriod;
+extern const int phiMinTimePeriod;
 
 const int maxMomentumGain = 1;
 const int minMomentumGain = -1;
+
+extern unsigned int tPhi;
 
 // --------------------------------------------- DEFINE OWEN OSCILLATION VARIABLES
 extern bool oscillating;
@@ -88,7 +93,7 @@ extern bool newOscillationAmplitudeBool;
 extern unsigned long sOscillationStart;
 extern unsigned long lastOscillationTime;
 
-unsigned long lastCircularOscillationTime;
+extern unsigned long lastCircularOscillationTime;
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
@@ -100,20 +105,8 @@ extern unsigned long lastTime2;
 extern float motorAngle1;
 extern float motorAngle2;
 
-//Phi clock variables
-extern int phiTimePeriod = 0;
-extern unsigned int tPhi;
 
-//Theta variable
-int current_theta;
-
-//Varibales for Oscillation
-extern bool doneCentre = false;
-int cachedMomentum;
-int frequency;
-int amplitude;
-
-//New oscillation
+extern unsigned long nextPulseDrop; //Clock variable for dropping pulse
 
 //Variables for dial
 extern bool lastPulseState;
@@ -135,5 +128,8 @@ void IRAM_ATTR handleEncoder2();
 
 void trackDialPulses();
 void trackNumberDialed();
+void dropPulseCount();
+
+void updateParameters();
 
 #endif // PROJECT_CONFIG_H

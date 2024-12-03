@@ -22,6 +22,7 @@ volatile int encoder2Position = 0;
 unsigned long lastCircularOscillationTime = 0;
 unsigned long lastTime = 0;
 unsigned long lastTime2 = 0;
+unsigned long nextPulseDrop = 0; 
 
 //Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
 float motorAngle1 = 120;
@@ -37,7 +38,7 @@ int lastPulseCount = 0;
 bool oscillating = false;
 
 int dOscillationDirection = 0;
-int aOscillationAmplitude = 20;
+int aOscillationAmplitude = 0;
 int newOscillationDirection = 0;
 int newOscillationAmplitude = 0;
 bool newOscillationDirectionBool = false;
@@ -49,6 +50,15 @@ unsigned long lastOscillationTime;
 float timePeriod = 650;
 float newTimePeriod = 0;
 bool newTimePeriodBool = false;
+
+const int thetaTimePeriod = 1000;
+const int phiTimePeriod = 1000;
+const int phiMaxTimePeriod = 5000;
+const int phiMinTimePeriod = 100;
+
+unsigned int tPhi;
+
+bool doneCentre = false;
 
 
 // Manual circular Oscillation variable
@@ -70,20 +80,15 @@ void loop() {
 
   // Get current time
   getTime();
-  //unsigned long currentTime2 = millis();
 
   trackDialPulses();
+  dropPulseCount();
 
+  // Description:
+  updateParameters();
 
-  
-  checkChanges();
-
-  
-  // TODO: May want there to be a wider margin range where the pulse count is correct. 
-  
-
+  dynamicOscillation();
   //circularOscillation();
-  doOscillation();
   //doOscillation();
 
   //testingFunction(90);
