@@ -81,6 +81,7 @@ void loop() {
   getTime();
 
   trackDialPulses();
+  dropPulseCount();
 
   // Reduce pulse count over time
 

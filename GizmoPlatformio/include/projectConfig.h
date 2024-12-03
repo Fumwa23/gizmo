@@ -128,5 +128,6 @@ void IRAM_ATTR handleEncoder2();
 
 void trackDialPulses();
 void trackNumberDialed();
+void dropPulseCount();
 
 #endif // PROJECT_CONFIG_H
