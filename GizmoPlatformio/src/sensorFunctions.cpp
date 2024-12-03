@@ -7,7 +7,7 @@ void trackDialPulses(){
 
         bool pulseState = digitalRead(PULSE_PIN);
 
-        if (pulseState && !lastPulseState && pulseCount < maxPulseCount){
+        if (pulseState && !lastPulseState){
             lastPulseCount = pulseCount;
             pulseCount++;
         }
@@ -65,4 +65,5 @@ void dropPulseCount(){
         Serial.print("Pulse count: ");
         Serial.println(pulseCount);
     }
+
 }

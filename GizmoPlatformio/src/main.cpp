@@ -58,7 +58,7 @@ const int phiMinTimePeriod = 100;
 
 unsigned int tPhi;
 
- bool doneCentre = false;
+bool doneCentre = false;
 
 
 // Manual circular Oscillation variable
@@ -84,18 +84,27 @@ void loop() {
   trackDialPulses();
   dropPulseCount();
 
-  // Reduce pulse count over time
+  const int maxPulseCount = 30;
 
-  
-  // checkChanges();
+  if (pulseCount > maxPulseCount){
+    pulseCount = maxPulseCount;
+  }
 
-  
-  // TODO: May want there to be a wider margin range where the pulse count is correct. 
+  if (lastPulseCount != pulseCount){
+    const float resonantTimePeriod = 700;
+
+    newOscillationDirection = 0; 
+    newOscillationAmplitude = pulseCount*20/maxPulseCount; // This mean that at max pulse count, the amplitude will be at 30
+    newTimePeriod = 4*resonantTimePeriod - 3*pulseCount*resonantTimePeriod/maxPulseCount; // This means that at max pulse count, the time period will be at resonant frequency
+
+    newTimePeriodBool = true;
+    newOscillationAmplitudeBool = true;
+    newOscillationDirectionBool = true;
+  }
   
 
   dynamicOscillation();
   //circularOscillation();
-  //doOscillation();
   //doOscillation();
 
   //testingFunction(90);
