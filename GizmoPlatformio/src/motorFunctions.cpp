@@ -116,6 +116,7 @@ void moveArmsToHome() {
 
       Serial.print("    Waiting : ");
       Serial.println(waiting);
+      
 
       startTime = millis();
       }
