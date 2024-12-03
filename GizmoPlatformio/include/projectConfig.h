@@ -42,8 +42,6 @@ void checkChanges();
 int getMomentum();
 void doOscillation();
 void dynamicOscillation();
-void testingOscillation();
-void testingParameters();
 
 // --------------------------------------------- DEFINE CONSTANTS
 const int freq = 30000;

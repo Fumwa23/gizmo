@@ -84,8 +84,8 @@ void loop() {
   trackDialPulses();
   dropPulseCount();
 
+
   updateParameters();
 
-  // dynamicOscillation();
-  testingOscillation();
+  dynamicOscillation();
 }
