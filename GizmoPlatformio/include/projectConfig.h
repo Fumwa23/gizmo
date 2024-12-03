@@ -41,6 +41,7 @@ void getTime();
 void checkChanges();
 int get_momentum();
 void doOscillation();
+void dynamicOscillation();
 
 // --------------------------------------------- DEFINE CONSTANTS
 const int freq = 30000;
@@ -68,13 +69,17 @@ extern float timePeriod; // 1 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
 extern bool newTimePeriodBool;
 extern float newTimePeriod;
 
-const int thetaTimePeriod = 1000;
-const int phiTimePeriod;
-const int phiMaxTimePeriod = 5000;
-const int phiMinTimePeriod = 100;
+// --------------------------------------------- DEFINE BENS OSCILLATION VARIABLES
+
+extern const int thetaTimePeriod;
+extern const int phiTimePeriod;
+extern const int phiMaxTimePeriod;
+extern const int phiMinTimePeriod;
 
 const int maxMomentumGain = 1;
 const int minMomentumGain = -1;
+
+extern unsigned int tPhi;
 
 // --------------------------------------------- DEFINE OWEN OSCILLATION VARIABLES
 extern bool oscillating;
@@ -88,7 +93,7 @@ extern bool newOscillationAmplitudeBool;
 extern unsigned long sOscillationStart;
 extern unsigned long lastOscillationTime;
 
-unsigned long lastCircularOscillationTime;
+extern unsigned long lastCircularOscillationTime;
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
@@ -101,8 +106,6 @@ extern float motorAngle1;
 extern float motorAngle2;
 
 //Phi clock variables
-extern int phiTimePeriod = 0;
-extern unsigned int tPhi;
 
 //Theta variable
 int current_theta;

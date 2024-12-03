@@ -50,6 +50,11 @@ float timePeriod = 650;
 float newTimePeriod = 0;
 bool newTimePeriodBool = false;
 
+const int thetaTimePeriod = 1000;
+const int phiTimePeriod = 1000;
+const int phiMaxTimePeriod = 5000;
+const int phiMinTimePeriod = 100;
+
 
 // Manual circular Oscillation variable
 int stage = 0;
@@ -70,10 +75,10 @@ void loop() {
 
   // Get current time
   getTime();
-  //unsigned long currentTime2 = millis();
 
   trackDialPulses();
 
+  // Reduce pulse count over time
 
   
   checkChanges();
@@ -82,8 +87,9 @@ void loop() {
   // TODO: May want there to be a wider margin range where the pulse count is correct. 
   
 
+  dynamicOscillation();
   //circularOscillation();
-  doOscillation();
+  //doOscillation();
   //doOscillation();
 
   //testingFunction(90);
