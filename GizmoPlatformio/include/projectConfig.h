@@ -37,16 +37,13 @@ float moveMotorAtSpeed();
 float moveTo();
 void analogWrite(int motorNumber, float inputPWM, bool remap = true);
 
-void startOscillation(int direction, int magnitude);
-void doOscillation();
-void dynamicOscillation();
-void circularOscillation();
-void circularOscillationOwen();
-void manualCircularOscillation();
-
-void testingFunction(int direction);
-
 void setupFunction();
+
+//Bens Effiecient? matbe? oscillation algorithm
+void getTime();
+void checkChanges();
+int get_momentum();
+void doOscillation();
 
 // --------------------------------------------- DEFINE CONSTANTS
 const int freq = 30000;
@@ -74,6 +71,13 @@ extern float timePeriod; // 1 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
 extern bool newTimePeriodBool;
 extern float newTimePeriod;
 
+const int thetaTimePeriod = 1000;
+const int phiTimePeriod;
+const int phiMaxTimePeriod = 5000;
+const int phiMinTimePeriod = 100;
+
+const int maxMomentumGain = 1;
+const int minMomentumGain = -1;
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
 extern volatile int encoder2Position;
@@ -84,21 +88,20 @@ extern unsigned long lastTime2;
 extern float motorAngle1;
 extern float motorAngle2;
 
+//Phi clock variables
+extern int phiTimePeriod = 0;
+extern unsigned int tPhi;
+
+//Theta variable
+int current_theta;
+
 //Varibales for Oscillation
-extern bool oscillating;
-extern int dOscillationDirection;
-extern int aOscillationAmplitude;
-extern int newOscillationDirection;
-extern int newOscillationAmplitude;
-extern bool newOscillationDirectionBool;
-extern bool newOscillationAmplitudeBool;
+extern bool doneCentre = false;
+int cachedMomentum;
+int frequency;
+int amplitude;
 
-extern unsigned long sOscillationStart;
-extern unsigned long lastOscillationTime;
-
-extern unsigned long lastCircularOscillationTime;
-
-extern float setpoint;
+//New oscillation
 
 //Variables for dial
 extern bool lastPulseState;

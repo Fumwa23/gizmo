@@ -69,46 +69,21 @@ void setup() {
 void loop() {
 
   // Get current time
-  unsigned long currentTime = millis();
+  getTime();
   //unsigned long currentTime2 = millis();
 
   trackDialPulses();
 
-  const int maxPulseCount = 30;
 
-  if (pulseCount > maxPulseCount){
-    pulseCount = maxPulseCount;
-  }
+  
+  checkChanges();
 
-  // TODO: create a function which iteratively decreases the pulseCount until it reaches 0 at a time interval
-  if (currentTime - lastTime >= 2000){
-    if (pulseCount > 0){
-      lastPulseCount = pulseCount;
-      Serial.print("Pulse count : ");
-      Serial.println(pulseCount);
-      pulseCount--;
-    }
-
-    lastTime = currentTime;
-  }
-
-  if (lastPulseCount != pulseCount){
-    const float resonantTimePeriod = 700;
-
-    newOscillationDirection = 0; 
-    newOscillationAmplitude = pulseCount*20/maxPulseCount; // This mean that at max pulse count, the amplitude will be at 30
-    newTimePeriod = 4*resonantTimePeriod - 3*pulseCount*resonantTimePeriod/maxPulseCount; // This means that at max pulse count, the time period will be at resonant frequency
-
-    newTimePeriodBool = true;
-    newOscillationAmplitudeBool = true;
-    newOscillationDirectionBool = true;
-  }
-
+  
   // TODO: May want there to be a wider margin range where the pulse count is correct. 
   
 
   //circularOscillation();
-  dynamicOscillation();
+  doOscillation();
   //doOscillation();
 
   //testingFunction(90);
