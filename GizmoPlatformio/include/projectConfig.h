@@ -105,6 +105,10 @@ extern unsigned long lastTime2;
 extern float motorAngle1;
 extern float motorAngle2;
 
+
+extern long nextPulseDrop; //Clock variable for dropping pulse
+
+
 //Phi clock variables
 
 //Theta variable
