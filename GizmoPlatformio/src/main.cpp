@@ -78,6 +78,7 @@ void setup() {
 
 void loop() {
   unsigned long currentTime = millis();
+  unsigned long currentTime2 = millis();
 
 /*
   trackDialPulses();
@@ -124,17 +125,19 @@ void loop() {
     // }
 
     // every 100ms be taking a bit from the pulse count and adding it to amplitude and time period
-  if (pulseCount > 0){
-    if (aOscillationAmplitude < maxAmplitude){
-      aOscillationAmplitude += (maxAmplitude/stepsTillMax)*3;
+    if (pulseCount > 0){
+      if (aOscillationAmplitude < maxAmplitude){
+        aOscillationAmplitude += (maxAmplitude/stepsTillMax)*3;
+      }
+
+      // if (timePeriod > resonantTimePeriod){
+      //   timePeriod -= (3*resonantTimePeriod/stepsTillMax)*3;
+      // }
+      
+      pulseCount -= 3;
     }
 
-    // if (timePeriod > resonantTimePeriod){
-    //   timePeriod -= (3*resonantTimePeriod/stepsTillMax)*3;
-    // }
-    
-    pulseCount -= 3;
-  }
+    dOscillationDirection = (dOscillationDirection + 2) % 360;
 
     Serial.print("Pulse count: ");
     Serial.print(pulseCount);
