@@ -84,13 +84,17 @@ void dynamicOscillation(){ // Direction of oscillation and amplitude of oscillat
       aOscillationAmplitude = newOscillationAmplitude;
       newOscillationAmplitudeBool = false;
     }
+  }
 
-    if (newTimePeriodBool){
-      timePeriod = newTimePeriod;
-      newTimePeriodBool = false;
+  if (t >= timePeriod/4-10){ // giving t a buffer in case it isn't exactly zero
+    if (newOscillationDirectionBool){
+
+      if (newTimePeriodBool){
+        timePeriod = newTimePeriod;
+        newTimePeriodBool = false;
+      }
     }
   }
-  
 
   if (millis() - lastOscillationTime > 20){
     // TODO: add function which clamps time period?

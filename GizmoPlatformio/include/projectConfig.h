@@ -106,7 +106,7 @@ extern float motorAngle1;
 extern float motorAngle2;
 
 
-extern long nextPulseDrop; //Clock variable for dropping pulse
+extern unsigned long nextPulseDrop; //Clock variable for dropping pulse
 
 //Variables for dial
 extern bool lastPulseState;

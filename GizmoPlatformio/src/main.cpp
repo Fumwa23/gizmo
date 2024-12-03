@@ -22,6 +22,7 @@ volatile int encoder2Position = 0;
 unsigned long lastCircularOscillationTime = 0;
 unsigned long lastTime = 0;
 unsigned long lastTime2 = 0;
+unsigned long nextPulseDrop = 0; 
 
 //Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
 float motorAngle1 = 120;
