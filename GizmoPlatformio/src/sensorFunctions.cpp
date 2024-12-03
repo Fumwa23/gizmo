@@ -84,3 +84,33 @@ void updateParameters(){
         newOscillationAmplitudeBool = true;
     }
 }
+
+void testingUpdateParameter(){
+    unsigned long currentTime2 = millis();
+
+    if (currentTime2-lastTime2 > 100){
+        if (increasingPulseCount){
+            lastPulseCount = pulseCount;
+            pulseCount += 1;
+
+            Serial.print("Pulse count: ");
+            Serial.println(pulseCount);
+
+            if (pulseCount >= 300){
+                increasingPulseCount = false;
+            }
+        } else {
+            lastPulseCount = pulseCount;    
+            pulseCount -= 1;
+
+            Serial.print("Pulse count: ");
+            Serial.println(pulseCount);
+
+            if (pulseCount <= 0){
+                increasingPulseCount = true;
+            }
+        }
+        
+        lastTime2 = currentTime2;
+    }
+}

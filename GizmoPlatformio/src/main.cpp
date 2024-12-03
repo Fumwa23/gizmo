@@ -102,8 +102,10 @@ void loop() {
 
   // every 100ms be subtracting a bit from amplitude and adding a bit to time period
   const float resonantTimePeriod = 700;
+  timePeriod = resonantTimePeriod;
   const float maxPulseCount = 300;
   const float maxAmplitude = 30;
+
 
   if (pulseCount > maxPulseCount){
     pulseCount = maxPulseCount;
@@ -117,22 +119,22 @@ void loop() {
       aOscillationAmplitude -= (maxAmplitude/stepsTillMax);
     }
 
-    if (timePeriod < 4*resonantTimePeriod){
-      timePeriod += (3*resonantTimePeriod/stepsTillMax);
-    }
+    // if (timePeriod < 4*resonantTimePeriod){
+    //   timePeriod += (3*resonantTimePeriod/stepsTillMax);
+    // }
 
     // every 100ms be taking a bit from the pulse count and adding it to amplitude and time period
-    if (pulseCount > 0){
-      if (aOscillationAmplitude < maxAmplitude){
-        aOscillationAmplitude += (maxAmplitude/stepsTillMax)*3;
-      }
-
-      if (timePeriod > resonantTimePeriod){
-        timePeriod -= (3*resonantTimePeriod/stepsTillMax)*3;
-      }
-      
-      pulseCount -= 3;
+  if (pulseCount > 0){
+    if (aOscillationAmplitude < maxAmplitude){
+      aOscillationAmplitude += (maxAmplitude/stepsTillMax)*3;
     }
+
+    // if (timePeriod > resonantTimePeriod){
+    //   timePeriod -= (3*resonantTimePeriod/stepsTillMax)*3;
+    // }
+    
+    pulseCount -= 3;
+  }
 
     Serial.print("Pulse count: ");
     Serial.print(pulseCount);
