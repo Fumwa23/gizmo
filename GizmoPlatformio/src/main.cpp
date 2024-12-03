@@ -37,7 +37,7 @@ int lastPulseCount = 0;
 bool oscillating = false;
 
 int dOscillationDirection = 0;
-int aOscillationAmplitude = 20;
+int aOscillationAmplitude = 0;
 int newOscillationDirection = 0;
 int newOscillationAmplitude = 0;
 bool newOscillationDirectionBool = false;
@@ -56,6 +56,8 @@ const int phiMaxTimePeriod = 5000;
 const int phiMinTimePeriod = 100;
 
 unsigned int tPhi;
+
+ bool doneCentre = false;
 
 
 // Manual circular Oscillation variable
@@ -83,7 +85,7 @@ void loop() {
   // Reduce pulse count over time
 
   
-  checkChanges();
+  // checkChanges();
 
   
   // TODO: May want there to be a wider margin range where the pulse count is correct. 

@@ -39,7 +39,7 @@ void analogWrite(int motorNumber, float inputPWM, bool remap = true);
 //Bens Effiecient? matbe? oscillation algorithm
 void getTime();
 void checkChanges();
-int get_momentum();
+int getMomentum();
 void doOscillation();
 void dynamicOscillation();
 
@@ -104,19 +104,6 @@ extern unsigned long lastTime2;
 
 extern float motorAngle1;
 extern float motorAngle2;
-
-//Phi clock variables
-
-//Theta variable
-int current_theta;
-
-//Varibales for Oscillation
-extern bool doneCentre = false;
-int cachedMomentum;
-int frequency;
-int amplitude;
-
-//New oscillation
 
 //Variables for dial
 extern bool lastPulseState;
