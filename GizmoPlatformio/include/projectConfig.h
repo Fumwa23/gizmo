@@ -128,6 +128,11 @@ extern bool dialling;
 extern int pulseCount;
 extern int lastPulseCount;
 
+extern float setpoint;
+
+extern bool pulsed;
+extern bool dialling;
+extern int pulseCount;
 extern int stage;
 
 void setupPins();
@@ -140,7 +145,7 @@ float moveMotorAtSpeed();
 void IRAM_ATTR handleEncoder1();
 void IRAM_ATTR handleEncoder2();
 
-void trackDialPulses();
-void trackNumberDialed();
+void trackPulses();
+void trackRestAndPulse();
 
 #endif // PROJECT_CONFIG_H

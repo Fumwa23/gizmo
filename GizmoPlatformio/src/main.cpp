@@ -23,6 +23,8 @@ unsigned long lastCircularOscillationTime = 0;
 unsigned long lastTime = 0;
 unsigned long lastTime2 = 0;
 
+float timePeriod = 0;
+
 //Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
 float motorAngle1 = 120;
 float motorAngle2 = 240;
@@ -78,21 +80,29 @@ void loop() {
 
   trackDialPulses();
 
-  // Reduce pulse count over time
 
-  
-  checkChanges();
+  // Track pulses
+  trackPulses();
+  //timePeriod = 50 * pulseCount;
 
-  
-  // TODO: May want there to be a wider margin range where the pulse count is correct. 
-  
+  if (currentTime - lastTime >= 1000) {
+    // Calculate RPM every second
+    pulseCount -= 1;
+    
+    if (pulseCount < 0){
+      pulseCount = 0;
+    } 
 
-  dynamicOscillation();
+    Serial.print("Pulse Count: ");
+    Serial.println(pulseCount);
+  }
+
   //circularOscillation();
-  //doOscillation();
-  //doOscillation();
-
-  //testingFunction(90);
-  //manualCircularOscillation();
-  //circularOscillationOwen();
+  dynamicOscillation(dOscillationDirection, aOscillationAmplitude);
+  // if (oscillating){
+  //   doOscillation();
+  // }else{
+  //   startOscillation(0,42.75);
+  //   delay(1000);
+  // }
 }
