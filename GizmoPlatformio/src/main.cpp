@@ -38,8 +38,8 @@ int lastPulseCount = 0;
 bool oscillating = false;
 
 int dOscillationDirection = 0;
-int aOscillationAmplitude = 0;
-int newOscillationAmplitude = 0;
+float aOscillationAmplitude = 0;
+float newOscillationAmplitude = 0;
 bool newOscillationAmplitudeBool = false;
 
 unsigned long sOscillationStart;
@@ -58,6 +58,8 @@ unsigned int tPhi;
 
 bool doneCentre = false;
 
+//TESTING VARIABLES
+bool increasingPulseCount = true;
 
 // Manual circular Oscillation variable
 int stage = 0;
@@ -75,14 +77,74 @@ void setup() {
 }
 
 void loop() {
+  unsigned long currentTime = millis();
 
-  // Get current time
-  getTime();
-
+/*
   trackDialPulses();
   dropPulseCount();
+
+  //testingUpdateParameter();
 
   updateParameters();
 
   dynamicOscillation();
+
+*/
+
+  // NEW METHOD:
+
+  // get number of pulses
+  trackDialPulses();
+
+  // have amplitude and time period with their own variables
+  //aOscillationAmplitude
+  //timePeriod
+
+  // every 100ms be subtracting a bit from amplitude and adding a bit to time period
+  const float resonantTimePeriod = 700;
+  const float maxPulseCount = 300;
+  const float maxAmplitude = 30;
+
+  if (pulseCount > maxPulseCount){
+    pulseCount = maxPulseCount;
+  }
+
+  const int stepsTillMax = 100;
+
+  if (currentTime - lastTime > 100){
+
+    if (aOscillationAmplitude > 0){
+      aOscillationAmplitude -= (maxAmplitude/stepsTillMax);
+    }
+
+    if (timePeriod < 4*resonantTimePeriod){
+      timePeriod += (3*resonantTimePeriod/stepsTillMax);
+    }
+
+    // every 100ms be taking a bit from the pulse count and adding it to amplitude and time period
+    if (pulseCount > 0){
+      if (aOscillationAmplitude < maxAmplitude){
+        aOscillationAmplitude += (maxAmplitude/stepsTillMax)*3;
+      }
+
+      if (timePeriod > resonantTimePeriod){
+        timePeriod -= (3*resonantTimePeriod/stepsTillMax)*3;
+      }
+      
+      pulseCount -= 3;
+    }
+
+    Serial.print("Pulse count: ");
+    Serial.print(pulseCount);
+    Serial.print(" | Amplitude: ");
+    Serial.print(aOscillationAmplitude);
+    Serial.print(" | Time period: ");
+    Serial.println(timePeriod);
+
+    lastTime = currentTime;
+  }
+
+
+  // update oscillation
+  alternativeOscillation();
 }
