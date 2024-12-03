@@ -75,6 +75,21 @@ const int phiMinTimePeriod = 100;
 
 const int maxMomentumGain = 1;
 const int minMomentumGain = -1;
+
+// --------------------------------------------- DEFINE OWEN OSCILLATION VARIABLES
+extern bool oscillating;
+extern int dOscillationDirection;
+extern int aOscillationAmplitude;
+extern int newOscillationDirection;
+extern int newOscillationAmplitude;
+extern bool newOscillationDirectionBool;
+extern bool newOscillationAmplitudeBool;
+
+extern unsigned long sOscillationStart;
+extern unsigned long lastOscillationTime;
+
+unsigned long lastCircularOscillationTime;
+
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
 extern volatile int encoder2Position;
