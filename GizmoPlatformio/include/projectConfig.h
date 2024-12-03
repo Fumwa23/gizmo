@@ -59,8 +59,8 @@ const float kp = 2; // Proportional gain
 const float ki = 0.05; // Integral gain
 const float kd = 0.0001; // Derivative gain
 
-const float outMin = -255.0;
-const float outMax = 255.0;
+const float outMin = -155.0;
+const float outMax = 155.0;
 const float sampleTime = 0.0001;
 const float tau = 0.0001;
 
@@ -113,6 +113,7 @@ extern bool lastPulseState;
 extern bool dialling;
 extern int pulseCount;
 extern int lastPulseCount;
+extern int maxPulseCount;
 
 extern int stage;
 
