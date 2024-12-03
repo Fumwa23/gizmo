@@ -72,6 +72,7 @@ void updateParameters(){
     if (pulseCount > maxPulseCount){
         pulseCount = maxPulseCount;
     }
+    
 
     if (lastPulseCount != pulseCount){
         const float resonantTimePeriod = 700;

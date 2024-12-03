@@ -42,6 +42,7 @@ void checkChanges();
 int getMomentum();
 void doOscillation();
 void dynamicOscillation();
+void circularOscillation();
 
 // --------------------------------------------- DEFINE CONSTANTS
 const int freq = 30000;
@@ -113,6 +114,7 @@ extern bool lastPulseState;
 extern bool dialling;
 extern int pulseCount;
 extern int lastPulseCount;
+extern int pulseShadow;
 
 extern int stage;
 

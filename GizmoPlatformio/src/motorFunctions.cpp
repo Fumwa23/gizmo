@@ -69,20 +69,70 @@ void analogWrite(int motorNumber, float inputPWM, bool remap){
 void moveArmsToHome() {
   unsigned long startTime = millis(); // Start time for timeout
   const unsigned long timeout = 1000;
+  dOscillationDirection = 180;
+  aOscillationAmplitude = 30;
 
-  int homePosition1 = 120 * GYZ;
-  int homePosition2 = 240 * GYZ;
-
-  while (true){
-    float calculatedPWM1 = pid1.move(homePosition1, encoder1Position); 
+  spm.calculate_motors(aOscillationAmplitude,dOscillationDirection);
+  Serial.println(aOscillationAmplitude);
+  Serial.println(dOscillationDirection);
+  Serial.println(motorAngle1);
+  Serial.println(motorAngle2);
+  bool waiting = true;
+  while (waiting){
+    float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
     analogWrite(1, calculatedPWM1);
-
     // Move motor 2 to 240 degrees
-    float calculatedPWM2 = pid2.move(homePosition2, encoder2Position);
+    float calculatedPWM2 = pid2.move(motorAngle2*GYZ, encoder2Position);
     analogWrite(2, calculatedPWM2);
 
     // Check to see if position has been reached
-    if (abs(encoder1Position - homePosition1) < 10 && abs(encoder2Position - homePosition2) < 10){
+    if (abs(encoder1Position - motorAngle1*GYZ) < 10 && abs(encoder2Position - motorAngle2*GYZ) < 10){
+      analogWrite(1, 0.0); // Stop motors 
+      analogWrite(2, 0.0); // Stop motors
+      Serial.print("---- HOMING COMPLETE ----");
+      Serial.print(" | Encoder 1 position: ");
+      Serial.print(encoder1Position/GYZ);
+      Serial.print(" | Encoder 2 position: ");
+      Serial.println(encoder2Position/GYZ);
+      waiting = false;
+    }
+
+    if (millis() - startTime > timeout) {
+      Serial.print("---- WAITING FOR HOME TO COMPLETE ----");
+      
+      // Print output
+      Serial.print(" | Output: ");
+      Serial.print(calculatedPWM1);
+
+      Serial.print(" Encoder1Position: ");
+      Serial.print(encoder1Position/GYZ);
+
+      // Print output
+      Serial.print(" | Output2: ");
+      Serial.print(calculatedPWM2);
+
+      Serial.print(" aEncoderPosition: ");
+      Serial.print(encoder2Position/GYZ);
+
+      Serial.print("    Waiting : ");
+      Serial.println(waiting);
+
+      startTime = millis();
+      }
+    }
+    Serial.println(" ----- STARTING CIRCLE ----- ");
+    while (dOscillationDirection<900){
+      circularOscillation();
+    }
+    while (true){
+    float calculatedPWM1 = pid1.move(120*GYZ, encoder1Position); 
+    analogWrite(1, calculatedPWM1);
+    // Move motor 2 to 240 degrees
+    float calculatedPWM2 = pid2.move(240*GYZ, encoder2Position);
+    analogWrite(2, calculatedPWM2);
+
+    // Check to see if position has been reached
+    if (abs(encoder1Position - 120*GYZ) < 10 && abs(encoder2Position - 240*GYZ) < 10){
       analogWrite(1, 0.0); // Stop motors 
       analogWrite(2, 0.0); // Stop motors
       Serial.print("---- HOMING COMPLETE ----");
@@ -108,7 +158,7 @@ void moveArmsToHome() {
       Serial.print(calculatedPWM2);
 
       Serial.print(" aEncoderPosition: ");
-      Serial.println(encoder2Position/GYZ);
+      Serial.print(encoder2Position/GYZ);
 
       startTime = millis();
     }
