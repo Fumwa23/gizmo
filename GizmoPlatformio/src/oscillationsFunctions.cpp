@@ -75,10 +75,6 @@ void dynamicOscillation(){ // Direction of oscillation and amplitude of oscillat
 
   // If the time within oscillation is less than 10ms, set the new direction and amplitude
   if (t >= timePeriod-10 || (t >= timePeriod/2-10 && t<= timePeriod/2)){ // giving t a buffer in case it isn't exactly zero
-    if (newOscillationDirectionBool){
-      dOscillationDirection = newOscillationDirection;
-      newOscillationDirectionBool = false;
-    }
 
     if (newOscillationAmplitudeBool){
       aOscillationAmplitude = newOscillationAmplitude;

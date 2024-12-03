@@ -85,9 +85,8 @@ extern unsigned int tPhi;
 extern bool oscillating;
 extern int dOscillationDirection;
 extern int aOscillationAmplitude;
-extern int newOscillationDirection;
+
 extern int newOscillationAmplitude;
-extern bool newOscillationDirectionBool;
 extern bool newOscillationAmplitudeBool;
 
 extern unsigned long sOscillationStart;

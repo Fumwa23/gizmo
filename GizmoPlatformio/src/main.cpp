@@ -39,9 +39,7 @@ bool oscillating = false;
 
 int dOscillationDirection = 0;
 int aOscillationAmplitude = 0;
-int newOscillationDirection = 0;
 int newOscillationAmplitude = 0;
-bool newOscillationDirectionBool = false;
 bool newOscillationAmplitudeBool = false;
 
 unsigned long sOscillationStart;
@@ -83,7 +81,6 @@ void loop() {
 
   trackDialPulses();
   dropPulseCount();
-
 
   updateParameters();
 
