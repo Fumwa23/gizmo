@@ -140,6 +140,8 @@ void moveArmsToHome() {
       Serial.print(encoder1Position/GYZ);
       Serial.print(" | Encoder 2 position: ");
       Serial.println(encoder2Position/GYZ);
+      dOscillationDirection = 0;
+      aOscillationAmplitude = 0;
       break;
     }
 
