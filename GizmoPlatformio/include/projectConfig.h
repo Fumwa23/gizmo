@@ -33,10 +33,8 @@ void IRAM_ATTR handleEncoder1();
 void IRAM_ATTR handleEncoder2();
 
 void moveArmsToHome();
-float moveMotorAtSpeed();
 void analogWrite(int motorNumber, float inputPWM, bool remap = true);
 
-//Bens Effiecient? matbe? oscillation algorithm
 void dynamicOscillation();
 void circularOscillation();
 
@@ -117,21 +115,14 @@ void setupMotors();
 
 void analogWrite(int motorNumber, float inputPWM, bool remap);
 void moveArmsToHome();
-float moveMotorAtSpeed();
 
 void IRAM_ATTR handleEncoder1();
 void IRAM_ATTR handleEncoder2();
 
 void trackDialPulses();
 void trackNumberDialed();
-void dropPulseCount();
-
-void updateParameters();
-
-void alternativeOscillation();
 
 //TESTING VARIABLES
 extern bool increasingPulseCount;
-void testingUpdateParameter();
 
 #endif // PROJECT_CONFIG_H

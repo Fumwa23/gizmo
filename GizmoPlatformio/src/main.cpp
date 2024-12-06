@@ -81,15 +81,11 @@ void loop() {
   unsigned long currentTime2 = millis();
 
 /*
-  trackDialPulses();
   dropPulseCount();
 
   //testingUpdateParameter();
 
   updateParameters();
-
-  dynamicOscillation();
-
 */
 
   // NEW METHOD:
@@ -149,7 +145,5 @@ void loop() {
     lastTime = currentTime;
   }
 
-
-  // update oscillation
-  alternativeOscillation();
+  dynamicOscillation();
 }

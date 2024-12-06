@@ -166,8 +166,3 @@ void moveArmsToHome() {
     }
   }
 }
-
-float moveMotorAtSpeed(){
-  // code here
-  return 0.0;
-}
