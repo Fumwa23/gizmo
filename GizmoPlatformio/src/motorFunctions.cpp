@@ -14,7 +14,6 @@
  *                 rotation.
  * @param remap If true (default), adjusts the PWM value to ensure the motor operates within 
  *              its minimum and maximum range. 
- * @todo Change map function to be proper mapping
  */
 void analogWrite(int motorNumber, float inputPWM, bool remap){
 

@@ -1,9 +1,5 @@
 #include "projectConfig.h"
 
-// Unfinshed Flag implementation...
-// volatile bool sensor1_triggered = false;
-// volatile bool sensor2_triggered = false;
-
 /**
  * @brief Interrupt service routine for motor encoder 1
  * 

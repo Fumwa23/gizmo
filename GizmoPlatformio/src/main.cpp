@@ -49,13 +49,14 @@ void setup() {
   moveArmsToHome();
   delay(1000);
 
+  lastTime = millis();
   sOscillationStart = millis(); // TODO: check if this goes here.
 }
 
 void loop() {
   unsigned long currentTime = millis();
 
-  trackDialPulses(); // get number of pulses
+  trackDialPulses();
 
   // every 100ms be subtracting a bit from amplitude
   const float resonantTimePeriod = 700;

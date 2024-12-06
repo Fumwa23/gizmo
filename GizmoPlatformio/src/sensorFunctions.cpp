@@ -3,14 +3,14 @@
 void trackDialPulses(){
      bool restState = digitalRead(REST_PIN);
 
-    if (restState == LOW){ // When the dial is not in rest state.
+    if (restState == LOW){ // restate == LOW when the dial is being moved
 
         bool pulseState = digitalRead(PULSE_PIN);
 
-        if (pulseState && !lastPulseState){
+        if (pulseState && !lastPulseState){ // Detects rising edge of pulse
             pulseCount += 10;
         }
-        //set pulsed to hold previous value for edge detection
+
         lastPulseState = pulseState;
     }
 }
@@ -24,29 +24,25 @@ void trackDialPulses(){
 void trackNumberDialed(){
     bool restState = digitalRead(REST_PIN);
 
-    if (restState == LOW){
-        //Dial is not in rest state.
+    if (restState == LOW){ // restate == LOW when the dial is being moved
         if (!dialling){
-            //Just started dialling
             dialling = true;
         }
-        //Read pulse pin
+
         bool pulseState = digitalRead(PULSE_PIN);
 
-        if (pulseState && !lastPulseState){
+        if (pulseState && !lastPulseState){ // Detects rising edge of pulse
             pulseCount++;
             Serial.print("Pulse detected: ");
             Serial.println(pulseCount);
         }
-        //set pulsed to hold previous value for edge detection
+
         lastPulseState = pulseState;
     }else{ 
-        //Dial is in rest state. Check if it has just returned
-        if (dialling){
-            //Just finished dialling
+
+        if (dialling){ // if dialling == true, the dial has just returned to rest state
             dialling = false;
             
-            //DO SOMETHING
             Serial.print("Number dialed: ");
             Serial.println(pulseCount);
 

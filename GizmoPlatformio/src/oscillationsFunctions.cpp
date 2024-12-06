@@ -1,8 +1,11 @@
 #include "projectConfig.h"
 
+/**
+ * @brief Oscillates the pendulum in a constant circular motion.
+ */
 void circularOscillation(){
     unsigned long circularOscillationTime = millis();
-    
+
     if (circularOscillationTime - lastTime >= 100){
         dOscillationDirection += 2;
         lastCircularOscillationTime = circularOscillationTime;
@@ -29,9 +32,22 @@ void circularOscillation(){
     analogWrite(2, calculatedPWM2);
 }
 
-
-void dynamicOscillation(){ // Direction of oscillation and amplitude of oscillation
-  // Calculate the magnitude of the oscillation that motors should move to.
+/**
+ * @brief Oscillates the motors on a singla plane with a varying amplitude.
+ * 
+ * The amplitude of the oscillation is calculated using the formula:
+ * 
+ * \f$ \phi = A \sin(\frac{2\pi t}{T}) \f$
+ * 
+ * where:
+ * - \f$ \phi \f$ is the magnitude of the oscillation
+ * - \f$ A \f$ is the amplitude of the oscillation
+ * - \f$ t \f$ is the time within the oscillation period
+ * - \f$ T \f$ is the time period of the oscillation
+ * 
+ * The motors are then moved to the calculated angle.
+ */
+void dynamicOscillation(){
   float t = fmod(millis()-sOscillationStart,timePeriod); // Time within oscillation period
 
 
