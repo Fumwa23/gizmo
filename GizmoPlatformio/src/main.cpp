@@ -7,27 +7,25 @@
  * @note This file is the entry point for the program.
  */
 
-#include "projectConfig.h" // Include proect header file
+#include "projectConfig.h"
 
 // --------------------------------------------- CREATE OBJECTS
-PIDController pid1;
-PIDController pid2;
-SPMController spm;
-SPMControllerOwen spmOwen;
+PIDController pid1; // PID contoller for first motor
+PIDController pid2; // PID controller for second motor
+SPMController spm; // Inverse kinematics controller
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES 
-// Variables for encoder
 volatile int encoder1Position = 0;
 volatile int encoder2Position = 0;
 
 unsigned long lastTime = 0;
 unsigned long lastCircularOscillationTime = 0;
 
-//Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
+// These are the angles that the motors should move to.
 float motorAngle1 = 120;
 float motorAngle2 = 240;
 
-//Variables for dial
+// Variables for dial
 bool lastPulseState = LOW;
 bool dialling = false;
 int pulseCount = 0;
@@ -37,10 +35,10 @@ int pulseCount = 0;
 int dOscillationDirection = 0;
 float aOscillationAmplitude = 0;
 
-unsigned long sOscillationStart;
+unsigned long sOscillationStart; // Start time of the oscillation in milliseconds
 unsigned long lastOscillationTime;
 
-float timePeriod = 650;
+float timePeriod = 650; 
 
 void setup() {
   Serial.begin(115200);
