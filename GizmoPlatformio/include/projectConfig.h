@@ -28,54 +28,33 @@ extern SPMControllerOwen spmOwen;
 #define PULSE_PIN 14
 #define REST_PIN 27
 
-// --------------------------------------------- FUNCTION DECLARATIONS
-void IRAM_ATTR handleEncoder1();
-void IRAM_ATTR handleEncoder2();
-
-void moveArmsToHome();
-void analogWrite(int motorNumber, float inputPWM, bool remap = true);
-
-void dynamicOscillation();
-void circularOscillation();
-
 // --------------------------------------------- DEFINE CONSTANTS
+
+// PWM constants
 const int freq = 30000;
 const int resolution = 8;
 
-const int pwmChannel1 = 0;
+// Two PWM channels per motor
+const int pwmChannel1 = 0; 
 const int pwmChannel2 = 1;
 const int pwmChannel3 = 2;
 const int pwmChannel4 = 3;
 
-const int ENCODER_PULSES_PER_REV = 700;
-const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0;
-
+// PID Controller constants
 const float kp = 2; // Proportional gain
 const float ki = 0.05; // Integral gain
 const float kd = 0.0001; // Derivative gain
 
 const float outMin = -200.0;
-const float outMax = 200.0;
-const float sampleTime = 0.0001;
-const float tau = 0.0001;
+const float outMax = 200.0; 
+const float sampleTime = 0.0001; // Sampling time in seconds
+const float tau = 0.0001; // Derivative low-pass filter time constant
 
+// Other constants
 const double pi = 3.141592653589793;
-extern float timePeriod; // 1 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
+const int ENCODER_PULSES_PER_REV = 700;
+const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0; // Ratio of encoder pulses to degrees
 
-// --------------------------------------------- DEFINE BENS OSCILLATION VARIABLES
-
-
-const int maxMomentumGain = 1;
-const int minMomentumGain = -1;
-
-// --------------------------------------------- DEFINE OWEN OSCILLATION VARIABLES
-extern int dOscillationDirection;
-extern float aOscillationAmplitude;
-
-extern unsigned long sOscillationStart;
-extern unsigned long lastOscillationTime;
-
-extern unsigned long lastCircularOscillationTime;
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;
@@ -86,19 +65,34 @@ extern unsigned long lastTime;
 extern float motorAngle1;
 extern float motorAngle2;
 
-//Variables for dial
+// Variables for dial
 extern bool lastPulseState;
 extern bool dialling;
 extern int pulseCount;
 
-void setupPins();
-void setupMotors();
+// Variables for Oscillation
+extern int dOscillationDirection;
+extern float aOscillationAmplitude;
 
-void analogWrite(int motorNumber, float inputPWM, bool remap);
-void moveArmsToHome();
+extern unsigned long sOscillationStart;
+extern unsigned long lastOscillationTime;
 
+extern unsigned long lastCircularOscillationTime;
+
+extern float timePeriod;
+
+// --------------------------------------------- FUNCTION DECLARATIONS
 void IRAM_ATTR handleEncoder1();
 void IRAM_ATTR handleEncoder2();
+
+void moveArmsToHome();
+void analogWrite(int motorNumber, float inputPWM, bool remap = true);
+
+void dynamicOscillation();
+void circularOscillation();
+
+void setupPins();
+void setupMotors();
 
 void trackDialPulses();
 void trackNumberDialed();
