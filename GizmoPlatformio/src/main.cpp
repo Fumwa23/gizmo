@@ -1,10 +1,11 @@
-/*
-This is the main file for the Gizmo Platformio project.
-
-This file contains the setup and loop functions.
-
-It is the file that is compiled and uploaded to the ESP32.
-*/
+/**
+ * @file main.cpp
+ * @brief Main file for the robot arm project.
+ * 
+ * This file contains the setup and loop functions for the robot arm project.
+ * 
+ * @note This file is the entry point for the program.
+ */
 
 #include "projectConfig.h" // Include proect header file
 
@@ -49,21 +50,6 @@ float timePeriod = 650;
 float newTimePeriod = 0;
 bool newTimePeriodBool = false;
 
-const int thetaTimePeriod = 1000;
-const int phiTimePeriod = 1000;
-const int phiMaxTimePeriod = 5000;
-const int phiMinTimePeriod = 100;
-
-unsigned int tPhi;
-
-bool doneCentre = false;
-
-//TESTING VARIABLES
-bool increasingPulseCount = true;
-
-// Manual circular Oscillation variable
-int stage = 0;
-
 void setup() {
   Serial.begin(115200);
 
@@ -80,29 +66,13 @@ void loop() {
   unsigned long currentTime = millis();
   unsigned long currentTime2 = millis();
 
-/*
-  dropPulseCount();
+  trackDialPulses(); // get number of pulses
 
-  //testingUpdateParameter();
-
-  updateParameters();
-*/
-
-  // NEW METHOD:
-
-  // get number of pulses
-  trackDialPulses();
-
-  // have amplitude and time period with their own variables
-  //aOscillationAmplitude
-  //timePeriod
-
-  // every 100ms be subtracting a bit from amplitude and adding a bit to time period
+  // every 100ms be subtracting a bit from amplitude
   const float resonantTimePeriod = 700;
   timePeriod = resonantTimePeriod;
   const float maxPulseCount = 300;
   const float maxAmplitude = 30;
-
 
   if (pulseCount > maxPulseCount){
     pulseCount = maxPulseCount;
@@ -116,19 +86,11 @@ void loop() {
       aOscillationAmplitude -= (maxAmplitude/stepsTillMax);
     }
 
-    // if (timePeriod < 4*resonantTimePeriod){
-    //   timePeriod += (3*resonantTimePeriod/stepsTillMax);
-    // }
-
     // every 100ms be taking a bit from the pulse count and adding it to amplitude and time period
     if (pulseCount > 0){
       if (aOscillationAmplitude < maxAmplitude){
         aOscillationAmplitude += (maxAmplitude/stepsTillMax)*3;
       }
-
-      // if (timePeriod > resonantTimePeriod){
-      //   timePeriod -= (3*resonantTimePeriod/stepsTillMax)*3;
-      // }
       
       pulseCount -= 3;
     }

@@ -18,9 +18,7 @@ void circularOscillation(){
         Serial.println(encoder2Position/GYZ);
     }
 
-
     spm.calculate_motors(aOscillationAmplitude,dOscillationDirection);
-
 
     // Move motors to calculated angle
     float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 

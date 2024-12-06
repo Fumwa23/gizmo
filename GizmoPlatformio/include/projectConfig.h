@@ -66,15 +66,9 @@ extern float newTimePeriod;
 
 // --------------------------------------------- DEFINE BENS OSCILLATION VARIABLES
 
-extern const int thetaTimePeriod;
-extern const int phiTimePeriod;
-extern const int phiMaxTimePeriod;
-extern const int phiMinTimePeriod;
 
 const int maxMomentumGain = 1;
 const int minMomentumGain = -1;
-
-extern unsigned int tPhi;
 
 // --------------------------------------------- DEFINE OWEN OSCILLATION VARIABLES
 extern bool oscillating;
@@ -108,8 +102,6 @@ extern bool dialling;
 extern int pulseCount;
 extern int lastPulseCount;
 
-extern int stage;
-
 void setupPins();
 void setupMotors();
 
@@ -121,8 +113,5 @@ void IRAM_ATTR handleEncoder2();
 
 void trackDialPulses();
 void trackNumberDialed();
-
-//TESTING VARIABLES
-extern bool increasingPulseCount;
 
 #endif // PROJECT_CONFIG_H
