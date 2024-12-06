@@ -18,10 +18,6 @@ SPMController spm; // Inverse kinematics controller
 volatile int encoder1Position = 0;
 volatile int encoder2Position = 0;
 
-unsigned long lastTime = 0;
-unsigned long lastCircularOscillationTime = 0;
-
-// These are the angles that the motors should move to.
 float motorAngle1 = 120;
 float motorAngle2 = 240;
 
@@ -31,7 +27,6 @@ bool dialling = false;
 int pulseCount = 0;
 
 //Varibales for Oscillation
-
 int dOscillationDirection = 0;
 float aOscillationAmplitude = 0;
 
@@ -39,6 +34,10 @@ unsigned long sOscillationStart; // Start time of the oscillation in millisecond
 unsigned long lastOscillationTime;
 
 float timePeriod = 650; 
+
+// Timers for asynchronous delay
+unsigned long lastTime = 0;
+unsigned long lastCircularOscillationTime = 0;
 
 void setup() {
   Serial.begin(115200);

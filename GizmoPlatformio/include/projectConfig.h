@@ -60,8 +60,6 @@ const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0; // Ratio of encoder puls
 extern volatile int encoder1Position;
 extern volatile int encoder2Position;
 
-extern unsigned long lastTime;
-
 extern float motorAngle1;
 extern float motorAngle2;
 
@@ -77,9 +75,11 @@ extern float aOscillationAmplitude;
 extern unsigned long sOscillationStart;
 extern unsigned long lastOscillationTime;
 
-extern unsigned long lastCircularOscillationTime;
-
 extern float timePeriod;
+
+// Timers for asynchronous delay
+extern unsigned long lastCircularOscillationTime;
+extern unsigned long lastTime;
 
 // --------------------------------------------- FUNCTION DECLARATIONS
 void IRAM_ATTR handleEncoder1();
