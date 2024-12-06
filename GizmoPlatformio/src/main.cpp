@@ -20,10 +20,8 @@ SPMControllerOwen spmOwen;
 volatile int encoder1Position = 0;
 volatile int encoder2Position = 0;
 
-unsigned long lastCircularOscillationTime = 0;
 unsigned long lastTime = 0;
-unsigned long lastTime2 = 0;
-unsigned long nextPulseDrop = 0; 
+unsigned long lastCircularOscillationTime = 0;
 
 //Motor angle variables. If there are already variables, remove these and add pre-existing variables to the definition later
 float motorAngle1 = 120;
@@ -33,22 +31,16 @@ float motorAngle2 = 240;
 bool lastPulseState = LOW;
 bool dialling = false;
 int pulseCount = 0;
-int lastPulseCount = 0;
 
 //Varibales for Oscillation
-bool oscillating = false;
 
 int dOscillationDirection = 0;
 float aOscillationAmplitude = 0;
-float newOscillationAmplitude = 0;
-bool newOscillationAmplitudeBool = false;
 
 unsigned long sOscillationStart;
 unsigned long lastOscillationTime;
 
 float timePeriod = 650;
-float newTimePeriod = 0;
-bool newTimePeriodBool = false;
 
 void setup() {
   Serial.begin(115200);
@@ -64,7 +56,6 @@ void setup() {
 
 void loop() {
   unsigned long currentTime = millis();
-  unsigned long currentTime2 = millis();
 
   trackDialPulses(); // get number of pulses
 

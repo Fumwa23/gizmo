@@ -8,7 +8,6 @@ void trackDialPulses(){
         bool pulseState = digitalRead(PULSE_PIN);
 
         if (pulseState && !lastPulseState){
-            lastPulseCount = pulseCount;
             pulseCount += 10;
         }
         //set pulsed to hold previous value for edge detection

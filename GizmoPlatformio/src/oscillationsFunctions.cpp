@@ -2,6 +2,7 @@
 
 void circularOscillation(){
     unsigned long circularOscillationTime = millis();
+    
     if (circularOscillationTime - lastTime >= 100){
         dOscillationDirection += 2;
         lastCircularOscillationTime = circularOscillationTime;

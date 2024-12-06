@@ -61,8 +61,6 @@ const float tau = 0.0001;
 
 const double pi = 3.141592653589793;
 extern float timePeriod; // 1 * 1000 * 2 * pi * sqrt(0.06 / 9.8);
-extern bool newTimePeriodBool;
-extern float newTimePeriod;
 
 // --------------------------------------------- DEFINE BENS OSCILLATION VARIABLES
 
@@ -71,12 +69,8 @@ const int maxMomentumGain = 1;
 const int minMomentumGain = -1;
 
 // --------------------------------------------- DEFINE OWEN OSCILLATION VARIABLES
-extern bool oscillating;
 extern int dOscillationDirection;
 extern float aOscillationAmplitude;
-
-extern float newOscillationAmplitude;
-extern bool newOscillationAmplitudeBool;
 
 extern unsigned long sOscillationStart;
 extern unsigned long lastOscillationTime;
@@ -88,19 +82,14 @@ extern volatile int encoder1Position;
 extern volatile int encoder2Position;
 
 extern unsigned long lastTime;
-extern unsigned long lastTime2;
 
 extern float motorAngle1;
 extern float motorAngle2;
-
-
-extern unsigned long nextPulseDrop; //Clock variable for dropping pulse
 
 //Variables for dial
 extern bool lastPulseState;
 extern bool dialling;
 extern int pulseCount;
-extern int lastPulseCount;
 
 void setupPins();
 void setupMotors();
