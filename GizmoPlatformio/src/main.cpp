@@ -49,7 +49,7 @@ void setup() {
   delay(1000);
 
   lastTime = millis();
-  sOscillationStart = millis(); // TODO: check if this goes here.
+  sOscillationStart = millis();
 }
 
 void loop() {

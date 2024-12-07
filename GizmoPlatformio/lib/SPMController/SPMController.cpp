@@ -1,9 +1,9 @@
 #include "SPMController.h"
+#include <math.h>
+
 SPMController::SPMController():
-pi(2*acos(0)),
-    
-sz_angle_sin(sin(36*pi/180)),
-cz_angle_cos(cos(36*pi/180)),
+sz_angle_sin(sin(36*PI/180)),
+cz_angle_cos(cos(36*PI/180)),
 cMotor({sz_angle_sin,0,-cz_angle_cos})
 {}
 
@@ -70,8 +70,8 @@ void SPMController::calculate_motors(float phi, float theta){
 vector <float> SPMController::get_direction_vector(float phi, float theta)
 {
   vector <float> driver_arm(3);
-    float rphi_rads = phi*pi/180;
-    float rtheta_rads = theta*pi/180;
+    float rphi_rads = phi*PI/180;
+    float rtheta_rads = theta*PI/180;
 
     driver_arm[0] = sin(rphi_rads)*cos(rtheta_rads);
     driver_arm[1] = sin(rphi_rads)*sin(rtheta_rads);
@@ -84,19 +84,19 @@ float SPMController::get_joint_angle(float x,float y){
   float angle;
   //check the quadrant of the angle to increment it the correct amount
   if (x<0){
-    angle = atan(y/x) + pi;
+    angle = atan(y/x) + PI;
   }else if (x>0){
     if (y<0){
-      angle = atan(y/x)+2*pi;
+      angle = atan(y/x)+2*PI;
     }else{
       angle = atan(y/x);
     }
   //Remove cases where x = 0 to prevent dividing by 0
   }else{
     if (y > 0){
-      angle = pi/2;
+      angle = PI/2;
     }else{
-      angle = 3*pi/2;
+      angle = 3*PI/2;
     }
   }
   return angle;
@@ -122,20 +122,20 @@ float SPMController::get_motor_angle(vector <float> joint){
   vector <float> tempVector = cross_product(joint, vertical);
   float theta = get_joint_angle(tempVector[0],tempVector[1]);
   // Serial.print(" Theta : ");
-  // Serial.print(theta*180/pi);
+  // Serial.print(theta*180/PI);
   // Serial.print("   Gamma : ");
-  // Serial.println(gamma*180/pi);
+  // Serial.println(gamma*180/PI);
   float motorAngle = theta+gamma;
 
 
 
   // //Generate angle
-  // float motor_angle = pi-acos(q)+gamma;
-  // if (motor_angle > 2*pi){
-  //   motor_angle -= 2*pi;
+  // float motor_angle = PI-acos(q)+gamma;
+  // if (motor_angle > 2*PI){
+  //   motor_angle -= 2*PI;
   // }
   // //Convert to degrees
-  return motorAngle/pi*180;
+  return motorAngle/PI*180;
 }
 
 
@@ -192,6 +192,6 @@ void SPMController::print_vector(vector <float> to_print, String title ){
     Serial.print(to_print[i]);
   }
   Serial.print("   XY Angle : ");
-  float angle = get_joint_angle(to_print[0], to_print[1])*180/pi;
+  float angle = get_joint_angle(to_print[0], to_print[1])*180/PI;
   Serial.println(angle);
 }

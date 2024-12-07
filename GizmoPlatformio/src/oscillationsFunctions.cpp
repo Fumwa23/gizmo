@@ -59,7 +59,7 @@ void dynamicOscillation(){
     // Serial.println(timePeriod);
 
 
-    float phi = aOscillationAmplitude*sin(2*pi*t/timePeriod); // Magnitude of oscillation
+    float phi = aOscillationAmplitude*sin(2*PI*t/timePeriod); // Magnitude of oscillation
     spm.calculate_motors(phi, dOscillationDirection);
     
     // Move motors to calculated angle

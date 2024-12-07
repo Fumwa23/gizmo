@@ -19,7 +19,7 @@ void trackDialPulses(){
 /**
  * @brief Tracks the number dialed on a rotary dial.
  *
- * @todo bug: the "Number dialed" message is printed multiple times.
+ * @todo fix bug: the "Number dialed" message is printed multiple times.
  */
 void trackNumberDialed(){
     bool restState = digitalRead(REST_PIN);

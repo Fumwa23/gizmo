@@ -51,10 +51,8 @@ const float sampleTime = 0.0001; // Sampling time in seconds
 const float tau = 0.0001; // Derivative low-pass filter time constant
 
 // Other constants
-const double pi = 3.141592653589793;
 const int ENCODER_PULSES_PER_REV = 700;
 const float GYZ = ENCODER_PULSES_PER_REV * 3.5 / 360.0; // Ratio of encoder pulses to degrees
-
 
 // --------------------------------------------- DEFINE GLOBAL VARIABLES
 extern volatile int encoder1Position;

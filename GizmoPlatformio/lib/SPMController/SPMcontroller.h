@@ -13,7 +13,6 @@ public:
     void calculate_motors(float phi, float theta);       // Example function
 
 private:
-    double pi;
     float sz_angle_sin;
     float cz_angle_cos;
     
