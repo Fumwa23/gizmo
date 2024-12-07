@@ -7,7 +7,12 @@ cz_angle_cos(cos(36*PI/180)),
 cMotor({sz_angle_sin,0,-cz_angle_cos})
 {}
 
-
+/**
+ * @brief Function to initialize the motor pointers
+ * 
+ * @param a_motor_ptr Pointer to the motor angle of motor A
+ * @param b_motor_ptr Pointer to the motor angle of motor B
+ */
 void SPMController::begin(float * a_motor_ptr, float * b_motor_ptr){
   this-> a_motor_ptr = a_motor_ptr;
   this-> b_motor_ptr = b_motor_ptr;
