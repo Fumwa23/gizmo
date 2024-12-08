@@ -71,7 +71,13 @@ void SPMController::calculateMotors(float phi, float theta){
 
 
 
-//Function to get the unit vector of the driver arm with a given angle, where theta is angle around the z axis and phi is the angle from the z axis
+/**
+ * @brief Function to get the unit vector of the driver arm
+ * 
+ * @param phi Angle from the z axis
+ * @param theta Angle around the z axis
+ * @return vector<float> The unit vector of the driver arm
+ */
 vector <float> SPMController::getDirectionVector(float phi, float theta)
 {
   vector <float> driverArm(3);
@@ -84,7 +90,15 @@ vector <float> SPMController::getDirectionVector(float phi, float theta)
     return driverArm;
 }
 
-//Function to get the angle of the joint vector in the xy plane
+
+/**
+ * @brief Function to get the angle of the joint vector to the x axis in the xy plane
+ * 
+ * @param x x component of the vector
+ * @param y y component of the vector
+ * 
+ * @return float The angle of the vector to the x axis
+ */
 float SPMController::getJointAngle(float x,float y){
   float angle;
   //check the quadrant of the angle to increment it the correct amount
@@ -107,7 +121,14 @@ float SPMController::getJointAngle(float x,float y){
   return angle;
 }
 
-//Function to solve for the motor angle from the x axis, knowing the vector of the joint
+
+/**
+ * @brief Function to solve for the motor angle from the x axis, knowing the vector of the joint
+ * 
+ * @param joint The vector of the joint
+ * 
+ * @return float The angle of the motor from the x axis
+ */
 float SPMController::getMotorAngle(vector <float> joint){
   // //Define parameters of equation mcosx + nsinx = p where x is the desired angle
   // float m = joint[0]*SIN_36;
@@ -146,7 +167,14 @@ float SPMController::getMotorAngle(vector <float> joint){
 
 
 
-//Function to calculate the cross product of 2 vectors
+/**
+ * @brief Function to calculate the cross product of 2 vectors
+ * 
+ * @param a First vector
+ * @param b Second vector
+ * 
+ * @return vector<float> The cross product of the 2 vectors
+ */
 vector <float> SPMController::crossProduct(vector<float> a, vector <float> b){
   vector <float> c(3); // Initialize vector with 3 elements
   c[0] = a[1]*b[2]-a[2]*b[1];
@@ -156,7 +184,14 @@ vector <float> SPMController::crossProduct(vector<float> a, vector <float> b){
 }
 
 
-//Function to multiply a vector by a scalar
+/**
+ * @brief Function to multiply a vector by a scalar
+ * 
+ * @param vec The vector to be scaled
+ * @param sca The scalar to multiply the vector by
+ * 
+ * @return vector<float> The scaled vector
+ */
 vector <float> SPMController::scaleVector(vector <float> vec, float sca){
   vector <float> newVec(3);
   int i;
@@ -167,7 +202,14 @@ vector <float> SPMController::scaleVector(vector <float> vec, float sca){
 }
 
 
-//Function to add 2 vectors
+/**
+ * @brief Function to add 2 vectors
+ * 
+ * @param a First vector
+ * @param b Second vector
+ * 
+ * @return vector<float> The sum of the 2 vectors
+ */
 vector <float> SPMController::addVectors(vector <float> a, vector <float> b){
   vector <float> newVec(3);
   int i;
@@ -178,7 +220,14 @@ vector <float> SPMController::addVectors(vector <float> a, vector <float> b){
 }
 
 
-//Function to subtract a vector from another
+/**
+ * @brief Function to subtract a vector from another
+ * 
+ * @param a First vector
+ * @param b Second vector
+ * 
+ * @return vector<float> First vector minus the second vector
+ */
 vector <float> SPMController::subVectors(vector <float> a, vector <float> b){
   vector <float> newVec(3);
   int i;
@@ -188,7 +237,13 @@ vector <float> SPMController::subVectors(vector <float> a, vector <float> b){
   return newVec;
 }
 
-//Function to serial print a vector
+
+/**
+ * @brief Function to serial print a vector
+ * 
+ * @param toPrint The vector to be printed
+ * @param title The title to be printed before the vector
+ */
 void SPMController::printVector(vector <float> toPrint, String title ){
   int i;
   Serial.print(title);
