@@ -71,7 +71,7 @@ void moveArmsToHome() {
   dOscillationDirection = 180;
   aOscillationAmplitude = 30;
 
-  spm.calculate_motors(aOscillationAmplitude,dOscillationDirection);
+  spm.calculateMotors(aOscillationAmplitude,dOscillationDirection);
   Serial.println(aOscillationAmplitude);
   Serial.println(dOscillationDirection);
   Serial.println(motorAngle1);

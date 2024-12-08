@@ -10,7 +10,7 @@ class SPMController{
 public:
     SPMController();              // Constructor
     void begin(float * pMotorA, float * pMotorB);
-    void calculate_motors(float phi, float theta);       // Example function
+    void calculateMotors(float phi, float theta);       // Example function
 
 private:
     // float sz_angle_sin;
@@ -19,7 +19,7 @@ private:
     const float COS_36;
     
     vector <float> driverArm;                 // Private member variable
-    vector <float> cMotor;
+    const vector <float> cMotor;
     
     float * pMotorA;
     float * pMotorB;

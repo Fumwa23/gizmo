@@ -10,7 +10,7 @@ class SPMControllerOwen{
 public:
     SPMControllerOwen();              // Constructor
     void begin(float * pMotorA, float * pMotorB);
-    void calculate_motors(float phi, float theta);       // Example function
+    void calculateMotors(float phi, float theta);       // Example function
 
 private:
     double pi;

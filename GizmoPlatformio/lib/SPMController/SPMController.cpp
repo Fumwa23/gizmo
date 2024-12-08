@@ -24,7 +24,7 @@ void SPMController::begin(float * pMotorA, float * pMotorB){
  * @param phi Angle from the z axis
  * @param theta Angle around the z axis
  */
-void SPMController::calculate_motors(float phi, float theta){
+void SPMController::calculateMotors(float phi, float theta){
   // Serial.print(" ----- Calclulating for phi : ");
   // Serial.print(phi);
   // Serial.print("   and theta : ");
@@ -75,12 +75,12 @@ void SPMController::calculate_motors(float phi, float theta){
 vector <float> SPMController::get_direction_vector(float phi, float theta)
 {
   vector <float> driverArm(3);
-    float rphi_rads = phi*PI/180;
-    float rtheta_rads = theta*PI/180;
+    float rphiRads = phi*PI/180;
+    float rthetaRads = theta*PI/180;
 
-    driverArm[0] = sin(rphi_rads)*cos(rtheta_rads);
-    driverArm[1] = sin(rphi_rads)*sin(rtheta_rads);
-    driverArm[2] = cos(rphi_rads);
+    driverArm[0] = sin(rphiRads)*cos(rthetaRads);
+    driverArm[1] = sin(rphiRads)*sin(rthetaRads);
+    driverArm[2] = cos(rphiRads);
     return driverArm;
 }
 
@@ -158,34 +158,34 @@ vector <float> SPMController::cross_product(vector<float> a, vector <float> b){
 
 //Function to multiply a vector by a scalar
 vector <float> SPMController::scaxvec(vector <float> vec, float sca){
-  vector <float> new_vec(3);
+  vector <float> newVec(3);
   int i;
   for (i=0; i<vec.size();i++){
-    new_vec[i] = vec[i]*sca;
+    newVec[i] = vec[i]*sca;
   }
-  return new_vec;
+  return newVec;
 }
 
 
 //Function to add 2 vectors
 vector <float> SPMController::add_vectors(vector <float> a, vector <float> b){
-  vector <float> new_vec(3);
+  vector <float> newVec(3);
   int i;
   for (i=0; i<a.size();i++){
-    new_vec[i] = a[i]+b[i];
+    newVec[i] = a[i]+b[i];
   }
-  return new_vec;
+  return newVec;
 }
 
 
 //Function to subtract a vector from another
 vector <float> SPMController::sub_vectors(vector <float> a, vector <float> b){
-  vector <float> new_vec(3);
+  vector <float> newVec(3);
   int i;
   for (i=0; i<a.size();i++){
-    new_vec[i] = a[i]-b[i];
+    newVec[i] = a[i]-b[i];
   }
-  return new_vec;
+  return newVec;
 }
 
 //Function to serial print a vector

@@ -22,7 +22,7 @@ void circularOscillation(){
         Serial.println(encoder2Position/GYZ);
     }
 
-    spm.calculate_motors(aOscillationAmplitude,dOscillationDirection);
+    spm.calculateMotors(aOscillationAmplitude,dOscillationDirection);
 
     // Move motors to calculated angle
     float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 
@@ -60,7 +60,7 @@ void dynamicOscillation(){
 
 
     float phi = aOscillationAmplitude*sin(2*PI*t/timePeriod); // Magnitude of oscillation
-    spm.calculate_motors(phi, dOscillationDirection);
+    spm.calculateMotors(phi, dOscillationDirection);
     
     // Move motors to calculated angle
     float calculatedPWM1 = pid1.move(motorAngle1*GYZ, encoder1Position); 

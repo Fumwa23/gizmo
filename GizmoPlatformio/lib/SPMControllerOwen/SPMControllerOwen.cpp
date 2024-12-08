@@ -19,7 +19,7 @@ void SPMControllerOwen::begin(float * pMotorA, float * pMotorB){
  * @param phi Angle from the z axis
  * @param theta Angle around the z axis
  */
-void SPMControllerOwen::calculate_motors(float phi, float theta){
+void SPMControllerOwen::calculateMotors(float phi, float theta){
   //Find direction vector given angle
   vector <float> driverArm = get_direction_vector(phi,theta);
   //print_vector(driverArm, "DRIVER ARM"); // Debug
@@ -67,12 +67,12 @@ void SPMControllerOwen::calculate_motors(float phi, float theta){
 vector <float> SPMControllerOwen::get_direction_vector(float phi, float theta)
 {
   vector <float> driverArm(3);
-    float rphi_rads = phi*pi/180;
-    float rtheta_rads = theta*pi/180;
+    float rphiRads = phi*pi/180;
+    float rthetaRads = theta*pi/180;
 
-    driverArm[0] = sin(rphi_rads)*cos(rtheta_rads);
-    driverArm[1] = sin(rphi_rads)*sin(rtheta_rads);
-    driverArm[2] = cos(rphi_rads);
+    driverArm[0] = sin(rphiRads)*cos(rthetaRads);
+    driverArm[1] = sin(rphiRads)*sin(rthetaRads);
+    driverArm[2] = cos(rphiRads);
     return driverArm;
 }
 
@@ -204,34 +204,34 @@ vector <float> SPMControllerOwen::cross_product(vector<float> a, vector <float> 
  * @param sca The scalar to scale the vector by
  */
 vector <float> SPMControllerOwen::scaxvec(vector <float> vec, float sca){
-  vector <float> new_vec(3);
+  vector <float> newVec(3);
   int i;
   for (i=0; i<vec.size();i++){
-    new_vec[i] = vec[i]*sca;
+    newVec[i] = vec[i]*sca;
   }
-  return new_vec;
+  return newVec;
 }
 
 
 //Function to add 2 vectors
 vector <float> SPMControllerOwen::add_vectors(vector <float> a, vector <float> b){
-  vector <float> new_vec(3);
+  vector <float> newVec(3);
   int i;
   for (i=0; i<a.size();i++){
-    new_vec[i] = a[i]+b[i];
+    newVec[i] = a[i]+b[i];
   }
-  return new_vec;
+  return newVec;
 }
 
 
 //Function to subtract a vector from another
 vector <float> SPMControllerOwen::sub_vectors(vector <float> a, vector <float> b){
-  vector <float> new_vec(3);
+  vector <float> newVec(3);
   int i;
   for (i=0; i<a.size();i++){
-    new_vec[i] = a[i]-b[i];
+    newVec[i] = a[i]-b[i];
   }
-  return new_vec;
+  return newVec;
 }
 
 //Function to serial print a vector
