@@ -30,7 +30,7 @@ void SPMController::calculateMotors(float phi, float theta){
   // Serial.print("   and theta : ");
   // Serial.println(theta);
   //Find direction vector given angle
-  vector <float> driverArm = get_direction_vector(phi,theta);
+  vector <float> driverArm = getDirectionVector(phi,theta);
   //print_vector(driverArm, "DRIVER ARM");
   //Find joint c (attached to static motor)
   vector <float> cJoint = cross_product(driverArm, cMotor);
@@ -53,13 +53,13 @@ void SPMController::calculateMotors(float phi, float theta){
   //print_vector(bJoint, "B JOINT");
 
   //Get A motor position
-  float aMotor = get_motor_angle(aJoint);
+  float aMotor = getMotorAngle(aJoint);
   //Serial.println("MOTOR A ANGLE");
   //Serial.println(aMotor);
   //Serial.println();
 
   //Get B motor position
-  float bMotor = get_motor_angle(bJoint);
+  float bMotor = getMotorAngle(bJoint);
   //Serial.println("MOTOR B ANGLE");
   //Serial.println(bMotor);
   //Serial.println();
@@ -72,7 +72,7 @@ void SPMController::calculateMotors(float phi, float theta){
 
 
 //Function to get the unit vector of the driver arm with a given angle, where theta is angle around the z axis and phi is the angle from the z axis
-vector <float> SPMController::get_direction_vector(float phi, float theta)
+vector <float> SPMController::getDirectionVector(float phi, float theta)
 {
   vector <float> driverArm(3);
     float rphiRads = phi*PI/180;
@@ -85,7 +85,7 @@ vector <float> SPMController::get_direction_vector(float phi, float theta)
 }
 
 //Function to get the angle of the joint vector in the xy plane
-float SPMController::get_joint_angle(float x,float y){
+float SPMController::getJointAngle(float x,float y){
   float angle;
   //check the quadrant of the angle to increment it the correct amount
   if (x<0){
@@ -108,13 +108,13 @@ float SPMController::get_joint_angle(float x,float y){
 }
 
 //Function to solve for the motor angle from the x axis, knowing the vector of the joint
-float SPMController::get_motor_angle(vector <float> joint){
+float SPMController::getMotorAngle(vector <float> joint){
   // //Define parameters of equation mcosx + nsinx = p where x is the desired angle
   // float m = joint[0]*SIN_36;
   // float n = joint[1]*SIN_36;
   // float p = joint[2]*COS_36;
   // //Define gamma, such that cos(x-gamma) = p/sqrt(n^2+m^2)
-  // float gamma = get_joint_angle(joint[0],joint[1]);
+  // float gamma = getJointAngle(joint[0],joint[1]);
 
   // //Define q, where q is p/sqrt(m^2+n^2)
   // float q = p/sqrt(m*m+n*n);
@@ -125,7 +125,7 @@ float SPMController::get_motor_angle(vector <float> joint){
   //Serial.println(gamma);
   vector <float> vertical = {0.0, 0.0, 1.0};
   vector <float> tempVector = cross_product(joint, vertical);
-  float theta = get_joint_angle(tempVector[0],tempVector[1]);
+  float theta = getJointAngle(tempVector[0],tempVector[1]);
   // Serial.print(" Theta : ");
   // Serial.print(theta*180/PI);
   // Serial.print("   Gamma : ");
@@ -197,6 +197,6 @@ void SPMController::print_vector(vector <float> toPrint, String title ){
     Serial.print(toPrint[i]);
   }
   Serial.print("   XY Angle : ");
-  float angle = get_joint_angle(toPrint[0], toPrint[1])*180/PI;
+  float angle = getJointAngle(toPrint[0], toPrint[1])*180/PI;
   Serial.println(angle);
 }

@@ -24,9 +24,9 @@ private:
     float * pMotorA;
     float * pMotorB;
 
-    vector <float> get_direction_vector(float phi, float theta);
-    float get_joint_angle(float x, float y);
-    float get_motor_angle(vector <float> joint);
+    vector <float> getDirectionVector(float phi, float theta);
+    float getJointAngle(float x, float y);
+    float getMotorAngle(vector <float> joint);
     vector <float> cross_product(vector <float> a, vector <float> b);
     vector <float> scaxvec(vector <float> vec, float sca);
     vector <float> add_vectors(vector <float> a, vector <float> b);

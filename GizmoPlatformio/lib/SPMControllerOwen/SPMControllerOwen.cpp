@@ -21,7 +21,7 @@ void SPMControllerOwen::begin(float * pMotorA, float * pMotorB){
  */
 void SPMControllerOwen::calculateMotors(float phi, float theta){
   //Find direction vector given angle
-  vector <float> driverArm = get_direction_vector(phi,theta);
+  vector <float> driverArm = getDirectionVector(phi,theta);
   //print_vector(driverArm, "DRIVER ARM"); // Debug
   //Find joint c (attached to static motor)
   vector <float> cJoint = cross_product(cMotor, driverArm);
@@ -64,7 +64,7 @@ void SPMControllerOwen::calculateMotors(float phi, float theta){
 
 
 //Function to get the unit vector of the driver arm with a given angle, where theta is angle around the z axis and phi is the angle from the z axis
-vector <float> SPMControllerOwen::get_direction_vector(float phi, float theta)
+vector <float> SPMControllerOwen::getDirectionVector(float phi, float theta)
 {
   vector <float> driverArm(3);
     float rphiRads = phi*pi/180;
@@ -77,7 +77,7 @@ vector <float> SPMControllerOwen::get_direction_vector(float phi, float theta)
 }
 
 //Function to get the angle of the joint vector in the xy plane
-float SPMControllerOwen::get_joint_angle(float x,float y){
+float SPMControllerOwen::getJointAngle(float x,float y){
   float angle;
   //check the quadrant of the angle to increment it the correct amount
   if (x<0){

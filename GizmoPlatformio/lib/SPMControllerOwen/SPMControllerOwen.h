@@ -23,8 +23,8 @@ private:
     float * pMotorA;
     float * pMotorB;
 
-    vector <float> get_direction_vector(float phi, float theta);
-    float get_joint_angle(float x, float y);
+    vector <float> getDirectionVector(float phi, float theta);
+    float getJointAngle(float x, float y);
     float get_motor_angle(vector <float> joint);
     float get_motor_angle_a(vector <float> joint);
     float get_motor_angle_b(vector <float> joint);
