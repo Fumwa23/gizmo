@@ -29,9 +29,11 @@ void SPMController::calculateMotors(float phi, float theta){
   // Serial.print(phi);
   // Serial.print("   and theta : ");
   // Serial.println(theta);
+
   //Find direction vector given angle
   vector <float> driverArm = getDirectionVector(phi,theta);
   //printVector(driverArm, "DRIVER ARM");
+
   //Find joint c (attached to static motor)
   vector <float> cJoint = crossProduct(driverArm, cMotor);
   // printVector(cJoint, "JOINT C");
@@ -101,6 +103,7 @@ vector <float> SPMController::getDirectionVector(float phi, float theta)
  */
 float SPMController::getJointAngle(float x,float y){
   float angle;
+
   //check the quadrant of the angle to increment it the correct amount
   if (x<0){
     angle = atan(y/x) + PI;
@@ -111,6 +114,7 @@ float SPMController::getJointAngle(float x,float y){
       angle = atan(y/x);
     }
   //Remove cases where x = 0 to prevent dividing by 0
+  
   }else{
     if (y > 0){
       angle = PI/2;
