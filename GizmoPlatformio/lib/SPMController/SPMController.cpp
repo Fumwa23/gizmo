@@ -31,26 +31,26 @@ void SPMController::calculateMotors(float phi, float theta){
   // Serial.println(theta);
   //Find direction vector given angle
   vector <float> driverArm = getDirectionVector(phi,theta);
-  //print_vector(driverArm, "DRIVER ARM");
+  //printVector(driverArm, "DRIVER ARM");
   //Find joint c (attached to static motor)
-  vector <float> cJoint = cross_product(driverArm, cMotor);
-  // print_vector(cJoint, "JOINT C");
+  vector <float> cJoint = crossProduct(driverArm, cMotor);
+  // printVector(cJoint, "JOINT C");
 
   //Get cross part of quaternion rotation
-  vector <float> rotationCross = scaxvec(cross_product(driverArm, cJoint),sqrt(3)/2);
-  //print_vector(rotationCross, "ROTATION CROSS");
+  vector <float> rotationCross = scaleVector(crossProduct(driverArm, cJoint),sqrt(3)/2);
+  //printVector(rotationCross, "ROTATION CROSS");
 
   //Get constant part of vector rotation
-  vector <float> rotConst = scaxvec(cJoint, -0.5);
-  //print_vector(rotConst, "Rotation constant");
+  vector <float> rotConst = scaleVector(cJoint, -0.5);
+  //printVector(rotConst, "Rotation constant");
 
   //Get A joint position
-  vector <float> aJoint = sub_vectors(rotConst, rotationCross);
-  //print_vector(aJoint, "A JOINT");
+  vector <float> aJoint = subVectors(rotConst, rotationCross);
+  //printVector(aJoint, "A JOINT");
 
   //Get B joint position
-  vector <float> bJoint = add_vectors(rotConst, rotationCross);
-  //print_vector(bJoint, "B JOINT");
+  vector <float> bJoint = addVectors(rotConst, rotationCross);
+  //printVector(bJoint, "B JOINT");
 
   //Get A motor position
   float aMotor = getMotorAngle(aJoint);
@@ -124,7 +124,7 @@ float SPMController::getMotorAngle(vector <float> joint){
   float gamma = asin(elevation*COS_36/SIN_36);
   //Serial.println(gamma);
   vector <float> vertical = {0.0, 0.0, 1.0};
-  vector <float> tempVector = cross_product(joint, vertical);
+  vector <float> tempVector = crossProduct(joint, vertical);
   float theta = getJointAngle(tempVector[0],tempVector[1]);
   // Serial.print(" Theta : ");
   // Serial.print(theta*180/PI);
@@ -147,7 +147,7 @@ float SPMController::getMotorAngle(vector <float> joint){
 
 
 //Function to calculate the cross product of 2 vectors
-vector <float> SPMController::cross_product(vector<float> a, vector <float> b){
+vector <float> SPMController::crossProduct(vector<float> a, vector <float> b){
   vector <float> c(3); // Initialize vector with 3 elements
   c[0] = a[1]*b[2]-a[2]*b[1];
   c[1] = a[2]*b[0]-a[0]*b[2];
@@ -157,7 +157,7 @@ vector <float> SPMController::cross_product(vector<float> a, vector <float> b){
 
 
 //Function to multiply a vector by a scalar
-vector <float> SPMController::scaxvec(vector <float> vec, float sca){
+vector <float> SPMController::scaleVector(vector <float> vec, float sca){
   vector <float> newVec(3);
   int i;
   for (i=0; i<vec.size();i++){
@@ -168,7 +168,7 @@ vector <float> SPMController::scaxvec(vector <float> vec, float sca){
 
 
 //Function to add 2 vectors
-vector <float> SPMController::add_vectors(vector <float> a, vector <float> b){
+vector <float> SPMController::addVectors(vector <float> a, vector <float> b){
   vector <float> newVec(3);
   int i;
   for (i=0; i<a.size();i++){
@@ -179,7 +179,7 @@ vector <float> SPMController::add_vectors(vector <float> a, vector <float> b){
 
 
 //Function to subtract a vector from another
-vector <float> SPMController::sub_vectors(vector <float> a, vector <float> b){
+vector <float> SPMController::subVectors(vector <float> a, vector <float> b){
   vector <float> newVec(3);
   int i;
   for (i=0; i<a.size();i++){
@@ -189,7 +189,7 @@ vector <float> SPMController::sub_vectors(vector <float> a, vector <float> b){
 }
 
 //Function to serial print a vector
-void SPMController::print_vector(vector <float> toPrint, String title ){
+void SPMController::printVector(vector <float> toPrint, String title ){
   int i;
   Serial.print(title);
   for (i=0; i<toPrint.size(); i++){

@@ -27,11 +27,11 @@ private:
     vector <float> getDirectionVector(float phi, float theta);
     float getJointAngle(float x, float y);
     float getMotorAngle(vector <float> joint);
-    vector <float> cross_product(vector <float> a, vector <float> b);
-    vector <float> scaxvec(vector <float> vec, float sca);
-    vector <float> add_vectors(vector <float> a, vector <float> b);
-    vector <float> sub_vectors(vector <float> a, vector <float> b);
-    void print_vector(vector <float> toPrint, String title);
+    vector <float> crossProduct(vector <float> a, vector <float> b);
+    vector <float> scaleVector(vector <float> vec, float sca);
+    vector <float> addVectors(vector <float> a, vector <float> b);
+    vector <float> subVectors(vector <float> a, vector <float> b);
+    void printVector(vector <float> toPrint, String title);
 };
 
 #endif // DC_MOTOR_CONTROL_H

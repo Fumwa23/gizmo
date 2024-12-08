@@ -22,36 +22,36 @@ void SPMControllerOwen::begin(float * pMotorA, float * pMotorB){
 void SPMControllerOwen::calculateMotors(float phi, float theta){
   //Find direction vector given angle
   vector <float> driverArm = getDirectionVector(phi,theta);
-  //print_vector(driverArm, "DRIVER ARM"); // Debug
+  //printVector(driverArm, "DRIVER ARM"); // Debug
   //Find joint c (attached to static motor)
-  vector <float> cJoint = cross_product(cMotor, driverArm);
-  //print_vector(cJoint, "JOINT C"); // Debug 
+  vector <float> cJoint = crossProduct(cMotor, driverArm);
+  //printVector(cJoint, "JOINT C"); // Debug 
 
 
   //Get cross part of quaternion rotation
-  vector <float> rotationCross = scaxvec(cross_product(driverArm, cJoint),sqrt(3)/2);
-  //print_vector(rotationCross, "ROTATION CROSS");
+  vector <float> rotationCross = scaleVector(crossProduct(driverArm, cJoint),sqrt(3)/2);
+  //printVector(rotationCross, "ROTATION CROSS");
 
   //Get constant part of vector rotation
-  vector <float> rotConst = scaxvec(cJoint, -0.5);
-  //print_vector(rotConst, "Rotation constant");
+  vector <float> rotConst = scaleVector(cJoint, -0.5);
+  //printVector(rotConst, "Rotation constant");
 
   //Get A joint position
-  vector <float> aJoint = sub_vectors(rotConst, rotationCross);
-  //print_vector(aJoint, "A JOINT");
+  vector <float> aJoint = subVectors(rotConst, rotationCross);
+  //printVector(aJoint, "A JOINT");
 
   //Get B joint position
-  vector <float> bJoint = add_vectors(rotConst, rotationCross);
-  //print_vector(bJoint, "B JOINT");
+  vector <float> bJoint = addVectors(rotConst, rotationCross);
+  //printVector(bJoint, "B JOINT");
 
   //Get A motor position
-  float aMotor = get_motor_angle_a(aJoint);
+  float aMotor = getMotorAngleA(aJoint);
   // Serial.println("MOTOR A ANGLE");
   // Serial.println(aMotor);
   // Serial.println();
 
   //Get B motor position
-  float bMotor = get_motor_angle_b(bJoint);
+  float bMotor = getMotorAngleB(bJoint);
   // Serial.println("MOTOR B ANGLE");
   // Serial.println(bMotor);
   // Serial.println();
@@ -100,7 +100,7 @@ float SPMControllerOwen::getJointAngle(float x,float y){
 }
 
 //Function to solve for the motor angle from the x axis, knowing the vector of the joint
-float SPMControllerOwen::get_motor_angle_a(vector <float> joint){
+float SPMControllerOwen::getMotorAngleA(vector <float> joint){
   //Define parameters of equation mcosx + nsinx = p where x is the desired angle
   float m = joint[0]*SIN_36;
   float n = joint[1]*SIN_36;
@@ -133,7 +133,7 @@ float SPMControllerOwen::get_motor_angle_a(vector <float> joint){
 }
 
 //Function to solve for the motor angle from the x axis, knowing the vector of the joint
-float SPMControllerOwen::get_motor_angle_b(vector <float> joint){
+float SPMControllerOwen::getMotorAngleB(vector <float> joint){
   //Define parameters of equation mcosx + nsinx = p where x is the desired angle
   float m = joint[0]*SIN_36;
   float n = joint[1]*SIN_36;
@@ -188,7 +188,7 @@ vector <float> SPMControllerOwen::quadratic_solver(float a, float b, float c){
 }
 
 //Function to calculate the cross product of 2 vectors
-vector <float> SPMControllerOwen::cross_product(vector<float> a, vector <float> b){
+vector <float> SPMControllerOwen::crossProduct(vector<float> a, vector <float> b){
   vector <float> c(3); // Initialize vector with 3 elements
   c[0] = a[1]*b[2]-a[2]*b[1];
   c[1] = a[2]*b[0]-a[0]*b[2];
@@ -203,7 +203,7 @@ vector <float> SPMControllerOwen::cross_product(vector<float> a, vector <float> 
  * @param vec The vector to be scaled
  * @param sca The scalar to scale the vector by
  */
-vector <float> SPMControllerOwen::scaxvec(vector <float> vec, float sca){
+vector <float> SPMControllerOwen::scaleVector(vector <float> vec, float sca){
   vector <float> newVec(3);
   int i;
   for (i=0; i<vec.size();i++){
@@ -214,7 +214,7 @@ vector <float> SPMControllerOwen::scaxvec(vector <float> vec, float sca){
 
 
 //Function to add 2 vectors
-vector <float> SPMControllerOwen::add_vectors(vector <float> a, vector <float> b){
+vector <float> SPMControllerOwen::addVectors(vector <float> a, vector <float> b){
   vector <float> newVec(3);
   int i;
   for (i=0; i<a.size();i++){
@@ -225,7 +225,7 @@ vector <float> SPMControllerOwen::add_vectors(vector <float> a, vector <float> b
 
 
 //Function to subtract a vector from another
-vector <float> SPMControllerOwen::sub_vectors(vector <float> a, vector <float> b){
+vector <float> SPMControllerOwen::subVectors(vector <float> a, vector <float> b){
   vector <float> newVec(3);
   int i;
   for (i=0; i<a.size();i++){
@@ -235,7 +235,7 @@ vector <float> SPMControllerOwen::sub_vectors(vector <float> a, vector <float> b
 }
 
 //Function to serial print a vector
-void SPMControllerOwen::print_vector(vector <float> toPrint, String title ){
+void SPMControllerOwen::printVector(vector <float> toPrint, String title ){
   int i;
   Serial.println(title);
   for (i=0; i<toPrint.size(); i++){
