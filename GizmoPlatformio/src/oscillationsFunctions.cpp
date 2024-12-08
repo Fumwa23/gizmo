@@ -32,6 +32,7 @@ void circularOscillation(){
     analogWrite(2, calculatedPWM2);
 }
 
+
 /**
  * @brief Oscillates the motors on a singla plane with a varying amplitude.
  * 
@@ -47,7 +48,7 @@ void circularOscillation(){
  * 
  * The motors are then moved to the calculated angle.
  */
-void dynamicOscillation(){
+void dynamicallyOscillate(){
   float t = fmod(millis()-sOscillationStart,timePeriod); // Time within oscillation period
 
 

@@ -50,3 +50,45 @@ void trackNumberDialed(){
         }
   }
 }
+
+void updateOscillationParameters(){
+    unsigned long currentTime = millis();
+    // every 100ms be subtracting a bit from amplitude
+    const float resonantTimePeriod = 700;
+    timePeriod = resonantTimePeriod;
+    const float maxPulseCount = 300;
+    const float maxAmplitude = 30;
+
+    if (pulseCount > maxPulseCount){
+        pulseCount = maxPulseCount;
+    }
+
+    const int stepsTillMax = 100;
+
+    if (currentTime - lastTime > 100){
+
+        if (aOscillationAmplitude > 0){
+        aOscillationAmplitude -= (maxAmplitude/stepsTillMax);
+        }
+
+        // every 100ms be taking a bit from the pulse count and adding it to amplitude and time period
+        if (pulseCount > 0){
+        if (aOscillationAmplitude < maxAmplitude){
+            aOscillationAmplitude += (maxAmplitude/stepsTillMax)*3;
+        }
+        
+        pulseCount -= 3;
+        }
+
+        // dOscillationDirection = (dOscillationDirection + 2) % 360; // Causes plane of oscillation to rotate
+
+        Serial.print("Pulse count: ");
+        Serial.print(pulseCount);
+        Serial.print(" | Amplitude: ");
+        Serial.print(aOscillationAmplitude);
+        Serial.print(" | Time period: ");
+        Serial.println(timePeriod);
+
+        lastTime = currentTime;
+    }
+}

@@ -83,16 +83,18 @@ extern unsigned long lastTime;
 void IRAM_ATTR handleEncoder1();
 void IRAM_ATTR handleEncoder2();
 
-void moveArmsToHome();
-void analogWrite(int motorNumber, float inputPWM, bool remap = true);
-
-void dynamicOscillation();
-void circularOscillation();
-
 void setupPins();
 void setupMotors();
 
+void moveArmsToHome();
+void analogWrite(int motorNumber, float inputPWM, bool remap = true);
+
 void trackDialPulses();
 void trackNumberDialed();
+
+void updateOscillationParameters();
+
+void dynamicallyOscillate();
+void circularOscillation();
 
 #endif // PROJECT_CONFIG_H
