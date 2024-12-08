@@ -21,15 +21,15 @@ void SPMControllerOwen::begin(float * a_motor_ptr, float * b_motor_ptr){
  */
 void SPMControllerOwen::calculate_motors(float phi, float theta){
   //Find direction vector given angle
-  vector <float> driver_arm = get_direction_vector(phi,theta);
-  //print_vector(driver_arm, "DRIVER ARM"); // Debug
+  vector <float> driverArm = get_direction_vector(phi,theta);
+  //print_vector(driverArm, "DRIVER ARM"); // Debug
   //Find joint c (attached to static motor)
-  vector <float> cJoint = cross_product(cMotor, driver_arm);
+  vector <float> cJoint = cross_product(cMotor, driverArm);
   //print_vector(cJoint, "JOINT C"); // Debug 
 
 
   //Get cross part of quaternion rotation
-  vector <float> rotationCross = scaxvec(cross_product(driver_arm, cJoint),sqrt(3)/2);
+  vector <float> rotationCross = scaxvec(cross_product(driverArm, cJoint),sqrt(3)/2);
   //print_vector(rotationCross, "ROTATION CROSS");
 
   //Get constant part of vector rotation
@@ -66,14 +66,14 @@ void SPMControllerOwen::calculate_motors(float phi, float theta){
 //Function to get the unit vector of the driver arm with a given angle, where theta is angle around the z axis and phi is the angle from the z axis
 vector <float> SPMControllerOwen::get_direction_vector(float phi, float theta)
 {
-  vector <float> driver_arm(3);
+  vector <float> driverArm(3);
     float rphi_rads = phi*pi/180;
     float rtheta_rads = theta*pi/180;
 
-    driver_arm[0] = sin(rphi_rads)*cos(rtheta_rads);
-    driver_arm[1] = sin(rphi_rads)*sin(rtheta_rads);
-    driver_arm[2] = cos(rphi_rads);
-    return driver_arm;
+    driverArm[0] = sin(rphi_rads)*cos(rtheta_rads);
+    driverArm[1] = sin(rphi_rads)*sin(rtheta_rads);
+    driverArm[2] = cos(rphi_rads);
+    return driverArm;
 }
 
 //Function to get the angle of the joint vector in the xy plane
@@ -235,11 +235,11 @@ vector <float> SPMControllerOwen::sub_vectors(vector <float> a, vector <float> b
 }
 
 //Function to serial print a vector
-void SPMControllerOwen::print_vector(vector <float> to_print, String title ){
+void SPMControllerOwen::print_vector(vector <float> toPrint, String title ){
   int i;
   Serial.println(title);
-  for (i=0; i<to_print.size(); i++){
-    Serial.println(to_print[i]);
+  for (i=0; i<toPrint.size(); i++){
+    Serial.println(toPrint[i]);
   }
   //Serial.println();
 }

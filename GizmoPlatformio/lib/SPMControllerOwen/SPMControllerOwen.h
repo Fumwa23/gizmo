@@ -17,7 +17,7 @@ private:
     float SIN_36;
     float COS_36;
     
-    vector <float> driver_arm;                 // Private member variable
+    vector <float> driverArm;                 // Private member variable
     vector <float> cMotor;
     
     float * a_motor_ptr;
@@ -34,7 +34,7 @@ private:
     vector <float> scaxvec(vector <float> vec, float sca);
     vector <float> add_vectors(vector <float> a, vector <float> b);
     vector <float> sub_vectors(vector <float> a, vector <float> b);
-    void print_vector(vector <float> to_print, String title);
+    void print_vector(vector <float> toPrint, String title);
 };
 
 #endif // SPM_CONTROLLER_OWEN_H

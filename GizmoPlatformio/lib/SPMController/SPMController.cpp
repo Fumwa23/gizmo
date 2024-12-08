@@ -30,14 +30,14 @@ void SPMController::calculate_motors(float phi, float theta){
   // Serial.print("   and theta : ");
   // Serial.println(theta);
   //Find direction vector given angle
-  vector <float> driver_arm = get_direction_vector(phi,theta);
-  //print_vector(driver_arm, "DRIVER ARM");
+  vector <float> driverArm = get_direction_vector(phi,theta);
+  //print_vector(driverArm, "DRIVER ARM");
   //Find joint c (attached to static motor)
-  vector <float> cJoint = cross_product(driver_arm, cMotor);
+  vector <float> cJoint = cross_product(driverArm, cMotor);
   // print_vector(cJoint, "JOINT C");
 
   //Get cross part of quaternion rotation
-  vector <float> rotationCross = scaxvec(cross_product(driver_arm, cJoint),sqrt(3)/2);
+  vector <float> rotationCross = scaxvec(cross_product(driverArm, cJoint),sqrt(3)/2);
   //print_vector(rotationCross, "ROTATION CROSS");
 
   //Get constant part of vector rotation
@@ -74,14 +74,14 @@ void SPMController::calculate_motors(float phi, float theta){
 //Function to get the unit vector of the driver arm with a given angle, where theta is angle around the z axis and phi is the angle from the z axis
 vector <float> SPMController::get_direction_vector(float phi, float theta)
 {
-  vector <float> driver_arm(3);
+  vector <float> driverArm(3);
     float rphi_rads = phi*PI/180;
     float rtheta_rads = theta*PI/180;
 
-    driver_arm[0] = sin(rphi_rads)*cos(rtheta_rads);
-    driver_arm[1] = sin(rphi_rads)*sin(rtheta_rads);
-    driver_arm[2] = cos(rphi_rads);
-    return driver_arm;
+    driverArm[0] = sin(rphi_rads)*cos(rtheta_rads);
+    driverArm[1] = sin(rphi_rads)*sin(rtheta_rads);
+    driverArm[2] = cos(rphi_rads);
+    return driverArm;
 }
 
 //Function to get the angle of the joint vector in the xy plane
@@ -189,14 +189,14 @@ vector <float> SPMController::sub_vectors(vector <float> a, vector <float> b){
 }
 
 //Function to serial print a vector
-void SPMController::print_vector(vector <float> to_print, String title ){
+void SPMController::print_vector(vector <float> toPrint, String title ){
   int i;
   Serial.print(title);
-  for (i=0; i<to_print.size(); i++){
+  for (i=0; i<toPrint.size(); i++){
     Serial.print("   ");
-    Serial.print(to_print[i]);
+    Serial.print(toPrint[i]);
   }
   Serial.print("   XY Angle : ");
-  float angle = get_joint_angle(to_print[0], to_print[1])*180/PI;
+  float angle = get_joint_angle(toPrint[0], toPrint[1])*180/PI;
   Serial.println(angle);
 }
