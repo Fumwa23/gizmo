@@ -13,8 +13,10 @@ public:
     void calculate_motors(float phi, float theta);       // Example function
 
 private:
-    float sz_angle_sin;
-    float cz_angle_cos;
+    // float sz_angle_sin;
+    // float cz_angle_cos;
+    const float SIN_36;
+    const float COS_36;
     
     vector <float> driver_arm;                 // Private member variable
     vector <float> cMotor;

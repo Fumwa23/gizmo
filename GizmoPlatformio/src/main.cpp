@@ -84,7 +84,7 @@ void loop() {
       pulseCount -= 3;
     }
 
-    dOscillationDirection = (dOscillationDirection + 2) % 360;
+    // dOscillationDirection = (dOscillationDirection + 2) % 360; // Causes plane of oscillation to rotate
 
     Serial.print("Pulse count: ");
     Serial.print(pulseCount);

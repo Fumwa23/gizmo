@@ -2,9 +2,9 @@
 SPMControllerOwen::SPMControllerOwen():
 pi(2*acos(0)),
     
-sz_angle_sin(sin(36*pi/180)),
-cz_angle_cos(cos(36*pi/180)),
-cMotor({sz_angle_sin,0,-cz_angle_cos})
+SIN_36(sin(36*pi/180)),
+COS_36(cos(36*pi/180)),
+cMotor({SIN_36,0,-COS_36})
 {}
 
 
@@ -102,15 +102,15 @@ float SPMControllerOwen::get_joint_angle(float x,float y){
 //Function to solve for the motor angle from the x axis, knowing the vector of the joint
 float SPMControllerOwen::get_motor_angle_a(vector <float> joint){
   //Define parameters of equation mcosx + nsinx = p where x is the desired angle
-  float m = joint[0]*sz_angle_sin;
-  float n = joint[1]*sz_angle_sin;
-  float p = joint[2]*cz_angle_cos;
+  float m = joint[0]*SIN_36;
+  float n = joint[1]*SIN_36;
+  float p = joint[2]*COS_36;
 
   //Solve simultaneous equation to get to solutions (x1, y1), (x2, y2)
   // terms in quadratic formula
   float a = m * m - 1;
-  float b = (2 * p * cz_angle_cos * m) / (n * n);
-  float c = sz_angle_sin*sz_angle_sin - (p * p * cz_angle_cos * cz_angle_cos) / (n * n);
+  float b = (2 * p * COS_36 * m) / (n * n);
+  float c = SIN_36*SIN_36 - (p * p * COS_36 * COS_36) / (n * n);
 
   vector <float> solutions = quadratic_solver(a, b, c);
   float x1 = solutions[0];
@@ -118,7 +118,7 @@ float SPMControllerOwen::get_motor_angle_a(vector <float> joint){
 
   // the a solution is always with the smallest x value
   float x = x1 < x2 ? x1 : x2;
-  float y = (-p*cz_angle_cos - m*x) / n;
+  float y = (-p*COS_36 - m*x) / n;
 
   // Account for different quadrants of solutions:
   if (x>0 && y>0){
@@ -135,23 +135,23 @@ float SPMControllerOwen::get_motor_angle_a(vector <float> joint){
 //Function to solve for the motor angle from the x axis, knowing the vector of the joint
 float SPMControllerOwen::get_motor_angle_b(vector <float> joint){
   //Define parameters of equation mcosx + nsinx = p where x is the desired angle
-  float m = joint[0]*sz_angle_sin;
-  float n = joint[1]*sz_angle_sin;
-  float p = joint[2]*cz_angle_cos;
+  float m = joint[0]*SIN_36;
+  float n = joint[1]*SIN_36;
+  float p = joint[2]*COS_36;
 
   //Solve simultaneous equation to get to solutions (x1, y1), (x2, y2)
   // terms in quadratic formula
   float a = m * m - 1;
-  float b = (2 * p * cz_angle_cos * m) / (n * n);
-  float c = sz_angle_sin*sz_angle_sin - (p * p * cz_angle_cos * cz_angle_cos) / (n * n);
+  float b = (2 * p * COS_36 * m) / (n * n);
+  float c = SIN_36*SIN_36 - (p * p * COS_36 * COS_36) / (n * n);
 
   vector <float> solutions = quadratic_solver(a, b, c);
   float x1 = solutions[0];
   float x2 = solutions[1]; //TODO change t 1
 
   // Find the y solutions for each x value
-  float y1 = (-p*cz_angle_cos - m*x1) / n;
-  float y2 = (-p*cz_angle_cos - m*x2) / n;
+  float y1 = (-p*COS_36 - m*x1) / n;
+  float y2 = (-p*COS_36 - m*x2) / n;
 
   // the a solution is always with the largest y value
   float x = y1 > y2 ? x1 : x2;

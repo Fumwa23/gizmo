@@ -14,8 +14,8 @@ public:
 
 private:
     double pi;
-    float sz_angle_sin;
-    float cz_angle_cos;
+    float SIN_36;
+    float COS_36;
     
     vector <float> driver_arm;                 // Private member variable
     vector <float> cMotor;

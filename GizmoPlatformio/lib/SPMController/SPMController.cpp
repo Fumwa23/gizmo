@@ -2,9 +2,9 @@
 #include <math.h>
 
 SPMController::SPMController():
-sz_angle_sin(sin(36*PI/180)),
-cz_angle_cos(cos(36*PI/180)),
-cMotor({sz_angle_sin,0,-cz_angle_cos})
+SIN_36(sin(36*PI/180)),
+COS_36(cos(36*PI/180)),
+cMotor({SIN_36,0,-COS_36})
 {}
 
 /**
@@ -110,9 +110,9 @@ float SPMController::get_joint_angle(float x,float y){
 //Function to solve for the motor angle from the x axis, knowing the vector of the joint
 float SPMController::get_motor_angle(vector <float> joint){
   // //Define parameters of equation mcosx + nsinx = p where x is the desired angle
-  // float m = joint[0]*sz_angle_sin;
-  // float n = joint[1]*sz_angle_sin;
-  // float p = joint[2]*cz_angle_cos;
+  // float m = joint[0]*SIN_36;
+  // float n = joint[1]*SIN_36;
+  // float p = joint[2]*COS_36;
   // //Define gamma, such that cos(x-gamma) = p/sqrt(n^2+m^2)
   // float gamma = get_joint_angle(joint[0],joint[1]);
 
@@ -121,7 +121,7 @@ float SPMController::get_motor_angle(vector <float> joint){
   float xyMag = sqrt(joint[0]*joint[0]+joint[1]*joint[1]);
   float elevation = joint[2]/xyMag;
   //Serial.println(elevation);
-  float gamma = asin(elevation*cz_angle_cos/sz_angle_sin);
+  float gamma = asin(elevation*COS_36/SIN_36);
   //Serial.println(gamma);
   vector <float> vertical = {0.0, 0.0, 1.0};
   vector <float> tempVector = cross_product(joint, vertical);
