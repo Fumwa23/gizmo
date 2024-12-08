@@ -10,12 +10,12 @@ cMotor({SIN_36,0,-COS_36})
 /**
  * @brief Function to initialize the motor pointers
  * 
- * @param a_motor_ptr Pointer to the motor angle of motor A
- * @param b_motor_ptr Pointer to the motor angle of motor B
+ * @param pMotorA Pointer to the motor angle of motor A
+ * @param pMotorB Pointer to the motor angle of motor B
  */
-void SPMController::begin(float * a_motor_ptr, float * b_motor_ptr){
-  this-> a_motor_ptr = a_motor_ptr;
-  this-> b_motor_ptr = b_motor_ptr;
+void SPMController::begin(float * pMotorA, float * pMotorB){
+  this-> pMotorA = pMotorA;
+  this-> pMotorB = pMotorB;
 }
 
 /**
@@ -64,8 +64,8 @@ void SPMController::calculate_motors(float phi, float theta){
   //Serial.println(bMotor);
   //Serial.println();
   
-  * a_motor_ptr = aMotor;
-  * b_motor_ptr = bMotor;
+  * pMotorA = aMotor;
+  * pMotorB = bMotor;
 }
 
 

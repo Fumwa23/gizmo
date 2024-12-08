@@ -9,7 +9,7 @@ using namespace std;
 class SPMController{
 public:
     SPMController();              // Constructor
-    void begin(float * a_motor_ptr, float * b_motor_ptr);
+    void begin(float * pMotorA, float * pMotorB);
     void calculate_motors(float phi, float theta);       // Example function
 
 private:
@@ -21,8 +21,8 @@ private:
     vector <float> driverArm;                 // Private member variable
     vector <float> cMotor;
     
-    float * a_motor_ptr;
-    float * b_motor_ptr;
+    float * pMotorA;
+    float * pMotorB;
 
     vector <float> get_direction_vector(float phi, float theta);
     float get_joint_angle(float x, float y);

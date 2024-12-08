@@ -8,9 +8,9 @@ cMotor({SIN_36,0,-COS_36})
 {}
 
 
-void SPMControllerOwen::begin(float * a_motor_ptr, float * b_motor_ptr){
-  this-> a_motor_ptr = a_motor_ptr;
-  this-> b_motor_ptr = b_motor_ptr;
+void SPMControllerOwen::begin(float * pMotorA, float * pMotorB){
+  this-> pMotorA = pMotorA;
+  this-> pMotorB = pMotorB;
 }
 
 /**
@@ -56,8 +56,8 @@ void SPMControllerOwen::calculate_motors(float phi, float theta){
   // Serial.println(bMotor);
   // Serial.println();
   
-  * a_motor_ptr = aMotor;
-  * b_motor_ptr = bMotor;
+  * pMotorA = aMotor;
+  * pMotorB = bMotor;
 }
 
 
