@@ -34,14 +34,14 @@ void setupMotors() {
   ledcAttachPin(M4_PIN, pwmChannel4); // Attach PWM to channel 0
   ledcSetup(pwmChannel4, freq, resolution);
 
-  // Setting up PID 
+  // Setting up PID controllers 
   pid1.initialise(kp, ki, kd, outMin, outMax, sampleTime, tau);
   pid2.initialise(kp, ki, kd, outMin, outMax, sampleTime, tau);
+
+  // Setting up kinematics controller
   spm.begin(&motorAngle2, &motorAngle1);
 
   // --------------------------------------------- CALLIBRATION AND HOMING
-
-  lastTime = millis();
  
   // Starting encoder positions on setup.
   encoder1Position = 33.5*GYZ;

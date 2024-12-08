@@ -14,7 +14,6 @@
  *                 rotation.
  * @param remap If true (default), adjusts the PWM value to ensure the motor operates within 
  *              its minimum and maximum range. 
- * @todo Change map function to be proper mapping
  */
 void analogWrite(int motorNumber, float inputPWM, bool remap){
 
@@ -72,7 +71,7 @@ void moveArmsToHome() {
   dOscillationDirection = 180;
   aOscillationAmplitude = 30;
 
-  spm.calculate_motors(aOscillationAmplitude,dOscillationDirection);
+  spm.calculateMotors(aOscillationAmplitude,dOscillationDirection);
   Serial.println(aOscillationAmplitude);
   Serial.println(dOscillationDirection);
   Serial.println(motorAngle1);
@@ -165,9 +164,4 @@ void moveArmsToHome() {
       startTime = millis();
     }
   }
-}
-
-float moveMotorAtSpeed(){
-  // code here
-  return 0.0;
 }
