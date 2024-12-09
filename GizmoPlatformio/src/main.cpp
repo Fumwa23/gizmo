@@ -1,12 +1,3 @@
-/**
- * @file main.cpp
- * @brief Main file for the robot arm project.
- * 
- * This file contains the setup and loop functions for the robot arm project.
- * 
- * @note This file is the entry point for the program.
- */
-
 #include "projectConfig.h"
 
 // --------------------------------------------- CREATE OBJECTS
@@ -46,7 +37,6 @@ void setup() {
   setupMotors();
 
   moveArmsToHome();
-  delay(1000);
 
   lastTime = millis();
   sOscillationStart = millis();
@@ -58,4 +48,5 @@ void loop() {
   updateOscillationParameters();
 
   dynamicallyOscillate();
+  // circularOscillation();
 }
