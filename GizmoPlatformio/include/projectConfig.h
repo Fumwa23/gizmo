@@ -6,8 +6,6 @@
 #include <math.h>
 #include <PIDController.h>
 #include <SPMController.h>
-#include <SPMControllerOwen.h>
-
 // --------------------------------------------- CREATE OBJECTS
 extern PIDController pid1;
 extern PIDController pid2;
