@@ -141,6 +141,8 @@ void moveArmsToHome() {
       Serial.println(encoder2Position/GYZ);
       dOscillationDirection = 0;
       aOscillationAmplitude = 0;
+
+      delay(1000); // Wait for 1 second before starting main loop
       break;
     }
 
