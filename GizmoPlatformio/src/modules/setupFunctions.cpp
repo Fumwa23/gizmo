@@ -1,5 +1,8 @@
 #include "projectConfig.h"
 
+/**
+ * @brief Setup function for the pins used in the project.
+ */
 void setupPins(){
     pinMode(C1_PIN, INPUT_PULLUP);
     pinMode(C2_PIN, INPUT_PULLUP);
@@ -15,6 +18,9 @@ void setupPins(){
     pinMode(REST_PIN, INPUT_PULLUP);
 }
 
+/**
+ * @brief Combination of setup functions for the interrupt handlers, motors, and PID controllers.
+ */
 void setupMotors() {
     // Attach interrupts to their corresponding functions
   attachInterrupt(digitalPinToInterrupt(C1_PIN), handleEncoder1, RISING);

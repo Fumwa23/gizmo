@@ -1,5 +1,10 @@
 #include "projectConfig.h"
 
+/**
+ * @brief Interpret the pulses from a rotary dial.
+ * 
+ * This function identifies rising edges of the pulses from the dial and increments a pulse count
+ */
 void trackDialPulses(){
      bool restState = digitalRead(REST_PIN);
 
@@ -18,8 +23,6 @@ void trackDialPulses(){
 
 /**
  * @brief Tracks the number dialed on a rotary dial.
- *
- * @todo fix bug: the "Number dialed" message is printed multiple times.
  */
 void trackNumberDialed(){
     bool restState = digitalRead(REST_PIN);
@@ -51,6 +54,9 @@ void trackNumberDialed(){
   }
 }
 
+/**
+ * @brief Update the amplitude and direction of the oscillation based on the number of pulses detected.
+ */
 void updateOscillationParameters(){
     unsigned long currentTime = millis();
     // every 100ms be subtracting a bit from amplitude

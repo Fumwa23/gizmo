@@ -23,6 +23,8 @@ void SPMController::begin(float * pMotorA, float * pMotorB){
  * 
  * @param phi Angle from the z axis
  * @param theta Angle around the z axis
+ * 
+ * @note The output is saved to the pointers for motor position.
  */
 void SPMController::calculateMotors(float phi, float theta){
   // Serial.print(" ----- Calclulating for phi : ");

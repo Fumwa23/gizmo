@@ -7,19 +7,19 @@ void circularOscillation(){
     unsigned long circularOscillationTime = millis();
 
     if (circularOscillationTime - lastTime >= 100){
-        dOscillationDirection += 2;
-        lastCircularOscillationTime = circularOscillationTime;
+      dOscillationDirection += 2;
+      lastCircularOscillationTime = circularOscillationTime;
 
-        Serial.print("Direction : ");
-        Serial.print(dOscillationDirection%360);
-        Serial.print(" | Target 1 : ");
-        Serial.print(motorAngle1);
-        Serial.print(" Target 2 : ");
-        Serial.print(motorAngle2);
-        Serial.print(" | Encoder 1 : ");
-        Serial.print(encoder1Position/GYZ);
-        Serial.print(" Encoder 2 : ");
-        Serial.println(encoder2Position/GYZ);
+      Serial.print("Direction : ");
+      Serial.print(dOscillationDirection%360);
+      Serial.print(" | Target 1 : ");
+      Serial.print(motorAngle1);
+      Serial.print(" Target 2 : ");
+      Serial.print(motorAngle2);
+      Serial.print(" | Encoder 1 : ");
+      Serial.print(encoder1Position/GYZ);
+      Serial.print(" Encoder 2 : ");
+      Serial.println(encoder2Position/GYZ);
     }
 
     spm.calculateMotors(aOscillationAmplitude,dOscillationDirection);
@@ -38,13 +38,13 @@ void circularOscillation(){
  * 
  * The amplitude of the oscillation is calculated using the formula:
  * 
- * \f$ \phi = A \sin(\frac{2\pi t}{T}) \f$
+ * phi = A sin(2*pi*t/T)
  * 
  * where:
- * - \f$ \phi \f$ is the magnitude of the oscillation
- * - \f$ A \f$ is the amplitude of the oscillation
- * - \f$ t \f$ is the time within the oscillation period
- * - \f$ T \f$ is the time period of the oscillation
+ * - phi is the magnitude of the oscillation
+ * - A is the amplitude of the oscillation
+ * - t is the time within the oscillation period
+ * - T is the time period of the oscillation
  * 
  * The motors are then moved to the calculated angle.
  */
