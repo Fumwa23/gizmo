@@ -1,15 +1,13 @@
-# gizmo
+# Physical Computing 
 
-### Naming conventions for us to use
+## Intro
+Code repository used to control the spherical manipulator and driven pendulum made for the Physical Computing module.
 
-Variables: camelCase
-Functions: camelCase
+## Structure
+This repo contains a PlatformIO project. When uploaded to an esp32, the main.cpp file is run.
+All variable and function declarations are stored in the projectConfig.h file in gizmoPlatformio/lib
+All functions run in the main.cpp file are stored in modules inside the gizmoPlatformio/src/modules directory.
+Two custom libraries have been made for PID control and for control over the 2DOF spherical coaxial manipulator.
 
-Classes: PascalCase
-Structs: PascalCase
-
-constants: ALL_CAPS
-
-class member variables: variableName_
-
-Namespaces: lowercase_snake_case
+## Use
+Two recreate this project...
